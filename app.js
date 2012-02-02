@@ -5,11 +5,12 @@ var express = require('express'),
     MemoryStore = express.session.MemoryStore,
     sessionStore = new MemoryStore(),
     parseCookie = require('connect').utils.parseCookie,
-    persistency = require('./persistency');
+    persistency = require('./persistency'),
+    config = require('./config');
 
 everyauth.google
-  .appId('596685303616.apps.googleusercontent.com')
-  .appSecret('jzmnVYcNNZBAcVjjDe0T-q8k')
+  .appId(config.app.google_client_id)
+  .appSecret(config.app.google_client_secret)
   .scope('https://www.googleapis.com/auth/userinfo.profile')
   .moduleTimeout(-1)
   .findOrCreateUser( function (session, accessToken, accessTokenExtra, googleUserMetadata) {
@@ -24,7 +25,7 @@ app.configure(function() {
   app.use(express.cookieParser());
   app.use(express.session({
     store: sessionStore,
-    secret: "wqeifujasldkjvas",
+    secret: config.app.google_client_secret,
     key: 'express.sid'
   }));
   app.use(everyauth.middleware());
@@ -40,12 +41,12 @@ app.get('/', function(req, res) {
   res.render('layout');
 });
 
-app.listen(80);
+app.listen(config.server.port);
 
 var sio = io.listen(app);
 sio.configure(function(){
-  sio.set('log level', 1);
-  sio.set('transports', ['xhr-polling', 'jsonp-polling']);
+  sio.set('log level', config.app.sio.log_level);
+  sio.set('transports', config.app.sio.transports);
 });
 
 
@@ -88,7 +89,7 @@ sio.sockets.on('connection', function(socket) {
       }
       history.push(completeMessage);
       persistency.saveMessage(completeMessage);
-      if (history.length > 20) history.shift();
+      if (history.length > config.app.history_size) history.shift();
       broadcast('message', completeMessage);
     });
 
