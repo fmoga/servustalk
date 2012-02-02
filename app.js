@@ -4,7 +4,8 @@ var express = require('express'),
     io = require('socket.io'),
     MemoryStore = express.session.MemoryStore,
     sessionStore = new MemoryStore(),
-    parseCookie = require('connect').utils.parseCookie;
+    parseCookie = require('connect').utils.parseCookie,
+    persistency = require('./persistency');
 
 everyauth.google
   .appId('596685303616.apps.googleusercontent.com')
@@ -82,9 +83,11 @@ sio.sockets.on('connection', function(socket) {
     socket.on('message', function(message) {
       var completeMessage = {
         user: socket.user,
-        message: message
+        message: message,
+        ts: new Date().getTime(),
       }
       history.push(completeMessage);
+      persistency.saveMessage(completeMessage);
       if (history.length > 20) history.shift();
       broadcast('message', completeMessage);
     });
