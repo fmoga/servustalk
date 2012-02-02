@@ -222,7 +222,7 @@ function isScrolledToBottomWithThreshold(threshold) {
   return false;
 }
 function checkYoutubeScrolling() {
-  if (isScrolledToBottomWithThreshold(365)) {
+  if (isScrolledToBottomWithThreshold(400)) {
     scrollToBottom();
   }
 }
