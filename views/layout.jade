@@ -1,0 +1,35 @@
+!!! 5
+html(lang="en")
+  head
+    title UbunTalk
+    link(href='http://fonts.googleapis.com/css?family=Droid+Sans', rel='stylesheet', type='text/css')
+    link(href='/public/css/style.css', rel='stylesheet', type='text/css')
+    - if (everyauth.loggedIn)
+      script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
+      script(src='/socket.io/socket.io.js')
+      script(src='/public/js/script.js')
+  body
+    - if (everyauth.loggedIn)
+      #header
+        | Currently logged in as 
+        span.username #{everyauth.google.user.name}
+        span#logout
+          a(href='/logout') Logout
+      table
+        tr
+          td#messagebox
+            .scrollr
+          td#buddylist(rowspan="2")
+            .scrollr
+              p 
+                span#title Online
+                a#toggle(href='#', full='1') &raquo;
+              ul
+        tr
+          td#inputbox
+            textarea#inputfield(rows='2')
+            #desktop
+              input#desknot(type='checkbox') 
+              span Desktop notifications
+    - else
+      a(href='/auth/google') Log in with Google

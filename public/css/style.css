@@ -1,0 +1,127 @@
+body, input, textarea {
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 14px;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 95%;
+}
+
+#header img {
+  max-height: 30px;
+  max-width: 30px;
+}
+
+#header .username {
+  font-weight: bold;
+}
+
+#header #logout {
+  float: right;
+}
+
+a, a:visited, a:hover {
+  text-decoration: none;
+  font-weight: normal;
+  color: #00E;
+}
+
+#header {
+  border-bottom: 1px solid #BBB;
+}
+
+#buddylist {
+  min-width: 200px;
+  border-left: 1px solid #BBB;
+  vertical-align: top;
+}
+
+.scrollr {
+  overflow-y: auto;
+  height: 100%;
+}
+
+#buddylist ul {
+  list-style-type: none;
+  padding-left: 10px;
+  margin-top: 10px;
+}
+
+#buddylist ul li {
+  margin-bottom: 5px;
+}
+
+#buddylist p {
+  font-weight: bold;
+  margin: 5px;
+  color: #777;
+}
+
+#buddylist #title {
+  margin-right: 5px;
+}
+
+.profilepic {
+  max-width: 30px;
+  max-height: 30px;
+  margin-right: 5px;
+}
+
+.middle {
+  vertical-align: middle;
+}
+
+table {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-collapse: collapse;
+}
+
+#messagebox {
+  width: 100%;
+  height: 100%;
+  padding: 5px 5px 5px 0px;
+}
+
+#messagebox img {
+  float: left;
+}
+
+.author {
+  margin-left: 35px;
+}
+
+#inputbox {
+  width: 100%
+}
+
+#inputfield {
+  width: 98%;
+  border: 1px solid #BBB;
+}
+
+hr {
+  border-top: 1px solid #DDD;
+  border-bottom: 0;
+  margin-right: 10px;
+}
+
+.notification {
+  font-style: italic;
+  color: #777;
+  padding-top: 2px;
+  padding-bottom: 3px;
+}
+
+#desktop {
+  color: #777;
+  text-align: right;
+  padding-right: 5px;
+}
