@@ -123,7 +123,7 @@ $(document).ready(function() {
       var ext = 0;
       var formats = ['.gif', '.jpg', '.jpeg', '.png' ];
       for (ext in formats) {
-        if (lowerLink.indexOf(formats[ext]) == lowerLink.length  - formats[ext].length ) {
+        if (lowerLink.indexOf(formats[ext]) != -1) {
           imagery.push(link);
           break;
         }
@@ -158,7 +158,7 @@ $(document).ready(function() {
   function addImagery(links) {
     var html = '<div id="imageDock">'; 
     $.each(links, function(index, link) {
-      html += '<img id="imageLink" onload="checkImageScrolling()" src="' + link + '"/>';
+      html += '<a target="_tab" href="' + link + '"><img id="imageLink" onload="checkImageScrolling()" src="' + link + '"/></a>';
     });
     html += '</div>';
     return html;
