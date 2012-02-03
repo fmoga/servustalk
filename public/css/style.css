@@ -125,3 +125,13 @@ hr {
   text-align: right;
   padding-right: 5px;
 }
+
+#imageDock {
+  overflow : auto;
+}
+
+#imageLink {
+  max-height : 315px;
+  max-width : 420px;
+  float : left;
+}

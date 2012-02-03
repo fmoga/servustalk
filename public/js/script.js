@@ -78,6 +78,7 @@ $(document).ready(function() {
       console.log(result);
       var html = '<div>' + result.html + '</div>';
       html += addYoutubeLinks(result.youtube);
+      html += addImagery(result.imagery);
       $('.author').last().append(html);
     } else {
       var html = '';
@@ -92,6 +93,7 @@ $(document).ready(function() {
       console.log(result);
       html += '<div>' + result.html + '</div>';
       html += addYoutubeLinks(result.youtube);
+      html += addImagery(result.imagery);
       html += '</div>';
       $('#messagebox .scrollr').append(html);
     }
@@ -101,6 +103,7 @@ $(document).ready(function() {
   function handleLinksAndEscape(text) {
     var html = '';
     var youtube = [];
+    var imagery = [];
     var index = text.indexOf('http://');
     while (index != -1) {
       textBeforeLink = text.substr(0, index);
@@ -112,7 +115,18 @@ $(document).ready(function() {
       // check for youtube links
       if (link.indexOf('http://www.youtube.com') == 0) {
         youtube.push(link); 
+      };
+      // check for imagery content
+      var lowerLink = link.toLowerCase();
+      var ext = 0;
+      var formats = ['.gif', '.jpg', '.jpeg', '.png' ];
+      for (ext in formats) {
+        if (lowerLink.indexOf(formats[ext]) == lowerLink.length  - formats[ext].length ) {
+          imagery.push(link);
+          break;
+        }
       }
+      
       if (finish == text.length) {
         text = '';
       } else {
@@ -123,10 +137,11 @@ $(document).ready(function() {
     html += $('<div/>').text(text).html();
     return {
       html : html,
-      youtube : youtube
+      youtube : youtube,
+      imagery : imagery
     }
   }
-
+  
   function addYoutubeLinks(links) {
     var html = '';
     $.each(links, function(index, link) {
@@ -135,6 +150,15 @@ $(document).ready(function() {
         html += '<div><iframe onload="checkYoutubeScrolling()" width="420" height="315" src="http://www.youtube.com/embed/' + params.v + '" frameborder="0" allowfullscreen></iframe></div>';
       }
     });
+    return html;
+  }
+
+  function addImagery(links) {
+    var html = '<div id="imageDock">'; 
+    $.each(links, function(index, link) {
+      html += '<img id="imageLink" onload="checkImageScrolling()" src="' + link + '"/>';
+    });
+    html += '</div>';
     return html;
   }
 
@@ -223,6 +247,11 @@ function isScrolledToBottomWithThreshold(threshold) {
 }
 function checkYoutubeScrolling() {
   if (isScrolledToBottomWithThreshold(400)) {
+    scrollToBottom();
+  }
+}
+function checkImageScrolling() {
+  if (isScrolledToBottomWithThreshold(500)) {
     scrollToBottom();
   }
 }
