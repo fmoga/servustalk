@@ -1,7 +1,7 @@
 var config = {}
 
 config.server = {
-    port: 8000
+    port: 80
 }
 
 config.mongo = {

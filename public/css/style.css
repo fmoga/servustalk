@@ -126,6 +126,7 @@ hr {
   padding-right: 5px;
 }
 
+<<<<<<< HEAD
 #imageDock {
   overflow : auto;
 }
@@ -134,4 +135,8 @@ hr {
   max-height : 315px;
   max-width : 420px;
   float : left;
+=======
+.attention {
+  color: #CD3333;
+>>>>>>> faac4dc395971c96dcd9e6e3650cd08ea53e8d1b
 }
