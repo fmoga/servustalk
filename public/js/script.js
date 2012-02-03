@@ -155,7 +155,6 @@ $(document).ready(function() {
     return html;
   }
 
-<<<<<<< HEAD
   function addImagery(links) {
     var html = '<div id="imageDock">'; 
     $.each(links, function(index, link) {
@@ -165,14 +164,10 @@ $(document).ready(function() {
     return html;
   }
 
-  function displayNotification(notification) {
-    var html = '<div class="notification">' + notification + '</div>';
-=======
   function displayNotification(notification, attention) {
     var classes = 'notification';
     if (attention) classes += ' attention';
     var html = '<div class="' + classes + '">' + notification + '</div>';
->>>>>>> faac4dc395971c96dcd9e6e3650cd08ea53e8d1b
     $('#messagebox .scrollr').append(html);
     lastUserActivity = {id: ''};
     if (isScrolledToBottom()) scrollToBottom();
