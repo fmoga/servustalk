@@ -1,3 +1,5 @@
+var jQuery = require('jquery');
+
 var config = {}
 
 config.server = {
@@ -16,6 +18,14 @@ config.app = {
         log_level: 1,
         transports: ['xhr-polling', 'jsonp-polling']
     }
+}
+
+try {
+    my_config = require('./my_config');
+    jQuery.extend(true, config, my_config);
+    console.log('Using user config found.');
+} catch(err) {
+    console.log('No user config found.');
 }
 
 module.exports = config
