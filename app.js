@@ -6,7 +6,8 @@ var express = require('express'),
     sessionStore = new MemoryStore(),
     parseCookie = require('connect').utils.parseCookie,
     persistency = require('./persistency'),
-    config = require('./config');
+    config = require('./config'),
+    route = require('./route');
 
 everyauth.google
   .appId(config.app.google_client_id)
@@ -37,9 +38,7 @@ app.configure(function() {
 
 everyauth.helpExpress(app);
 
-app.get('/', function(req, res) {
-  res.render('layout');
-});
+route.addRoutes(app);
 
 app.listen(config.server.port);
 
