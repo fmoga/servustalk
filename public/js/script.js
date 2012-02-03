@@ -70,6 +70,10 @@ $(document).ready(function() {
   });
 
   socket.on('disconnect', function() {
+    displayNotification('You have been disconnected from the server. Refreshing in 5 seconds...');
+    setTimeout(function() {
+      location.reload();
+    }, 5000);
   });
 
   function displayMessage(message) {
