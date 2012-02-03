@@ -70,10 +70,8 @@ $(document).ready(function() {
   });
 
   socket.on('disconnect', function() {
-    displayNotification('You have been disconnected from the server. Refreshing in 5 seconds...');
-    setTimeout(function() {
-      location.reload();
-    }, 5000);
+    var message = 'You have been disconnected from server for maintenance. Please refresh and log in again.';
+    displayNotification(message, true);
   });
 
   function displayMessage(message) {
@@ -142,8 +140,10 @@ $(document).ready(function() {
     return html;
   }
 
-  function displayNotification(notification) {
-    var html = '<div class="notification">' + notification + '</div>';
+  function displayNotification(notification, attention) {
+    var classes = 'notification';
+    if (attention) classes += ' attention';
+    var html = '<div class="' + classes + '">' + notification + '</div>';
     $('#messagebox .scrollr').append(html);
     lastUserActivity = {id: ''};
     if (isScrolledToBottom()) scrollToBottom();
