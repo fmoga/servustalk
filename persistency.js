@@ -14,3 +14,7 @@ exports.saveMessage = function(message) {
     }
     messages.insert(msg);
 }
+
+exports.getMessages = function(callback) {
+    return messages.find().toArray(callback);
+}
