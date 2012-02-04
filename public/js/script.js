@@ -30,7 +30,7 @@ $(document).ready(function() {
   socket.on('message', function(message) {
     if (!focused && $('#desknot').prop('checked') && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
       var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
-      displayDesktopNotification(picture, message.user.name, message.message);
+      displayDesktopNotification(picture, message.user.name, message.text);
     }
     displayMessage(message);
   });
@@ -105,7 +105,7 @@ $(document).ready(function() {
   }
 
   function processMessage(message){
-      var result = handleLinksAndEscape(message.message);
+      var result = handleLinksAndEscape(message.text);
       var html = '<div>' + result.html + '</div>';
       html += addYoutubeLinks(result.youtube);
       html += addMixcloudLinks(result.mixcloud);

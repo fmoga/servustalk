@@ -71,7 +71,7 @@ function init(app, sessionStore) {
         socket.on('message', function(message) {
           var completeMessage = {
             user: socket.user,
-            message: message,
+            text: message,
             ts: new Date().getTime(),
           }
           history.push(completeMessage);
