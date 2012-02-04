@@ -9,6 +9,8 @@ var currentClients = [];
 var first = true;
 var popup;
 var focused = true;
+var flickeringTitle;
+var originalDocTitle = document.title;
 
 $(document).ready(function() {
   var socket = io.connect();
@@ -16,10 +18,23 @@ $(document).ready(function() {
   });
 
   socket.on('message', function(message) {
+    if (!focused) {
+	flickeringTitle = setInterval(function(){
+        if(document.title == originalDocTitle) {
+        	document.title=message.user.name + ' has written ' + message.message;
+	}
+	else {
+		document.title=originalDocTitle;	
+	}
+   }, 2000);
+    }
+
     if (!focused && $('#desknot').prop('checked') && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
+      
       var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
       displayDesktopNotification(picture, message.user.name, message.message);
     }
+    
     displayMessage(message);
   });
 
@@ -313,6 +328,11 @@ window.addEventListener('focus', function() {
   if (popup) popup.cancel();
   focused = true;
   $('#inputbox').focus();
+  window.clearInterval(flickeringTitle);
+  if(originalDocTitle != 'undefined') {
+  document.title = originalDocTitle;
+}
+
 });
 
 window.addEventListener('blur', function() {
