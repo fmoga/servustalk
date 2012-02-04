@@ -32,6 +32,7 @@ app.configure(function() {
   app.use(everyauth.middleware());
   app.use(app.router);
   app.set('view engine', 'jade');
+  app.set('view options', {layout: false});
   app.use('/public', express.static(__dirname + '/public'));
   app.use(express.errorHandler());
 });
