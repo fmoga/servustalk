@@ -109,8 +109,15 @@ $(document).ready(function() {
     } else {
       date = dayOfWeek[timestamp.getDay()] + ', ' + timestamp.getDate() + ' ' + month[timestamp.getMonth()] + ' ' + timestamp.getFullYear();
     }
-    var time = timestamp.getHours() + ':' + timestamp.getMinutes(); 
+    var time = padTime(timestamp.getHours()) + ':' + padTime(timestamp.getMinutes()); 
     return date + ' at ' + time;
+  }
+
+  function padTime(number) {
+    if (number < 10) {
+      return '0' + number;
+    }
+    return number;
   }
 
   function handleLinksAndEscape(text) {
