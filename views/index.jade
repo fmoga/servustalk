@@ -1,0 +1,34 @@
+extends layout
+
+block append scripts
+  script(src='http://balupton.github.com/jquery-syntaxhighlighter/scripts/jquery.syntaxhighlighter.min.js')
+  script(src='/socket.io/socket.io.js')
+  script(src='/public/js/script.js')
+
+block header
+  #header
+    span#roomTitle
+    a#changeTitle(href='#') Change title
+    span#logout
+      a(href='/logout') Logout
+
+block content
+  table
+    tr
+      td#messagebox
+        .scrollr
+      td#buddylist(rowspan="2")
+        .scrollr
+          p 
+            span#title Online
+            a#toggle(href='#', full='1') &raquo;
+          ul
+    tr
+      td#inputbox
+        textarea#inputfield(rows='2')
+        #footer
+          | Logged in as 
+          span.username #{everyauth.google.user.name}
+          span#desktop
+            input#desknot(type='checkbox') 
+            span Desktop notifications

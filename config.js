@@ -20,6 +20,11 @@ config.app = {
     }
 }
 
+config.defaultTitle = {
+  text: 'UbunTalk - chat for humans (and dancers)',
+  user: 'UbunTalk'
+}
+
 try {
     my_config = require('./my_config');
     jQuery.extend(true, config, my_config);
