@@ -15,6 +15,7 @@ everyauth.google
   .moduleTimeout(-1)
   .findOrCreateUser( function (session, accessToken, accessTokenExtra, googleUserMetadata) {
       console.log('Fetched from Google: ' + util.inspect(googleUserMetadata));
+      persistency.updateUser(googleUserMetadata);
       return googleUserMetadata;
   })
   .redirectPath('/');
@@ -40,5 +41,6 @@ everyauth.helpExpress(app);
 
 route.addRoutes(app);
 realtime.init(app, sessionStore);
+persistency.init();
 
 app.listen(config.server.port);
