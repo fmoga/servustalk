@@ -1,5 +1,10 @@
-var defaultPicture = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
-var lastUserActivity = {id: ''};
+var DEFAULT_PICTURE = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
+var MAX_TIMESTAMP_DIFF = 60000; // 1 min
+var VIRTUAL_USER = { id: ''};
+
+var lastMessage = {
+  user: VIRTUAL_USER
+};
 var currentClients = [];
 var first = true;
 var popup;
@@ -12,16 +17,8 @@ $(document).ready(function() {
 
   socket.on('message', function(message) {
     if (!focused && $('#desknot').prop('checked') && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-      if (popup) {
-        popup.cancel();
-      }
-      var picture = message.user.picture ? message.user.picture : defaultPicture;
-      popup = window.webkitNotifications.createNotification(picture, message.user.name, message.message)
-      popup.onclick = function() { 
-        window.focus(); 
-        this.cancel(); 
-      };
-      popup.show();
+      var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
+      displayDesktopNotification(picture, message.user.name, message.message);
     }
     displayMessage(message);
   });
@@ -34,7 +31,7 @@ $(document).ready(function() {
        nameStyle = 'style="display: none"';
     }
     $.each(clients, function(index, client) {
-      var picture = defaultPicture;
+      var picture = DEFAULT_PICTURE;
       if (client.picture) picture = client.picture;
       $(buddylist).append('<li><img class="profilepic middle" title="' +client.name + '" src="' + picture + '"/><span class="profilename" ' + nameStyle + '>' + client.name + '</span></li>'); 
     });
@@ -75,36 +72,69 @@ $(document).ready(function() {
   });
 
   function displayMessage(message) {
-    if (message.user.id == lastUserActivity.id) {
-      result = handleLinksAndEscape(message.message);
-      console.log(result);
-      var html = '<div>' + result.html + '</div>';
-      html += addYoutubeLinks(result.youtube);
-      html += addImagery(result.imagery);
-      $('.author').last().append(html);
+    var processedMessage = processMessage(message);
+    if (message.user.id == lastMessage.user.id && message.ts < lastMessage.ts + MAX_TIMESTAMP_DIFF ) {
+      $('.author').last().append(processedMessage.html);
     } else {
       var html = '';
-      if (lastUserActivity.id != '') {
+      if (lastMessage.user.id != VIRTUAL_USER.id) {
         html += '<hr/>'; 
       }
-      lastUserActivity = message.user;
-      var picture = message.user.picture ? message.user.picture : defaultPicture;
+      var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
       html += '<img class="profilepic" src="' + picture + '"/>';
-      html += '<div class="author"><strong>' + $('<div/>').text(message.user.name).html() + '</strong>';
-      var result = handleLinksAndEscape(message.message);
-      console.log(result);
-      html += '<div>' + result.html + '</div>';
-      html += addYoutubeLinks(result.youtube);
-      html += addImagery(result.imagery);
+      html += '<div class="author"><strong>' + $('<div/>').text(message.user.name).html() + '</strong><span class="timestamp">' + formatTimestamp(message.ts) + '</span>';
+      html += processedMessage.html;
       html += '</div>';
       $('#messagebox .scrollr').append(html);
     }
-    if (isScrolledToBottom()) scrollToBottom();
+    lastMessage = message;
+    handleScroll(processedMessage.scrollSize);
+  }
+
+  function processMessage(message){
+      var result = handleLinksAndEscape(message.message);
+      var html = '<div>' + result.html + '</div>';
+      html += addYoutubeLinks(result.youtube);
+      html += addMixcloudLinks(result.mixcloud);
+      html += addSoundcloudLinks(result.soundcloud);
+      html += addImagery(result.imagery);
+      return {
+        html: html,
+        scrollSize: guessMessageScrollSize(result)
+      }
+  }
+
+  function guessMessageScrollSize(processedMessage) {
+    return 75 + processedMessage.youtube.length * 340 + processedMessage.mixcloud.length * 485 + processedMessage.soundcloud.length * 90 + processedMessage.imagery.length * 425;
+  }
+
+  function formatTimestamp(ts) {
+    var timestamp = new Date(ts);
+    var now = new Date();
+    var dayOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var date;
+    if (timestamp.getDate() == now.getDate() && timestamp.getMonth() === now.getMonth() && timestamp.getFullYear() == timestamp.getFullYear()) {
+      date = 'Today';  
+    } else {
+      date = dayOfWeek[timestamp.getDay()] + ', ' + timestamp.getDate() + ' ' + month[timestamp.getMonth()] + ' ' + timestamp.getFullYear();
+    }
+    var time = padTime(timestamp.getHours()) + ':' + padTime(timestamp.getMinutes()); 
+    return date + ' at ' + time;
+  }
+
+  function padTime(number) {
+    if (number < 10) {
+      return '0' + number;
+    }
+    return number;
   }
 
   function handleLinksAndEscape(text) {
     var html = '';
     var youtube = [];
+    var mixcloud = [];
+    var soundcloud = [];
     var imagery = [];
     var index = text.indexOf('http://');
     while (index != -1) {
@@ -118,12 +148,18 @@ $(document).ready(function() {
       if (link.indexOf('http://www.youtube.com') == 0) {
         youtube.push(link); 
       };
+      if (link.indexOf('http://www.mixcloud.com') == 0) {
+        mixcloud.push(link); 
+      };
+      if (link.indexOf('http://soundcloud.com') == 0) {
+        soundcloud.push(link); 
+      };
       // check for imagery content
       var lowerLink = link.toLowerCase();
       var ext = 0;
       var formats = ['.gif', '.jpg', '.jpeg', '.png' ];
       for (ext in formats) {
-        if (lowerLink.indexOf(formats[ext]) == lowerLink.length  - formats[ext].length ) {
+        if (lowerLink.indexOf(formats[ext]) != -1) {
           imagery.push(link);
           break;
         }
@@ -140,6 +176,8 @@ $(document).ready(function() {
     return {
       html : html,
       youtube : youtube,
+      mixcloud: mixcloud,
+      soundcloud: soundcloud,
       imagery : imagery
     }
   }
@@ -149,18 +187,50 @@ $(document).ready(function() {
     $.each(links, function(index, link) {
       var params = getUrlVars(link);
       if (params.v) {
-        html += '<div><iframe onload="checkYoutubeScrolling()" width="420" height="315" src="http://www.youtube.com/embed/' + params.v + '" frameborder="0" allowfullscreen></iframe></div>';
+        html += '<div><iframe width="420" height="315" src="http://www.youtube.com/embed/' + params.v + '" frameborder="0" allowfullscreen></iframe></div>';
       }
     });
     return html;
   }
 
-  function addImagery(links) {
-    var html = '<div id="imageDock">'; 
+  function addSoundcloudLinks(links) {
+    var html = '';
     $.each(links, function(index, link) {
-      html += '<img id="imageLink" onload="checkImageScrolling()" src="' + link + '"/>';
+      html += '<div class="soundcloud">';
+      html += '<object height="81" width="100%">'; 
+      html += '  <param name="movie" value="https://player.soundcloud.com/player.swf?url=' + encodeURIComponent(link) + '&amp;show_comments=true&amp;auto_play=false&amp;color=ff7700"></param>';
+      html += '  <param name="allowscriptaccess" value="always"></param>';
+      html += '  <embed allowscriptaccess="always" height="81" src="https://player.soundcloud.com/player.swf?url=' + encodeURIComponent(link) + '&amp;show_comments=true&amp;auto_play=false&amp;color=ff7700" type="application/x-shockwave-flash" width="100%"></embed>';
+      html += '</object>';   
+      html += '</div>';
     });
-    html += '</div>';
+    return html;
+  }
+
+  function addMixcloudLinks(links) {
+    var html = '';
+    $.each(links, function(index, link) {
+      html += '<div class="mixcloud">';
+      html += '<object width="480" height="480">';
+      html += '  <param name="movie" value="http://www.mixcloud.com/media/swf/player/mixcloudLoader.swf?feed=' + encodeURIComponent(link) + '&embed_uuid=cf33541f-9302-42e5-91bb-597a70dc852d&stylecolor=&embed_type=widget_standard"></param>';
+      html += '  <param name="allowFullScreen" value="true"></param>';
+      html += '  <param name="wmode" value="opaque"></param>';
+      html += '  <param name="allowscriptaccess" value="always"></param>';
+      html += '  <embed src="http://www.mixcloud.com/media/swf/player/mixcloudLoader.swf?feed=' + encodeURIComponent(link) + '&embed_uuid=cf33541f-9302-42e5-91bb-597a70dc852d&stylecolor=&embed_type=widget_standard" type="application/x-shockwave-flash" wmode="opaque" allowscriptaccess="always" allowfullscreen="true" width="480" height="480"></embed>';
+      html += '</object>';
+      html += '</div>';
+    });
+    return html;
+  }
+
+  function addImagery(links) {
+    var html = '';
+    $.each(links, function(index, link) {
+      html += '<a target="_tab" href="' + link + '"><img id="imageLink" src="' + link + '"/></a>';
+    });
+    if (html !== '') {
+      html = '<div id="imageDock">' + html + '</div>';
+    }
     return html;
   }
 
@@ -169,8 +239,20 @@ $(document).ready(function() {
     if (attention) classes += ' attention';
     var html = '<div class="' + classes + '">' + notification + '</div>';
     $('#messagebox .scrollr').append(html);
-    lastUserActivity = {id: ''};
-    if (isScrolledToBottom()) scrollToBottom();
+    lastMessage = { user: VIRTUAL_USER };
+    handleScroll(75);
+  }
+
+  function displayDesktopNotification(picture, title, text) {
+      if (popup) {
+        popup.cancel();
+      }
+      popup = window.webkitNotifications.createNotification(picture, title, text);
+      popup.onclick = function() { 
+        window.focus(); 
+        this.cancel(); 
+      };
+      popup.show();
   }
 
   $('#toggle').click(function() {
@@ -189,9 +271,11 @@ $(document).ready(function() {
 
   $('#inputfield').keypress(function(event) {
     if (event.which == 13) {
-      var text = $('#inputfield').val(); 
+      var text = $.trim($('#inputfield').val()); 
       $('#inputfield').val('');
-      socket.emit('message', text);
+      if (text !== '') {
+        socket.emit('message', text);
+      }
       return false;
     }
   });
@@ -227,6 +311,7 @@ $(document).ready(function() {
 window.addEventListener('focus', function() {
   if (popup) popup.cancel();
   focused = true;
+  $('#inputbox').focus();
 });
 
 window.addEventListener('blur', function() {
@@ -238,26 +323,18 @@ function scrollToBottom() {
   $(messagebox).animate({ scrollTop: $(messagebox).prop("scrollHeight") }, 0);
 }
 
-function isScrolledToBottom() {
-  return isScrolledToBottomWithThreshold(50);
+function handleScroll(threshold) {
+  if(isScrolledToBottom(threshold)) {
+    scrollToBottom();
+  }
 }
 
-function isScrolledToBottomWithThreshold(threshold) {
+function isScrolledToBottom(threshold) {
   var elem = $('#messagebox .scrollr');
   if (elem[0].scrollHeight - elem.scrollTop() < elem.outerHeight() + threshold) {
     return true;
   }
   return false;
-}
-function checkYoutubeScrolling() {
-  if (isScrolledToBottomWithThreshold(400)) {
-    scrollToBottom();
-  }
-}
-function checkImageScrolling() {
-  if (isScrolledToBottomWithThreshold(500)) {
-    scrollToBottom();
-  }
 }
 
 function isWhitespace(ch) { 
