@@ -4,6 +4,13 @@ block append scripts
   script(src='/socket.io/socket.io.js')
   script(src='/public/js/script.js')
 
+block header
+  #header
+    span#roomTitle
+    a#changeTitle(href='#') Change title
+    span#logout
+      a(href='/logout') Logout
+
 block content
   table
     tr
@@ -18,6 +25,9 @@ block content
     tr
       td#inputbox
         textarea#inputfield(rows='2')
-        #desktop
-          input#desknot(type='checkbox') 
-          span Desktop notifications
+        #footer
+          | Logged in as 
+          span.username #{everyauth.google.user.name}
+          span#desktop
+            input#desknot(type='checkbox') 
+            span Desktop notifications

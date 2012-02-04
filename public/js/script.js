@@ -13,6 +13,16 @@ var focused = true;
 $(document).ready(function() {
   var socket = io.connect();
   socket.on('connect', function() {
+    socket.emit('loadTitle');
+  });
+
+  socket.on('loadTitle', function(title) {
+    $('#roomTitle').html(escapeText(title.text));
+  });
+
+  socket.on('updateTitle', function(title) {
+    $('#roomTitle').html(escapeText(title.text));
+    displayNotification(title.user + ' changed chat title');
   });
 
   socket.on('message', function(message) {
@@ -21,6 +31,10 @@ $(document).ready(function() {
       displayDesktopNotification(picture, message.user.name, message.message);
     }
     displayMessage(message);
+  });
+
+  socket.on('title', function(title) {
+    $('#roomTitle').html(title);
   });
 
   socket.on('clients', function(clients) {
@@ -306,6 +320,11 @@ $(document).ready(function() {
   } else if (window.webkitNotifications.checkPermission() == 0) {
     $('#desknot').prop('checked', true);
   }
+
+  $('#changeTitle').click(function() {
+    var newTitleText = prompt("Enter new chat title", "");
+    socket.emit('updateTitle', newTitleText);
+  });
 });
 
 window.addEventListener('focus', function() {
@@ -350,4 +369,8 @@ function getUrlVars(link) {
     vars[hash[0]] = hash[1];
   }
   return vars;
+}
+
+function escapeText(text) {
+  return $('<div/>').text(text).html();
 }
