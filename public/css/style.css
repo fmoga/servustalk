@@ -94,6 +94,10 @@ table {
   float: left;
 }
 
+#messagebox .scrollr {
+  padding-bottom: 2px;
+}
+
 .author {
   margin-left: 35px;
 }
