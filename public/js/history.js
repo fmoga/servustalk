@@ -173,6 +173,21 @@ function isWhitespace(ch) {
   return " \t\n\r\v".indexOf(ch) != -1;
 }
 
+function getUrlVars(link) {
+  var vars = [], hash;
+  var hashes = link.slice(link.indexOf('?') + 1).split('&');
+  for(var i = 0; i < hashes.length; i++) {
+    hash = hashes[i].split('=');
+    vars.push(hash[0]);
+    vars[hash[0]] = hash[1];
+  }
+  return vars;
+}
+
+function escapeText(text) {
+  return $('<div/>').text(text).html();
+}
+
 $(document).ready(function() {
     $.ajax({
         url: "/getHistory",
