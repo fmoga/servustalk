@@ -36,7 +36,11 @@ function init(app, sessionStore) {
         if (err) {
             console.warn('Error getting title: ' + err, err.stack);
         } else {
-            title = titles[0];
+            if (titles.length == 0) {
+                title = config.defaultTitle;
+            } else {
+                title = titles[0];
+            }
         }
     });
 
