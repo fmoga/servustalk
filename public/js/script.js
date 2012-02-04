@@ -35,10 +35,6 @@ $(document).ready(function() {
     displayMessage(message);
   });
 
-  socket.on('title', function(title) {
-    $('#roomTitle').html(title);
-  });
-
   socket.on('clients', function(clients) {
     var buddylist = $('#buddylist ul');
     $(buddylist).empty();
@@ -321,7 +317,9 @@ $(document).ready(function() {
 
   $('#changeTitle').click(function() {
     var newTitleText = prompt("Enter new chat title", "");
-    socket.emit('updateTitle', newTitleText);
+    if ($.trim(newTitleText) !== '') { 
+      socket.emit('updateTitle', newTitleText);
+    }
   });
 });
 
