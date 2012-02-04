@@ -139,3 +139,10 @@ hr {
 .attention {
   color: #CD3333;
 }
+
+.timestamp {
+  color: #777;
+  font-size: 12px;
+  font-style: italic;
+  margin-left: 5px;
+}

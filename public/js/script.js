@@ -1,5 +1,10 @@
-var defaultPicture = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
-var lastUserActivity = {id: ''};
+var DEFAULT_PICTURE = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
+var MAX_TIMESTAMP_DIFF = 60000; // 1 min
+var VIRTUAL_USER = { id: ''};
+
+var lastMessage = {
+  user: VIRTUAL_USER
+};
 var currentClients = [];
 var first = true;
 var popup;
@@ -12,16 +17,8 @@ $(document).ready(function() {
 
   socket.on('message', function(message) {
     if (!focused && $('#desknot').prop('checked') && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-      if (popup) {
-        popup.cancel();
-      }
-      var picture = message.user.picture ? message.user.picture : defaultPicture;
-      popup = window.webkitNotifications.createNotification(picture, message.user.name, message.message)
-      popup.onclick = function() { 
-        window.focus(); 
-        this.cancel(); 
-      };
-      popup.show();
+      var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
+      displayDesktopNotification(picture, message.user.name, message.message);
     }
     displayMessage(message);
   });
@@ -34,7 +31,7 @@ $(document).ready(function() {
        nameStyle = 'style="display: none"';
     }
     $.each(clients, function(index, client) {
-      var picture = defaultPicture;
+      var picture = DEFAULT_PICTURE;
       if (client.picture) picture = client.picture;
       $(buddylist).append('<li><img class="profilepic middle" title="' +client.name + '" src="' + picture + '"/><span class="profilename" ' + nameStyle + '>' + client.name + '</span></li>'); 
     });
@@ -75,22 +72,20 @@ $(document).ready(function() {
   });
 
   function displayMessage(message) {
-    if (message.user.id == lastUserActivity.id) {
+    if (message.user.id == lastMessage.user.id && message.ts < lastMessage.ts + MAX_TIMESTAMP_DIFF ) {
       result = handleLinksAndEscape(message.message);
-      console.log(result);
       var html = '<div>' + result.html + '</div>';
       html += addYoutubeLinks(result.youtube);
       html += addImagery(result.imagery);
       $('.author').last().append(html);
     } else {
       var html = '';
-      if (lastUserActivity.id != '') {
+      if (lastMessage.user.id != VIRTUAL_USER.id) {
         html += '<hr/>'; 
       }
-      lastUserActivity = message.user;
-      var picture = message.user.picture ? message.user.picture : defaultPicture;
+      var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
       html += '<img class="profilepic" src="' + picture + '"/>';
-      html += '<div class="author"><strong>' + $('<div/>').text(message.user.name).html() + '</strong>';
+      html += '<div class="author"><strong>' + $('<div/>').text(message.user.name).html() + '</strong><span class="timestamp">' + formatTimestamp(message.ts) + '</span>';
       var result = handleLinksAndEscape(message.message);
       console.log(result);
       html += '<div>' + result.html + '</div>';
@@ -99,7 +94,23 @@ $(document).ready(function() {
       html += '</div>';
       $('#messagebox .scrollr').append(html);
     }
+    lastMessage = message;
     if (isScrolledToBottom()) scrollToBottom();
+  }
+
+  function formatTimestamp(ts) {
+    var timestamp = new Date(ts);
+    var now = new Date();
+    var dayOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var date;
+    if (timestamp.getDate() == now.getDate() && timestamp.getMonth() === now.getMonth() && timestamp.getFullYear() == timestamp.getFullYear()) {
+      date = 'Today';  
+    } else {
+      date = dayOfWeek[timestamp.getDay()] + ', ' + timestamp.getDate() + ' ' + month[timestamp.getMonth()] + ' ' + timestamp.getFullYear();
+    }
+    var time = timestamp.getHours() + ':' + timestamp.getMinutes(); 
+    return date + ' at ' + time;
   }
 
   function handleLinksAndEscape(text) {
@@ -156,11 +167,13 @@ $(document).ready(function() {
   }
 
   function addImagery(links) {
-    var html = '<div id="imageDock">'; 
+    var html = '';
     $.each(links, function(index, link) {
       html += '<a target="_tab" href="' + link + '"><img id="imageLink" onload="checkImageScrolling()" src="' + link + '"/></a>';
     });
-    html += '</div>';
+    if (html !== '') {
+      html = '<div id="imageDock">' + html + '</div>';
+    }
     return html;
   }
 
@@ -169,8 +182,20 @@ $(document).ready(function() {
     if (attention) classes += ' attention';
     var html = '<div class="' + classes + '">' + notification + '</div>';
     $('#messagebox .scrollr').append(html);
-    lastUserActivity = {id: ''};
+    lastMessage = { user: VIRTUAL_USER };
     if (isScrolledToBottom()) scrollToBottom();
+  }
+
+  function displayDesktopNotification(picture, title, text) {
+      if (popup) {
+        popup.cancel();
+      }
+      popup = window.webkitNotifications.createNotification(picture, title, text);
+      popup.onclick = function() { 
+        window.focus(); 
+        this.cancel(); 
+      };
+      popup.show();
   }
 
   $('#toggle').click(function() {
@@ -189,9 +214,11 @@ $(document).ready(function() {
 
   $('#inputfield').keypress(function(event) {
     if (event.which == 13) {
-      var text = $('#inputfield').val(); 
+      var text = $.trim($('#inputfield').val()); 
       $('#inputfield').val('');
-      socket.emit('message', text);
+      if (text !== '') {
+        socket.emit('message', text);
+      }
       return false;
     }
   });
@@ -227,6 +254,7 @@ $(document).ready(function() {
 window.addEventListener('focus', function() {
   if (popup) popup.cancel();
   focused = true;
+  $('#inputbox').focus();
 });
 
 window.addEventListener('blur', function() {
@@ -255,6 +283,7 @@ function checkYoutubeScrolling() {
   }
 }
 function checkImageScrolling() {
+  console.log(this);
   if (isScrolledToBottomWithThreshold(500)) {
     scrollToBottom();
   }
