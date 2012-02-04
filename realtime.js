@@ -32,6 +32,14 @@ function packClients() {
 }
 
 function init(app, sessionStore) {
+    persistency.getTitle(function(err, titles) {
+        if (err) {
+            console.warn('Error getting title: ' + err, err.stack);
+        } else {
+            title = titles[0];
+        }
+    });
+
     var sio = io.listen(app);
     sio.configure(function(){
       sio.set('log level', config.app.sio.log_level);
@@ -93,9 +101,13 @@ function init(app, sessionStore) {
         socket.on('updateTitle', function(newTitle) { 
             title = {
               text: newTitle,
-              user: socket.user.name
+              user: socket.user.name,
+              ts: new Date().getTime()
             };
             broadcast('updateTitle', title);
+
+            title.user = socket.user.id;
+            persistency.saveTitle(title);
         });
       } else {
         socket.disconnect();
