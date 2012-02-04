@@ -15,7 +15,7 @@ exports.init = function() {
 exports.saveMessage = function(message) {
     msg = {
         user: message.user.id,
-        text: message.message,
+        text: message.text,
         ts: message.ts
     }
     messages.insert(msg);
