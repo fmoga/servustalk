@@ -4,12 +4,15 @@ INSTALL
 * install node.js (0.6.9)
 * install npm (1.1.0-3)
 * run "npm install" in the root folder
+* install mongodb
+* configure my_config.js file as described below
 * run "node app.js"
+* open browser at localhost:8000
 
 Notes:
-- Everyauth fails to parse Google OAuth response once in a while and causes the server to crash. Workaround for this is to use 'node forever.js' when starting the server which respawns the app once it crashes.
-- In order to authenticate with Google, you will need to register a Google App via the Google API Console. The callback endpoint is /auth/google/callback. You will probably need to add your application domain in /etc/hosts to map to localhost.
+- Everyauth fails to parse Google OAuth response once in a while and causes the server to crash. Workaround for this is to use the forever module when starting the server which respawns the app once it crashes. However, this is not necessary during development, it is used for the live app.
 - To support persistency, you need to install mongodb and create a database called ubuntalk.
+- In order to authenticate with Google, you will need to register a Google App via the Google API Console. The callback endpoint for OAuth is /auth/google/callback. You will then need to use the generated client id and client secret tokens in the config file. We have an application already setup for development, configs listed below.
 - If you want to locally change the default configurations, create a my_config.js file with the following structure which should copy config.js:
 
         var my_config = {}
