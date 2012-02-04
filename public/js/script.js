@@ -72,8 +72,9 @@ $(document).ready(function() {
   });
 
   function displayMessage(message) {
+    var processedMessage = processMessage(message);
     if (message.user.id == lastMessage.user.id && message.ts < lastMessage.ts + MAX_TIMESTAMP_DIFF ) {
-      $('.author').last().append(displayMessageTextAndLinks(message));
+      $('.author').last().append(processedMessage.html);
     } else {
       var html = '';
       if (lastMessage.user.id != VIRTUAL_USER.id) {
@@ -82,23 +83,31 @@ $(document).ready(function() {
       var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
       html += '<img class="profilepic" src="' + picture + '"/>';
       html += '<div class="author"><strong>' + $('<div/>').text(message.user.name).html() + '</strong><span class="timestamp">' + formatTimestamp(message.ts) + '</span>';
-      html += displayMessageTextAndLinks(message);
+      html += processedMessage.html;
       html += '</div>';
       $('#messagebox .scrollr').append(html);
     }
     lastMessage = message;
-    if (isScrolledToBottom()) scrollToBottom();
+    handleScroll(processedMessage.scrollSize);
   }
 
-  function displayMessageTextAndLinks(message){
+  function processMessage(message){
       var result = handleLinksAndEscape(message.message);
       var html = '<div>' + result.html + '</div>';
       html += addYoutubeLinks(result.youtube);
       html += addMixcloudLinks(result.mixcloud);
       html += addSoundcloudLinks(result.soundcloud);
       html += addImagery(result.imagery);
-      return html;
+      return {
+        html: html,
+        scrollSize: guessMessageScrollSize(result)
+      }
   }
+
+  function guessMessageScrollSize(processedMessage) {
+    return 75 + processedMessage.youtube.length * 340 + processedMessage.mixcloud.length * 485 + processedMessage.soundcloud.length * 90 + processedMessage.imagery.length * 425;
+  }
+
   function formatTimestamp(ts) {
     var timestamp = new Date(ts);
     var now = new Date();
@@ -178,7 +187,7 @@ $(document).ready(function() {
     $.each(links, function(index, link) {
       var params = getUrlVars(link);
       if (params.v) {
-        html += '<div><iframe onload="checkYoutubeScrolling()" width="420" height="315" src="http://www.youtube.com/embed/' + params.v + '" frameborder="0" allowfullscreen></iframe></div>';
+        html += '<div><iframe width="420" height="315" src="http://www.youtube.com/embed/' + params.v + '" frameborder="0" allowfullscreen></iframe></div>';
       }
     });
     return html;
@@ -217,7 +226,7 @@ $(document).ready(function() {
   function addImagery(links) {
     var html = '';
     $.each(links, function(index, link) {
-      html += '<a target="_tab" href="' + link + '"><img id="imageLink" onload="checkImageScrolling()" src="' + link + '"/></a>';
+      html += '<a target="_tab" href="' + link + '"><img id="imageLink" src="' + link + '"/></a>';
     });
     if (html !== '') {
       html = '<div id="imageDock">' + html + '</div>';
@@ -231,7 +240,7 @@ $(document).ready(function() {
     var html = '<div class="' + classes + '">' + notification + '</div>';
     $('#messagebox .scrollr').append(html);
     lastMessage = { user: VIRTUAL_USER };
-    if (isScrolledToBottom()) scrollToBottom();
+    handleScroll(75);
   }
 
   function displayDesktopNotification(picture, title, text) {
@@ -314,27 +323,18 @@ function scrollToBottom() {
   $(messagebox).animate({ scrollTop: $(messagebox).prop("scrollHeight") }, 0);
 }
 
-function isScrolledToBottom() {
-  return isScrolledToBottomWithThreshold(50);
+function handleScroll(threshold) {
+  if(isScrolledToBottom(threshold)) {
+    scrollToBottom();
+  }
 }
 
-function isScrolledToBottomWithThreshold(threshold) {
+function isScrolledToBottom(threshold) {
   var elem = $('#messagebox .scrollr');
   if (elem[0].scrollHeight - elem.scrollTop() < elem.outerHeight() + threshold) {
     return true;
   }
   return false;
-}
-function checkYoutubeScrolling() {
-  if (isScrolledToBottomWithThreshold(400)) {
-    scrollToBottom();
-  }
-}
-function checkImageScrolling() {
-  console.log(this);
-  if (isScrolledToBottomWithThreshold(500)) {
-    scrollToBottom();
-  }
 }
 
 function isWhitespace(ch) { 
