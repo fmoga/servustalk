@@ -6,6 +6,7 @@ var io = require('socket.io'),
 
 var online = {};
 var history = [];
+var title = config.defaultTitle;
 
 function broadcast(type, body) {
   var buddyListUpdate = false;
@@ -84,11 +85,22 @@ function init(app, sessionStore) {
           console.log('Disconnected: ' + socket.user.name);
           broadcast('clients', packClients());
         });
+
+        socket.on('loadTitle', function() {
+            socket.emit('loadTitle', title); 
+        });
+
+        socket.on('updateTitle', function(newTitle) { 
+            title = {
+              text: newTitle,
+              user: socket.user.name
+            };
+            broadcast('updateTitle', title);
+        });
       } else {
         socket.disconnect();
       }
     });
-
 
 }
 

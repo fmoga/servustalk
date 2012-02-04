@@ -10,11 +10,6 @@ html(lang="en")
   body
     - if (everyauth.loggedIn)
       block header
-        #header
-          | Currently logged in as 
-          span.username #{everyauth.google.user.name}
-          span#logout
-            a(href='/logout') Logout
       block content
     - else
       a(href='/auth/google') Log in with Google
