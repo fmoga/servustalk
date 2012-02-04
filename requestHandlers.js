@@ -13,6 +13,7 @@ function getHistory(req, res) {
     persistency.getMessages(function(err, messages) {
         if (err) {
             console.warn('Error getting messages: ' + err, err.stack);
+            res.render('404');
         } else {
             persistency.getUsers(function(err, users) {
                 if (err) {
@@ -22,11 +23,13 @@ function getHistory(req, res) {
                     // Maps user_id -> user
                     users_by_id = {};
                     for (idx in users) {
+                        users[idx]._id = undefined;
                         users_by_id[users[idx].id] = users[idx];
                     }
 
                     // message.user contains id, but we need a user object
                     for (idx in messages) {
+                        messages[idx]._id = undefined;
                         messages[idx].user = users_by_id[messages[idx].user];
                     }
 
