@@ -11,6 +11,13 @@ var popup;
 var focused = true;
 
 $(document).ready(function() {
+  $.SyntaxHighlighter.init({
+    'lineNumbers': true,
+    'baseUrl' : 'public/syntaxhighlighter',
+    'themes' : ['ubutalk'],
+    'theme': 'ubutalk'
+  });
+
   var socket = io.connect();
   socket.on('connect', function() {
     socket.emit('loadTitle');
@@ -100,6 +107,8 @@ $(document).ready(function() {
       html += '</div>';
       $('#messagebox .scrollr').append(html);
     }
+
+    $('code').syntaxHighlight();
     lastMessage = message;
     if (wasScrolledToBottom) scrollToBottom();
   }
@@ -180,6 +189,11 @@ $(document).ready(function() {
       index = text.search(linkMatch);
     }
     html += $('<div/>').text(text).html();
+
+    // handle [code]snippets[/code]
+    html = html.replace("[code]", "<code class='highlight'>");
+    html = html.replace("[/code]", "</code>");
+
     return {
       html : html,
       youtube : youtube,
@@ -278,7 +292,7 @@ $(document).ready(function() {
   });
 
   $('#inputfield').keypress(function(event) {
-    if (event.which == 13) {
+    if (event.which == 13 && !event.shiftKey) {
       var text = $.trim($('#inputfield').val()); 
       $('#inputfield').val('');
       if (text !== '') {
