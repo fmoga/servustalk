@@ -11,17 +11,20 @@ body {
   height: 95%;
 }
 
-#header img {
-  max-height: 30px;
-  max-width: 30px;
+.username {
+  font-style: italic;
 }
 
-#header .username {
-  font-weight: bold;
+#footer {
+  color: #777;
 }
 
 #header #logout {
   float: right;
+}
+
+#roomTitle {
+  font-weight: bold;
 }
 
 a, a:visited, a:hover {
@@ -32,6 +35,7 @@ a, a:visited, a:hover {
 
 #header {
   border-bottom: 1px solid #BBB;
+  overflow: auto;
 }
 
 #buddylist {
@@ -126,7 +130,7 @@ hr {
 
 #desktop {
   color: #777;
-  text-align: right;
+  float: right;
   padding-right: 5px;
 }
 
@@ -153,4 +157,9 @@ hr {
 
 .soundcloud {
   width: 480px;
+}
+
+#changeTitle {
+  margin-left: 5px;
+  white-space: nowrap;
 }

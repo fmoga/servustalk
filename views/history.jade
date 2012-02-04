@@ -1,5 +1,17 @@
 extends layout
 
+block append scripts
+  script(src='/public/js/history.js')
+
+block header
+  #header
+    | Currently logged in as 
+    span.username #{everyauth.google.user.name}
+    span#logout
+      a(href='/logout') Logout
+
 block content
-  each message in messages
-    p= message.text
+  table
+    tr
+      td#messagebox
+        .scrollr

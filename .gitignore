@@ -1,4 +1,5 @@
 .*.swp
 node_modules/
+ubuntalk.err
 ubuntalk.log
 my_config.js

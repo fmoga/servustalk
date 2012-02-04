@@ -13,8 +13,27 @@ var flickeringTitle;
 var originalDocTitle = document.title;
 
 $(document).ready(function() {
+  $.SyntaxHighlighter.init({
+    'lineNumbers': true,
+    'baseUrl' : 'public/syntaxhighlighter',
+    'themes' : ['ubutalk'],
+    'theme': 'ubutalk'
+  });
+
   var socket = io.connect();
   socket.on('connect', function() {
+    socket.emit('loadTitle');
+  });
+
+  socket.on('loadTitle', function(title) {
+    var result = handleLinksAndEscape(title.text);
+    $('#roomTitle').html(result.html);
+  });
+
+  socket.on('updateTitle', function(title) {
+    var result = handleLinksAndEscape(title.text);
+    $('#roomTitle').html(result.html);
+    displayNotification(title.user + ' changed chat title');
   });
 
   socket.on('message', function(message) {
@@ -32,7 +51,7 @@ $(document).ready(function() {
     if (!focused && $('#desknot').prop('checked') && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
       
       var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
-      displayDesktopNotification(picture, message.user.name, message.message);
+      displayDesktopNotification(picture, message.user.name, message.text);
     }
     
     displayMessage(message);
@@ -88,8 +107,9 @@ $(document).ready(function() {
 
   function displayMessage(message) {
     var processedMessage = processMessage(message);
+    var wasScrolledToBottom = isScrolledToBottom();
     if (message.user.id == lastMessage.user.id && message.ts < lastMessage.ts + MAX_TIMESTAMP_DIFF ) {
-      $('.author').last().append(processedMessage.html);
+      $('.author').last().append(processedMessage);
     } else {
       var html = '';
       if (lastMessage.user.id != VIRTUAL_USER.id) {
@@ -98,29 +118,24 @@ $(document).ready(function() {
       var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
       html += '<img class="profilepic" src="' + picture + '"/>';
       html += '<div class="author"><strong>' + $('<div/>').text(message.user.name).html() + '</strong><span class="timestamp">' + formatTimestamp(message.ts) + '</span>';
-      html += processedMessage.html;
+      html += processedMessage;
       html += '</div>';
       $('#messagebox .scrollr').append(html);
     }
+
+    $('code').syntaxHighlight();
     lastMessage = message;
-    handleScroll(processedMessage.scrollSize);
+    if (wasScrolledToBottom) scrollToBottom();
   }
 
   function processMessage(message){
-      var result = handleLinksAndEscape(message.message);
+      var result = handleLinksAndEscape(message.text);
       var html = '<div>' + result.html + '</div>';
       html += addYoutubeLinks(result.youtube);
       html += addMixcloudLinks(result.mixcloud);
       html += addSoundcloudLinks(result.soundcloud);
       html += addImagery(result.imagery);
-      return {
-        html: html,
-        scrollSize: guessMessageScrollSize(result)
-      }
-  }
-
-  function guessMessageScrollSize(processedMessage) {
-    return 75 + processedMessage.youtube.length * 340 + processedMessage.mixcloud.length * 485 + processedMessage.soundcloud.length * 90 + processedMessage.imagery.length * 425;
+      return html;
   }
 
   function formatTimestamp(ts) {
@@ -189,6 +204,11 @@ $(document).ready(function() {
       index = text.search(linkMatch);
     }
     html += $('<div/>').text(text).html();
+
+    // handle [code]snippets[/code]
+    html = html.replace("[code]", "<code class='highlight'>");
+    html = html.replace("[/code]", "</code>");
+
     return {
       html : html,
       youtube : youtube,
@@ -251,12 +271,13 @@ $(document).ready(function() {
   }
 
   function displayNotification(notification, attention) {
+    var wasScrolledToBottom = isScrolledToBottom();
     var classes = 'notification';
     if (attention) classes += ' attention';
     var html = '<div class="' + classes + '">' + notification + '</div>';
     $('#messagebox .scrollr').append(html);
     lastMessage = { user: VIRTUAL_USER };
-    handleScroll(75);
+    if (wasScrolledToBottom) scrollToBottom();
   }
 
   function displayDesktopNotification(picture, title, text) {
@@ -286,7 +307,7 @@ $(document).ready(function() {
   });
 
   $('#inputfield').keypress(function(event) {
-    if (event.which == 13) {
+    if (event.which == 13 && !event.shiftKey) {
       var text = $.trim($('#inputfield').val()); 
       $('#inputfield').val('');
       if (text !== '') {
@@ -322,6 +343,13 @@ $(document).ready(function() {
   } else if (window.webkitNotifications.checkPermission() == 0) {
     $('#desknot').prop('checked', true);
   }
+
+  $('#changeTitle').click(function() {
+    var newTitleText = prompt("Enter new chat title", "");
+    if ($.trim(newTitleText) !== '') { 
+      socket.emit('updateTitle', newTitleText);
+    }
+  });
 });
 
 window.addEventListener('focus', function() {
@@ -344,15 +372,9 @@ function scrollToBottom() {
   $(messagebox).animate({ scrollTop: $(messagebox).prop("scrollHeight") }, 0);
 }
 
-function handleScroll(threshold) {
-  if(isScrolledToBottom(threshold)) {
-    scrollToBottom();
-  }
-}
-
-function isScrolledToBottom(threshold) {
+function isScrolledToBottom() {
   var elem = $('#messagebox .scrollr');
-  if (elem[0].scrollHeight - elem.scrollTop() < elem.outerHeight() + threshold) {
+  if (elem[0].scrollHeight - elem.scrollTop() < elem.outerHeight() + 5) {
     return true;
   }
   return false;
@@ -371,4 +393,8 @@ function getUrlVars(link) {
     vars[hash[0]] = hash[1];
   }
   return vars;
+}
+
+function escapeText(text) {
+  return $('<div/>').text(text).html();
 }

@@ -6,6 +6,7 @@ var io = require('socket.io'),
 
 var online = {};
 var history = [];
+var title = config.defaultTitle;
 
 function broadcast(type, body) {
   var buddyListUpdate = false;
@@ -31,6 +32,14 @@ function packClients() {
 }
 
 function init(app, sessionStore) {
+    persistency.getTitle(function(err, titles) {
+        if (err) {
+            console.warn('Error getting title: ' + err, err.stack);
+        } else {
+            title = titles[0];
+        }
+    });
+
     var sio = io.listen(app);
     sio.configure(function(){
       sio.set('log level', config.app.sio.log_level);
@@ -70,7 +79,7 @@ function init(app, sessionStore) {
         socket.on('message', function(message) {
           var completeMessage = {
             user: socket.user,
-            message: message,
+            text: message,
             ts: new Date().getTime(),
           }
           history.push(completeMessage);
@@ -84,11 +93,26 @@ function init(app, sessionStore) {
           console.log('Disconnected: ' + socket.user.name);
           broadcast('clients', packClients());
         });
+
+        socket.on('loadTitle', function() {
+            socket.emit('loadTitle', title); 
+        });
+
+        socket.on('updateTitle', function(newTitle) { 
+            title = {
+              text: newTitle,
+              user: socket.user.name,
+              ts: new Date().getTime()
+            };
+            broadcast('updateTitle', title);
+
+            title.user = socket.user.id;
+            persistency.saveTitle(title);
+        });
       } else {
         socket.disconnect();
       }
     });
-
 
 }
 

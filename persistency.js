@@ -7,6 +7,7 @@ var db = server.db("ubuntalk")
 
 var messages = db.collection("messages")
 var users = db.collection("users")
+var titles = db.collection("titles")
 
 exports.init = function() {
     users.ensureIndex({id: 1});
@@ -15,7 +16,7 @@ exports.init = function() {
 exports.saveMessage = function(message) {
     msg = {
         user: message.user.id,
-        text: message.message,
+        text: message.text,
         ts: message.ts
     }
     messages.insert(msg);
@@ -48,4 +49,12 @@ exports.getUser = function(id, callback) {
 
 exports.getUsers = function(callback) {
     users.find().toArray(callback);
+}
+
+exports.saveTitle = function(title) {
+    titles.insert(title);
+}
+
+exports.getTitle = function(callback) {
+    titles.find({}).sort({ts: -1}).limit(1).toArray(callback);
 }
