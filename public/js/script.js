@@ -150,7 +150,8 @@ $(document).ready(function() {
     var mixcloud = [];
     var soundcloud = [];
     var imagery = [];
-    var index = text.indexOf('http://');
+    var linkMatch = /http[s]?:///g
+    var index = text.search(linkMatch);
     while (index != -1) {
       textBeforeLink = text.substr(0, index);
       html += $('<div/>').text(textBeforeLink).html();
@@ -184,7 +185,7 @@ $(document).ready(function() {
       } else {
         text = text.substr(finish);
       }
-      index = text.indexOf('http://');
+      index = text.search(linkMatch);
     }
     html += $('<div/>').text(text).html();
     return {
