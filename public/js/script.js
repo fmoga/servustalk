@@ -17,11 +17,13 @@ $(document).ready(function() {
   });
 
   socket.on('loadTitle', function(title) {
-    $('#roomTitle').html(escapeText(title.text));
+    var result = handleLinksAndEscape(title.text);
+    $('#roomTitle').html(result.html);
   });
 
   socket.on('updateTitle', function(title) {
-    $('#roomTitle').html(escapeText(title.text));
+    var result = handleLinksAndEscape(title.text);
+    $('#roomTitle').html(result.html);
     displayNotification(title.user + ' changed chat title');
   });
 
