@@ -169,6 +169,10 @@ function addImagery(links) {
   return html;
 }
 
+function isWhitespace(ch) {
+  return " \t\n\r\v".indexOf(ch) != -1;
+}
+
 $(document).ready(function() {
     $.ajax({
         url: "/getHistory",
