@@ -85,6 +85,7 @@ function init(app, sessionStore) {
     sio.sockets.on('connection', function(socket) {
       if (socket.handshake.session.auth) {
         socket.user = socket.handshake.session.auth.google.user;
+        socket.user.idle = false;
         online[socket.id] = socket;
         console.log('Connected: ' + socket.user.name);
         broadcast('clients', packClients());
@@ -122,6 +123,16 @@ function init(app, sessionStore) {
 
             title.user = socket.user.id;
             persistency.saveTitle(title);
+        });
+
+        socket.on('idle', function() {
+          socket.user.idle = true;
+          broadcast('clients', packClients());
+        });
+
+        socket.on('not idle', function() {
+          socket.user.idle = false;
+          broadcast('clients', packClients());
         });
       } else {
         socket.disconnect();

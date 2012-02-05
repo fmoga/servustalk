@@ -40,7 +40,7 @@ a, a:visited, a:hover {
 }
 
 #buddylist {
-  min-width: 200px;
+  width: 200px;
   border-left: 1px solid #BBB;
   vertical-align: top;
 }
@@ -87,6 +87,11 @@ table {
   padding: 0;
   border: 0;
   border-collapse: collapse;
+  table-layout: fixed;
+}
+
+#messagebox img.emoticon {
+  float: none;
 }
 
 #messagebox {
@@ -100,7 +105,7 @@ table {
 }
 
 #messagebox .scrollr {
-  padding-bottom: 2px;
+  word-wrap: break-word;
 }
 
 .author {
@@ -163,4 +168,19 @@ hr {
 #changeTitle {
   margin-left: 5px;
   white-space: nowrap;
+}
+
+.profilename.idle {
+  color: #777;
+  font-style: italic;
+}
+
+.profilepic.idle {
+  opacity: 0.5;
+  filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+.messageContent {
+  overflow: auto;
+  padding-bottom: 2px;
 }

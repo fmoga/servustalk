@@ -1,6 +1,7 @@
 var DEFAULT_PICTURE = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
-var MAX_TIMESTAMP_DIFF = 60000; // 1 min
+var MAX_TIMESTAMP_DIFF = 60 * 1000; // 1 min
 var VIRTUAL_USER = { id: ''};
+var IDLE_TIMEOUT = 5 * 60 * 1000; // 5 min
 
 var lastMessage = {
   user: VIRTUAL_USER
@@ -11,6 +12,34 @@ var popup;
 var focused = true;
 var flickeringTitle;
 var originalDocTitle;
+var socket;
+var idle = false;
+var idlePromise;
+
+var smyles= [
+	{ code: ':))', url:'public/smileys/21.gif'},
+	{ code: ':)', url:'public/smileys/1.gif'},
+	{ code: '\\:D/', url:'public/smileys/69.gif'},
+	{ code: '\\:d/', url:'public/smileys/69.gif'},
+	{ code: '>:D<', url:'public/smileys/6.gif'},
+	{ code: '>:d<', url:'public/smileys/6.gif'},
+	{ code: ':D', url:'public/smileys/4.gif'},
+	{ code: ':d', url:'public/smileys/4.gif'},
+	{ code: ';)', url:'public/smileys/3.gif'},
+	{ code: ':p', url:'public/smileys/10.gif'},
+	{ code: ':P', url:'public/smileys/10.gif'},
+	{ code: ':|', url:'public/smileys/22.gif'},
+	{ code: '=))', url:'public/smileys/24.gif'},
+	{ code: ':x', url:'public/smileys/8.gif'},
+	{ code: ':X', url:'public/smileys/8.gif'},
+	{ code: ':*', url:'public/smileys/11.gif'},
+	{ code: ':((', url:'public/smileys/20.gif'},
+	{ code: ':(', url:'public/smileys/2.gif'},
+	{ code: ':o', url:'public/smileys/13.gif'},
+	{ code: ':O', url:'public/smileys/13.gif'},
+	{ code: '<(")', url:'public/smileys/penguin.gif'},
+	{ code: '[!ie]', url:'public/smileys/55.gif'}
+	];
 
 $(document).ready(function() {
   $.SyntaxHighlighter.init({
@@ -22,7 +51,7 @@ $(document).ready(function() {
 
   originalDocTitle = document.title;
 
-  var socket = io.connect();
+  socket = io.connect();
   socket.on('connect', function() {
     socket.emit('loadTitle');
   });
@@ -39,30 +68,22 @@ $(document).ready(function() {
   });
 
   socket.on('message', function(message) {
+    // title flicker
     if (!focused) {
-        var user=message.user.name;
-	var currentFlickeringTitle = setInterval(function(){
-        if(document.title == originalDocTitle) {
-        	document.title=message.user.name + ' has written ' + message.text;
-                console.log(document.title);
-	}
-	else {
-		document.title=originalDocTitle;	
-	}
-	
-   }, 2000);
-       if(flickeringTitle != currentFlickeringTitle) {
-		clearInterval(flickeringTitle);
-		flickeringTitle = currentFlickeringTitle;
-	}
+      if (flickeringTitle) clearInterval(flickeringTitle);
+      flickeringTitle = setInterval(function(){
+        if(document.title === originalDocTitle) {
+          document.title = message.user.name + ' has messaged UbunTalk';
+	      } else {
+          document.title = originalDocTitle;	
+        }
+      }, 2000);
     }
-
+    // desktop notification
     if (!focused && $('#desknot').prop('checked') && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-      
       var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
       displayDesktopNotification(picture, message.user.name, message.text);
     }
-    
     displayMessage(message);
   });
 
@@ -74,9 +95,9 @@ $(document).ready(function() {
        nameStyle = 'style="display: none"';
     }
     $.each(clients, function(index, client) {
-      var picture = DEFAULT_PICTURE;
-      if (client.picture) picture = client.picture;
-      $(buddylist).append('<li><img class="profilepic middle" title="' +client.name + '" src="' + picture + '"/><span class="profilename" ' + nameStyle + '>' + client.name + '</span></li>'); 
+      var picture = client.picture ? client.picture : DEFAULT_PICTURE;
+      var idle = client.idle ? 'idle' : '';
+      $(buddylist).append('<li><img class="profilepic ' + idle + ' middle" title="' +client.name + '" src="' + picture + '"/><span class="profilename ' + idle + '" ' + nameStyle + '>' + client.name + '</span></li>'); 
     });
 
     if (first) {
@@ -139,7 +160,7 @@ $(document).ready(function() {
 
   function processMessage(message){
       var result = handleLinksAndEscape(message.text);
-      var html = '<div>' + result.html + '</div>';
+      var html = '<div class="messageContent">' + result.html + '</div>';
       html += addYoutubeLinks(result.youtube);
       html += addMixcloudLinks(result.mixcloud);
       html += addSoundcloudLinks(result.soundcloud);
@@ -179,8 +200,9 @@ $(document).ready(function() {
     var index = text.search(linkMatch);
     while (index != -1) {
       textBeforeLink = text.substr(0, index);
-      html += $('<div/>').text(textBeforeLink).html();
-      var finish = index;
+      //html += $('<div/>').text(textBeforeLink).html();
+      html += getHtmlWithSmilyes(textBeforeLink);
+	  var finish = index;
       while (finish < text.length && !isWhitespace(text[finish])) finish++;
       var link = text.substr(index, finish-index+1);
       html += '<a target="_tab" href="' + link + '">' + $('<div/>').text(link).html() + '</a>';
@@ -212,8 +234,8 @@ $(document).ready(function() {
       }
       index = text.search(linkMatch);
     }
-    html += $('<div/>').text(text).html();
-
+    //html += $('<div/>').text(text).html();
+	html += getHtmlWithSmilyes(text);
     // handle [code]snippets[/code]
     html = html.replace("[code]", "<code class='highlight'>");
     html = html.replace("[/code]", "</code>");
@@ -306,12 +328,12 @@ $(document).ready(function() {
       $('.profilename').hide();
       $(this).attr('full', '0');
       $(this).html('&laquo;');
-      $('#buddylist').css('min-width', '80px');
+      $('#buddylist').css('width', '80px');
     } else {
       $('.profilename').show();
       $(this).attr('full', '1');
       $(this).html('&raquo;');
-      $('#buddylist').css('min-width', '200px');
+      $('#buddylist').css('width', '200px');
     }
   });
 
@@ -362,19 +384,33 @@ $(document).ready(function() {
 });
 
 window.addEventListener('focus', function() {
-  if (popup) popup.cancel();
   focused = true;
   $('#inputbox').focus();
-  window.clearInterval(flickeringTitle);
-  flickeringTitle='undefined';
-  if(originalDocTitle != 'undefined') {
+  // desktop notification
+  if (popup) popup.cancel();
+  // flickering title
+  clearInterval(flickeringTitle);
+  delete flickeringTitle;
   document.title = originalDocTitle;
-}
-
+  // idle
+  if (idle) {
+    idle = false;
+    socket.emit('not idle');
+  } else {
+    if (idlePromise) {
+      clearTimeout(idlePromise);
+      delete idlePromise;
+    }
+  }
 });
 
 window.addEventListener('blur', function() {
   focused = false;
+  // idle
+  idlePromise = setTimeout(function() {
+    idle = true;
+    socket.emit('idle');
+  }, IDLE_TIMEOUT);
 });
 
 function scrollToBottom() {
@@ -408,3 +444,32 @@ function getUrlVars(link) {
 function escapeText(text) {
   return $('<div/>').text(text).html();
 }
+
+
+function htmlEncode(value){
+  return $('<div/>').text(value).html();
+}
+
+function htmlDecode(value){
+  return $('<div/>').html(value).text();
+}
+
+function getHtmlWithSmilyes(text)
+{
+	for (var i = 0; i < smyles.length; i ++)
+	{
+		var pos = text.indexOf(smyles[i].code);
+		if ( pos >= 0)
+		{
+			return getHtmlWithSmilyes(text.substring(0, pos)) + 
+				getSmyleHtml(smyles[i]) + 
+				getHtmlWithSmilyes(text.substring(pos+smyles[i].code.length, text.length));	
+		}	
+	}
+	return htmlEncode(text);
+}
+function getSmyleHtml(smyle)
+{
+	return '<img class="emoticon" src="' + smyle.url + '" title="' + smyle.code + '" alt="' + smyle.code + '"/>';
+}
+
