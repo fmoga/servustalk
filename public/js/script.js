@@ -137,26 +137,45 @@ $(document).ready(function() {
   });
 
   function displayMessage(message) {
-    var processedMessage = processMessage(message);
     var wasScrolledToBottom = isScrolledToBottom();
-    if (message.user.id == lastMessage.user.id && message.ts < lastMessage.ts + MAX_TIMESTAMP_DIFF ) {
-      $('.author').last().append(processedMessage);
-    } else {
-      var html = '';
-      if (lastMessage.user.id != VIRTUAL_USER.id) {
-        html += '<hr/>'; 
+    if (message.text.indexOf('/') == 0) {
+      // we now have command support
+      if (message.text.indexOf('/announce') == 0) {
+        html = '';
+        html += '<div style="background: #8CD98E"><b>' + message.user.name + ':<b/> ';
+        html += htmlEncode(message.text.substring(message.text.indexOf(' ') + 1))  + ' </div>';
+        $('#messagebox .scrollr').append(html);
+        if (wasScrolledToBottom) scrollToBottom();
+      } else if (message.text.indexOf('/alert') == 0) {
+        html = '';
+        html += '<div style="background: #D9A48C"><b>' + message.user.name + ':<b/> ';
+        html += htmlEncode(message.text.substring(message.text.indexOf(' ') + 1))  + ' </div>';
+        $('#messagebox .scrollr').append(html);
+        if (wasScrolledToBottom) scrollToBottom();
       }
-      var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
-      html += '<img class="profilepic" src="' + picture + '"/>';
-      html += '<div class="author"><strong>' + $('<div/>').text(message.user.name).html() + '</strong><span class="timestamp">' + formatTimestamp(message.ts) + '</span>';
-      html += processedMessage;
-      html += '</div>';
-      $('#messagebox .scrollr').append(html);
-    }
 
-    $('code').syntaxHighlight();
-    lastMessage = message;
-    if (wasScrolledToBottom) scrollToBottom();
+    }
+    else {
+      var processedMessage = processMessage(message);
+      if (message.user.id == lastMessage.user.id && message.ts < lastMessage.ts + MAX_TIMESTAMP_DIFF ) {
+        $('.author').last().append(processedMessage);
+      } else {
+        var html = '';
+        if (lastMessage.user.id != VIRTUAL_USER.id) {
+          html += '<hr/>'; 
+        }
+        var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
+        html += '<img class="profilepic" src="' + picture + '"/>';
+        html += '<div class="author"><strong>' + $('<div/>').text(message.user.name).html() + '</strong><span class="timestamp">' + formatTimestamp(message.ts) + '</span>';
+        html += processedMessage;
+        html += '</div>';
+        $('#messagebox .scrollr').append(html);
+      }
+
+      $('code').syntaxHighlight();
+      lastMessage = message;
+      if (wasScrolledToBottom) scrollToBottom();
+    }
   }
 
   function processMessage(message){
@@ -259,7 +278,6 @@ $(document).ready(function() {
     };
     var time = parseInt(text.substring(0, text.indexOf('m')));
     time = time * 60 + parseInt(text.substring(text.indexOf('m') + 1, text.indexOf('s')));
-    alert(text + ' ---> ' + time);
     return '&start=' + time;
   }
 
