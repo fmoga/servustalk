@@ -16,6 +16,14 @@ var socket;
 var idle = false;
 var idlePromise;
 
+var smyles= [
+	{ code: ':))', url:'public/smileys/21.gif'},
+	{ code: ':)', url:'public/smileys/1.gif'},
+	{ code: ':D', url:'public/smileys/4.gif'},
+	{ code: ':d', url:'public/smileys/4.gif'},
+	{ code: '[!ie]', url:'public/smileys/55.gif'}
+	];
+
 $(document).ready(function() {
   $.SyntaxHighlighter.init({
     'lineNumbers': true,
@@ -175,8 +183,9 @@ $(document).ready(function() {
     var index = text.search(linkMatch);
     while (index != -1) {
       textBeforeLink = text.substr(0, index);
-      html += $('<div/>').text(textBeforeLink).html();
-      var finish = index;
+      //html += $('<div/>').text(textBeforeLink).html();
+      html += getHtmlWithSmilyes(textBeforeLink);
+	  var finish = index;
       while (finish < text.length && !isWhitespace(text[finish])) finish++;
       var link = text.substr(index, finish-index+1);
       html += '<a target="_tab" href="' + link + '">' + $('<div/>').text(link).html() + '</a>';
@@ -208,8 +217,8 @@ $(document).ready(function() {
       }
       index = text.search(linkMatch);
     }
-    html += $('<div/>').text(text).html();
-
+    //html += $('<div/>').text(text).html();
+	html += getHtmlWithSmilyes(text);
     // handle [code]snippets[/code]
     html = html.replace("[code]", "<code class='highlight'>");
     html = html.replace("[/code]", "</code>");
@@ -418,3 +427,32 @@ function getUrlVars(link) {
 function escapeText(text) {
   return $('<div/>').text(text).html();
 }
+
+
+function htmlEncode(value){
+  return $('<div/>').text(value).html();
+}
+
+function htmlDecode(value){
+  return $('<div/>').html(value).text();
+}
+
+function getHtmlWithSmilyes(text)
+{
+	for (var i = 0; i < smyles.length; i ++)
+	{
+		var pos = text.indexOf(smyles[i].code);
+		if ( pos >= 0)
+		{
+			return getHtmlWithSmilyes(text.substring(0, pos)) + 
+				getSmyleHtml(smyles[i]) + 
+				getHtmlWithSmilyes(text.substring(pos+smyles[i].code.length, text.length));	
+		}	
+	}
+	return htmlEncode(text);
+}
+function getSmyleHtml(smyle)
+{
+	return '<img src="' + smyle.url + '" title="' + smyle.code + '" alt="' + smyle.code + '"/>';
+}
+
