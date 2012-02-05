@@ -24,7 +24,8 @@ var smyles= [
 	{ code: '\\:d/', url:'public/smileys/69.gif'},
 	{ code: '>:D<', url:'public/smileys/6.gif'},
 	{ code: '>:d<', url:'public/smileys/6.gif'},
-	{ code: ':D', url:'public/smileys/4.gif'},
+	{ code: ':>', url:'public/smileys/15.gif'},
+    { code: ':D', url:'public/smileys/4.gif'},
 	{ code: ':d', url:'public/smileys/4.gif'},
 	{ code: ';)', url:'public/smileys/3.gif'},
 	{ code: ':p', url:'public/smileys/10.gif'},
@@ -194,7 +195,7 @@ $(document).ready(function() {
         var color = message.text.substring(1, message.text.indexOf(' '));
         if (!color.match(/[a-fA-F0-9]{6}|[a-fA-F0-9]{3}/g)) color = '#AAAAAA';
         html = '';
-        html += '<div style="background: ' + color + '"><b>' + message.user.name + ':<b/> ';
+        html += '<div id="alert" style="background: ' + color + '"><b>' + message.user.name + ':<b/> ';
         html += htmlEncode(message.text.substring(message.text.indexOf(' ') + 1))  + ' </div>';
         $('#messagebox .scrollr').append(html);
         if (wasScrolledToBottom) scrollToBottom();
