@@ -19,6 +19,8 @@ var idlePromise;
 var smyles= [
 	{ code: ':))', url:'public/smileys/21.gif'},
 	{ code: ':)', url:'public/smileys/1.gif'},
+	{ code: '\\:D/', url:'public/smileys/69.gif'},
+	{ code: '\\:d/', url:'public/smileys/69.gif'},
 	{ code: '>:D<', url:'public/smileys/6.gif'},
 	{ code: '>:d<', url:'public/smileys/6.gif'},
 	{ code: ':D', url:'public/smileys/4.gif'},
@@ -35,6 +37,7 @@ var smyles= [
 	{ code: ':(', url:'public/smileys/2.gif'},
 	{ code: ':o', url:'public/smileys/13.gif'},
 	{ code: ':O', url:'public/smileys/13.gif'},
+	{ code: '<(")', url:'public/smileys/penguin.gif'},
 	{ code: '[!ie]', url:'public/smileys/55.gif'}
 	];
 
