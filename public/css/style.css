@@ -105,7 +105,6 @@ table {
 }
 
 #messagebox .scrollr {
-  padding-bottom: 2px;
   word-wrap: break-word;
 }
 
@@ -183,4 +182,5 @@ hr {
 
 .messageContent {
   overflow: auto;
+  padding-bottom: 2px;
 }
