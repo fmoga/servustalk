@@ -10,7 +10,7 @@ var first = true;
 var popup;
 var focused = true;
 var flickeringTitle;
-var originalDocTitle = document.title;
+var originalDocTitle;
 
 $(document).ready(function() {
   $.SyntaxHighlighter.init({
@@ -19,6 +19,8 @@ $(document).ready(function() {
     'themes' : ['ubutalk'],
     'theme': 'ubutalk'
   });
+
+  originalDocTitle = document.title;
 
   var socket = io.connect();
   socket.on('connect', function() {
@@ -38,14 +40,21 @@ $(document).ready(function() {
 
   socket.on('message', function(message) {
     if (!focused) {
-	flickeringTitle = setInterval(function(){
+        var user=message.user.name;
+	var currentFlickeringTitle = setInterval(function(){
         if(document.title == originalDocTitle) {
-        	document.title=message.user.name + ' has written ' + message.message;
+        	document.title=message.user.name + ' has written ' + message.text;
+                console.log(document.title);
 	}
 	else {
 		document.title=originalDocTitle;	
 	}
+	
    }, 2000);
+       if(flickeringTitle != currentFlickeringTitle) {
+		clearInterval(flickeringTitle);
+		flickeringTitle = currentFlickeringTitle;
+	}
     }
 
     if (!focused && $('#desknot').prop('checked') && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
@@ -357,6 +366,7 @@ window.addEventListener('focus', function() {
   focused = true;
   $('#inputbox').focus();
   window.clearInterval(flickeringTitle);
+  flickeringTitle='undefined';
   if(originalDocTitle != 'undefined') {
   document.title = originalDocTitle;
 }
