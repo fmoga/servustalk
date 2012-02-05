@@ -44,6 +44,16 @@ function init(app, sessionStore) {
         }
     });
 
+    persistency.getHistory(config.app.history_size, function(err, messages) {
+        if (err) {
+            console.warn('Error getting history: ' + err, err.stack);
+        } else {
+            persistency.mergeMessagesWithUsers(messages, null, function(messages) {
+              history = messages.reverse();
+            });
+        }
+    });
+
     var sio = io.listen(app);
     sio.configure(function(){
       sio.set('log level', config.app.sio.log_level);
