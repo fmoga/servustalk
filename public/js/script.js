@@ -154,11 +154,12 @@ $(document).ready(function() {
         if (wasScrolledToBottom) scrollToBottom();
       } else if (message.text.indexOf('/#') == 0) {
         var color = message.text.substring(1, message.text.indexOf(' '));
-        if (!color.match(/[a-fA-F0-9]{6}/g)) color = '#AAAAAA';
+        if (!color.match(/[a-fA-F0-9]{6}|[a-fA-F0-9]{3}/g)) color = '#AAAAAA';
         html = '';
         html += '<div style="background: ' + color + '"><b>' + message.user.name + ':<b/> ';
         html += htmlEncode(message.text.substring(message.text.indexOf(' ') + 1))  + ' </div>';
         $('#messagebox .scrollr').append(html);
+        if (wasScrolledToBottom) scrollToBottom();
       }
 
     }
