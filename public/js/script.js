@@ -15,6 +15,7 @@ var originalDocTitle;
 var socket;
 var idle = false;
 var idlePromise;
+var tabHistory;
 
 var smyles= [
 	{ code: ':))', url:'public/smileys/21.gif'},
@@ -41,6 +42,43 @@ var smyles= [
 	{ code: '[!ie]', url:'public/smileys/55.gif'},
     { code: '\n', url:''}
 	];
+
+// jQuery plugin to get textarea cursor position
+(function ($, undefined) {
+  $.fn.getCursorPosition = function() {
+    var el = $(this).get(0);
+    var pos = 0;
+    if('selectionStart' in el) {
+      pos = el.selectionStart;
+    } else if('selection' in document) {
+      el.focus();
+      var Sel = document.selection.createRange();
+      var SelLength = document.selection.createRange().text.length;
+      Sel.moveStart('character', -el.value.length);
+      pos = Sel.text.length - SelLength;
+    }
+    return pos;
+  }
+})(jQuery);
+
+// jQuery plugin to set textarea cursor position
+(function ($, undefined) {
+  $.fn.selectRange = function(start, end) {
+    this.each(function(index, elem) {
+      if (elem.setSelectionRange) {
+        elem.focus();
+        elem.setSelectionRange(start, end);
+      } else if (elem.createTextRange) {
+        var range = elem.createTextRange();
+        range.collapse(true);
+        range.moveEnd('character', end);
+        range.moveStart('character', start);
+        range.select();
+      }
+    });
+    return this;
+  }
+})(jQuery);
 
 $(document).ready(function() {
   $.SyntaxHighlighter.init({
@@ -396,8 +434,9 @@ $(document).ready(function() {
     }
   });
 
-  $('#inputfield').keypress(function(event) {
-    if (event.which == 13 && !event.shiftKey) {
+  $('#inputfield').live('keydown', function(e) { 
+    var keyCode = e.keyCode || e.which; 
+    if (keyCode == 13 && !event.shiftKey) { // Enter
       var text = $.trim($('#inputfield').val()); 
       $('#inputfield').val('');
       if (text !== '') {
@@ -405,7 +444,58 @@ $(document).ready(function() {
       }
       return false;
     }
+    if (keyCode === 9) { // Tab
+      event.preventDefault();
+      if (tabHistory) {
+        showTabResult();
+        return false;
+      }
+      var index = $('#inputfield').getCursorPosition();
+      var text = $('#inputfield').val();
+      var left = text.substring(0, index);
+      var right = text.substring(index);
+      index = left.lastIndexOf('@');
+      if (index != -1) {
+        var mention = left.substring(index + 1);
+        left = left.substring(0, index);
+        var names = new Array();
+        $('.profilename').each(function() {
+            var name = $(this).text();
+            if ((name).toLowerCase().indexOf(mention.toLowerCase()) == 0) {
+              names.push(name);
+            }
+        }); 
+        names = unique(names);
+        if (names.length > 0) {
+          tabHistory = {
+            left: left,
+            mention: mention,
+            right: right,
+            names: names,
+            pos: 0
+          }
+          showTabResult();
+        }
+      }
+    } else {
+      tabHistory = null;
+    }
   });
+
+  function showTabResult() {
+    var name = tabHistory.mention; 
+    if (tabHistory.pos < tabHistory.names.length) {
+      name = tabHistory.names[tabHistory.pos];
+    }
+    $('#inputfield').val(tabHistory.left + '@' + name + tabHistory.right);
+    var cursor = tabHistory.left.length + 1 + name.length;
+    $('#inputfield').selectRange(cursor, cursor);
+    if (tabHistory.pos == tabHistory.names.length) {
+      tabHistory.pos = 0;
+    } else {
+      tabHistory.pos++;
+    }
+  }
 
   $(document).keyup(function(event) {
     if (event.which == 27) {
@@ -527,6 +617,7 @@ function getHtmlWithSmilyes(text)
 	}
 	return htmlEncode(text);
 }
+
 function getSmyleHtml(smyle)
 {
     // sneaky newline check
@@ -536,3 +627,9 @@ function getSmyleHtml(smyle)
 	return '<img class="emoticon" src="' + smyle.url + '" title="' + smyle.code + '" alt="' + smyle.code + '"/>';
 }
 
+function unique(a) {
+  var o = {}, i, l = a.length, r = [];
+  for(i=0; i<l;i+=1) o[a[i]] = a[i];
+  for(i in o) r.push(o[i]);
+  return r;
+};
