@@ -174,12 +174,14 @@ $(document).ready(function() {
 
       $('code').syntaxHighlight();
       lastMessage = message;
-      if (wasScrolledToBottom) scrollToBottom();
+      if (wasScrolledToBottom) {
+        scrollToBottom();
+      }
     }
   }
 
   function processMessage(message){
-      var result = handleLinksAndEscape(message.text);
+      var result = handleLinksAndEscape(message.text.replace(/boian/g, 'ಠ_ಠ'));
       var html = '<div class="messageContent">' + result.html + '</div>';
       html += addYoutubeLinks(result.youtube);
       html += addMixcloudLinks(result.mixcloud);
@@ -448,7 +450,7 @@ window.addEventListener('blur', function() {
 
 function scrollToBottom() {
   var messagebox = $('#messagebox .scrollr');
-  $(messagebox).animate({ scrollTop: $(messagebox).prop("scrollHeight") }, 0);
+  $(messagebox).animate({ scrollTop: $(messagebox).prop("scrollHeight") + 20 }, 0);
 }
 
 function isScrolledToBottom() {
