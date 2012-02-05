@@ -90,6 +90,10 @@ table {
   table-layout: fixed;
 }
 
+#messagebox img.emoticon {
+  float: none;
+}
+
 #messagebox {
   width: 100%;
   height: 100%;
@@ -175,4 +179,8 @@ hr {
 .profilepic.idle {
   opacity: 0.5;
   filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+.messageContent {
+  overflow: auto;
 }

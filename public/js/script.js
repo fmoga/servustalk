@@ -21,6 +21,11 @@ var smyles= [
 	{ code: ':)', url:'public/smileys/1.gif'},
 	{ code: ':D', url:'public/smileys/4.gif'},
 	{ code: ':d', url:'public/smileys/4.gif'},
+	{ code: ';)', url:'public/smileys/3.gif'},
+	{ code: ':p', url:'public/smileys/10.gif'},
+	{ code: ':P', url:'public/smileys/10.gif'},
+	{ code: ':|', url:'public/smileys/22.gif'},
+	{ code: '=))', url:'public/smileys/24.gif'},
 	{ code: '[!ie]', url:'public/smileys/55.gif'}
 	];
 
@@ -143,7 +148,7 @@ $(document).ready(function() {
 
   function processMessage(message){
       var result = handleLinksAndEscape(message.text);
-      var html = '<div>' + result.html + '</div>';
+      var html = '<div class="messageContent">' + result.html + '</div>';
       html += addYoutubeLinks(result.youtube);
       html += addMixcloudLinks(result.mixcloud);
       html += addSoundcloudLinks(result.soundcloud);
@@ -453,6 +458,6 @@ function getHtmlWithSmilyes(text)
 }
 function getSmyleHtml(smyle)
 {
-	return '<img src="' + smyle.url + '" title="' + smyle.code + '" alt="' + smyle.code + '"/>';
+	return '<img class="emoticon" src="' + smyle.url + '" title="' + smyle.code + '" alt="' + smyle.code + '"/>';
 }
 
