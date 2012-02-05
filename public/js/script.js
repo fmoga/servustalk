@@ -302,12 +302,12 @@ $(document).ready(function() {
       $('.profilename').hide();
       $(this).attr('full', '0');
       $(this).html('&laquo;');
-      $('#buddylist').css('min-width', '80px');
+      $('#buddylist').css('width', '80px');
     } else {
       $('.profilename').show();
       $(this).attr('full', '1');
       $(this).html('&raquo;');
-      $('#buddylist').css('min-width', '200px');
+      $('#buddylist').css('width', '200px');
     }
   });
 
