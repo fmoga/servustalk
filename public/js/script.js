@@ -218,7 +218,7 @@ $(document).ready(function() {
         soundcloud.push(link); 
       };
       if (link.indexOf('http://youtu.be') == 0) {
-        youtube.push(link.replace(/youtu\.be\//g, 'youtube.com/watch?v='));
+        youtube.push(link.replace(/\?/g, '&').replace(/youtu\.be\//g, 'youtube.com/watch?v='));
       }
       // check for imagery content
       var lowerLink = link.toLowerCase();
@@ -254,8 +254,12 @@ $(document).ready(function() {
   }
   
   function paramize(text) {
-    var time = parseInt(text.substring(0,2));
-    time = time * 60 + parseInt(text.substring(3,5));
+    if (!text.match(/\d\d?m\d\d?s/g)) {
+        return '';
+    };
+    var time = parseInt(text.substring(0, text.indexOf('m')));
+    time = time * 60 + parseInt(text.substring(text.indexOf('m') + 1, text.indexOf('s')));
+    alert(text + ' ---> ' + time);
     return '&start=' + time;
   }
 
