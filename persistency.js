@@ -11,6 +11,8 @@ var titles = db.collection("titles")
 
 exports.init = function() {
     users.ensureIndex({id: 1});
+    messages.ensureIndex({ts: 1});
+    titles.ensureIndex({ts: 1});
 }
 
 exports.saveMessage = function(message) {
@@ -22,8 +24,8 @@ exports.saveMessage = function(message) {
     messages.insert(msg);
 }
 
-exports.getMessages = function(callback) {
-    messages.find().toArray(callback);
+exports.getMessages = function(lower_date, upper_date, callback) {
+    messages.find({ts: { $gt: lower_date.getTime(), $lt: upper_date.getTime()} }).toArray(callback);
 }
 
 exports.updateUser = function(user) {
