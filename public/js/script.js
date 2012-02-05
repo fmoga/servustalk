@@ -1,6 +1,7 @@
 var DEFAULT_PICTURE = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
-var MAX_TIMESTAMP_DIFF = 60000; // 1 min
+var MAX_TIMESTAMP_DIFF = 60 * 1000; // 1 min
 var VIRTUAL_USER = { id: ''};
+var IDLE_TIMEOUT = 5 * 60 * 1000; // 5 min
 
 var lastMessage = {
   user: VIRTUAL_USER
@@ -11,6 +12,9 @@ var popup;
 var focused = true;
 var flickeringTitle;
 var originalDocTitle;
+var socket;
+var idle = false;
+var idlePromise;
 
 $(document).ready(function() {
   $.SyntaxHighlighter.init({
@@ -22,7 +26,7 @@ $(document).ready(function() {
 
   originalDocTitle = document.title;
 
-  var socket = io.connect();
+  socket = io.connect();
   socket.on('connect', function() {
     socket.emit('loadTitle');
   });
@@ -39,30 +43,22 @@ $(document).ready(function() {
   });
 
   socket.on('message', function(message) {
+    // title flicker
     if (!focused) {
-        var user=message.user.name;
-	var currentFlickeringTitle = setInterval(function(){
-        if(document.title == originalDocTitle) {
-        	document.title=message.user.name + ' has written ' + message.text;
-                console.log(document.title);
-	}
-	else {
-		document.title=originalDocTitle;	
-	}
-	
-   }, 2000);
-       if(flickeringTitle != currentFlickeringTitle) {
-		clearInterval(flickeringTitle);
-		flickeringTitle = currentFlickeringTitle;
-	}
+      if (flickeringTitle) clearInterval(flickeringTitle);
+      flickeringTitle = setInterval(function(){
+        if(document.title === originalDocTitle) {
+          document.title = message.user.name + ' has messaged UbunTalk';
+	      } else {
+          document.title = originalDocTitle;	
+        }
+      }, 2000);
     }
-
+    // desktop notification
     if (!focused && $('#desknot').prop('checked') && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
-      
       var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
       displayDesktopNotification(picture, message.user.name, message.text);
     }
-    
     displayMessage(message);
   });
 
@@ -74,9 +70,9 @@ $(document).ready(function() {
        nameStyle = 'style="display: none"';
     }
     $.each(clients, function(index, client) {
-      var picture = DEFAULT_PICTURE;
-      if (client.picture) picture = client.picture;
-      $(buddylist).append('<li><img class="profilepic middle" title="' +client.name + '" src="' + picture + '"/><span class="profilename" ' + nameStyle + '>' + client.name + '</span></li>'); 
+      var picture = client.picture ? client.picture : DEFAULT_PICTURE;
+      var idle = client.idle ? 'idle' : '';
+      $(buddylist).append('<li><img class="profilepic ' + idle + ' middle" title="' +client.name + '" src="' + picture + '"/><span class="profilename ' + idle + '" ' + nameStyle + '>' + client.name + '</span></li>'); 
     });
 
     if (first) {
@@ -362,19 +358,33 @@ $(document).ready(function() {
 });
 
 window.addEventListener('focus', function() {
-  if (popup) popup.cancel();
   focused = true;
   $('#inputbox').focus();
-  window.clearInterval(flickeringTitle);
-  flickeringTitle='undefined';
-  if(originalDocTitle != 'undefined') {
+  // desktop notification
+  if (popup) popup.cancel();
+  // flickering title
+  clearInterval(flickeringTitle);
+  delete flickeringTitle;
   document.title = originalDocTitle;
-}
-
+  // idle
+  if (idle) {
+    idle = false;
+    socket.emit('not idle');
+  } else {
+    if (idlePromise) {
+      clearTimeout(idlePromise);
+      delete idlePromise;
+    }
+  }
 });
 
 window.addEventListener('blur', function() {
   focused = false;
+  // idle
+  idlePromise = setTimeout(function() {
+    idle = true;
+    socket.emit('idle');
+  }, IDLE_TIMEOUT);
 });
 
 function scrollToBottom() {

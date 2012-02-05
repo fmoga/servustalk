@@ -164,3 +164,13 @@ hr {
   margin-left: 5px;
   white-space: nowrap;
 }
+
+.profilename.idle {
+  color: #777;
+  font-style: italic;
+}
+
+.profilepic.idle {
+  opacity: 0.5;
+  filter: alpha(opacity=50); /* For IE8 and earlier */
+}
