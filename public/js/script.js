@@ -142,13 +142,13 @@ $(document).ready(function() {
       // we now have command support
       if (message.text.indexOf('/announce') == 0) {
         html = '';
-        html += '<div style="background: #8CD98E"><b>' + message.user.name + ':<b/> ';
+        html += '<div style="background: #CCFABE"><b>' + message.user.name + ':<b/> ';
         html += htmlEncode(message.text.substring(message.text.indexOf(' ') + 1))  + ' </div>';
         $('#messagebox .scrollr').append(html);
         if (wasScrolledToBottom) scrollToBottom();
       } else if (message.text.indexOf('/alert') == 0) {
         html = '';
-        html += '<div style="background: #D9A48C"><b>' + message.user.name + ':<b/> ';
+        html += '<div style="background: #F9DACC"><b>' + message.user.name + ':<b/> ';
         html += htmlEncode(message.text.substring(message.text.indexOf(' ') + 1))  + ' </div>';
         $('#messagebox .scrollr').append(html);
         if (wasScrolledToBottom) scrollToBottom();
