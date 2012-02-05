@@ -47,6 +47,7 @@ function getHistory(req, res) {
       });
     }
   });
+}
 
 
 exports.index = index
