@@ -36,6 +36,7 @@ a, a:visited, a:hover {
 #header {
   border-bottom: 1px solid #BBB;
   overflow: auto;
+  padding-bottom: 2px;
 }
 
 #buddylist {
