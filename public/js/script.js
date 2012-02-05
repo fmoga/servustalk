@@ -164,7 +164,8 @@ $(document).ready(function() {
 
     }
     else {
-      var processedMessage = processMessage(message);
+      var userMention = '@' + $('#loggedUser').html();
+      var processedMessage = processMessage(message, userMention);
       if (message.user.id == lastMessage.user.id && message.ts < lastMessage.ts + MAX_TIMESTAMP_DIFF ) {
         $('.author').last().append(processedMessage);
       } else {
@@ -188,14 +189,29 @@ $(document).ready(function() {
     }
   }
 
-  function processMessage(message){
-      var result = handleLinksAndEscape(message.text.replace(/boian/g, 'ಠ_ಠ'));
-      var html = '<div class="messageContent">' + result.html + '</div>';
+  function processMessage(message, userMention){
+      var result = handleLinksAndEscape(message.text);
+      result.html = result.html.replace(/boian/g, 'ಠ_ಠ');
+      result.html = handleMentions(result.html, userMention);
+      var classes = 'messageContent';
+      if (hasMention(result.html, userMention)) {
+        classes += ' mention';
+      }
+      var html = '<div class="' + classes + '">' + result.html + '</div>';
       html += addYoutubeLinks(result.youtube);
       html += addMixcloudLinks(result.mixcloud);
       html += addSoundcloudLinks(result.soundcloud);
       html += addImagery(result.imagery);
       return html;
+  }
+
+  function hasMention(text, mention) {
+    return text.indexOf(mention) != -1;
+  }
+
+  function handleMentions(text, mention) {
+      var r = new RegExp(mention, 'g');
+      return text.replace(r, '<strong>' + mention + '</strong>');
   }
 
   function formatTimestamp(ts) {

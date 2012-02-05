@@ -185,3 +185,7 @@ hr {
   overflow: auto;
   padding-bottom: 2px;
 }
+
+.mention {
+  background-color: #FFFFAA;
+}
