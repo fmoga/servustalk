@@ -188,14 +188,24 @@ function escapeText(text) {
   return $('<div/>').text(text).html();
 }
 
+function getHistory(date) {
+  $.ajax({
+      url: "/getHistory/"+date.getFullYear()+"/"+date.getMonth()+"/"+date.getDate()+"/",
+      type: "POST",
+      success: function(data) {
+          $("#messagebox .scrollr").empty();
+          for (idx in data.messages) {
+              displayMessage(data.messages[idx]);
+          }
+      },
+  });
+}
 $(document).ready(function() {
-    $.ajax({
-        url: "/getHistory",
-        type: "POST",
-        success: function(data) {
-            for (idx in data.messages) {
-                displayMessage(data.messages[idx]);
-            }
-        },
+    $("#datepicker").datepicker({
+        onSelect: function(dateText, inst) {
+                      date = new Date(inst.currentYear, inst.currentMonth, inst.currentDay, 0, 0, 0, 0);
+                      getHistory(date);
+                  }
     });
+    getHistory(new Date());
 });

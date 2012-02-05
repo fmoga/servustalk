@@ -2,6 +2,7 @@ extends layout
 
 block append scripts
   script(src='/public/js/history.js')
+  script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
 
 block header
   #header
@@ -15,3 +16,6 @@ block content
     tr
       td#messagebox
         .scrollr
+      td#buddylist(rowspan="2")
+        .scrollr
+          #datepicker
