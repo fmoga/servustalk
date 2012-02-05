@@ -38,7 +38,8 @@ var smyles= [
 	{ code: ':o', url:'public/smileys/13.gif'},
 	{ code: ':O', url:'public/smileys/13.gif'},
 	{ code: '<(")', url:'public/smileys/penguin.gif'},
-	{ code: '[!ie]', url:'public/smileys/55.gif'}
+	{ code: '[!ie]', url:'public/smileys/55.gif'},
+    { code: '\n', url:''}
 	];
 
 $(document).ready(function() {
@@ -470,6 +471,10 @@ function getHtmlWithSmilyes(text)
 }
 function getSmyleHtml(smyle)
 {
+    // sneaky newline check
+    if (smyle.code == '\n') {
+        return '<br/>';
+    }
 	return '<img class="emoticon" src="' + smyle.url + '" title="' + smyle.code + '" alt="' + smyle.code + '"/>';
 }
 
