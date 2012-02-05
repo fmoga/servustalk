@@ -217,6 +217,9 @@ $(document).ready(function() {
       if (link.indexOf('http://soundcloud.com') == 0) {
         soundcloud.push(link); 
       };
+      if (link.indexOf('http://youtu.be') == 0) {
+        youtube.push(link.replace(/youtu\.be\//g, 'youtube.com/watch?v='));
+      }
       // check for imagery content
       var lowerLink = link.toLowerCase();
       var ext = 0;
@@ -250,12 +253,19 @@ $(document).ready(function() {
     }
   }
   
+  function paramize(text) {
+    var time = parseInt(text.substring(0,2));
+    time = time * 60 + parseInt(text.substring(3,5));
+    return '&start=' + time;
+  }
+
   function addYoutubeLinks(links) {
     var html = '';
     $.each(links, function(index, link) {
       var params = getUrlVars(link);
+      var timestamp = params.t ? paramize(params.t) : '';
       if (params.v) {
-        html += '<div><iframe width="420" height="315" src="http://www.youtube.com/embed/' + params.v + '" frameborder="0" allowfullscreen></iframe></div>';
+        html += '<div><iframe width="420" height="315" src="http://www.youtube.com/v/' + params.v + timestamp + '" frameborder="0" allowfullscreen></iframe></div>';
       }
     });
     return html;
