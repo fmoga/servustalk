@@ -16,6 +16,7 @@ var socket;
 var idle = false;
 var idlePromise;
 var tabHistory;
+var unloading = false;
 
 var smyles= [
 	{ code: ':))', url:'public/smileys/21.gif'},
@@ -171,8 +172,10 @@ $(document).ready(function() {
   });
 
   socket.on('disconnect', function() {
-    var message = 'You have been disconnected from server for maintenance. Please refresh and log in again.';
-    displayNotification(message, true);
+    if (!unloading) {
+      var message = 'You have been disconnected from server for maintenance. Please refresh and log in again.';
+      displayNotification(message, true);
+    }
   });
 
   function displayMessage(message) {
@@ -561,6 +564,10 @@ window.addEventListener('blur', function() {
     idle = true;
     socket.emit('idle');
   }, IDLE_TIMEOUT);
+});
+
+$(window).bind('beforeunload', function() {
+  unloading = true;
 });
 
 function scrollToBottom() {
