@@ -4,8 +4,9 @@ html(lang="en")
     title UbunTalk
     link(href='http://fonts.googleapis.com/css?family=Droid+Sans', rel='stylesheet', type='text/css')
     link(href='/public/css/style.css', rel='stylesheet', type='text/css')
-    link(href='/public/css/jquery-ui-1.8.17.custom.css', rel='stylesheet', type='text/css')
     - if (everyauth.loggedIn)
+      block stylesheets
+        link(href='/public/css/jquery-ui-1.8.17.custom.css', rel='stylesheet', type='text/css')
       block scripts
         script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
         script(src='/public/js/jquery-ui-1.8.17.custom.min.js');

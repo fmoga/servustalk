@@ -49,11 +49,11 @@ function getHistory(req, res) {
   });
 }
 
-function ui(req, res) {
-  res.render('ui');
+function beta(req, res) {
+  res.render('beta');
 }
 
 exports.index = index
 exports.history = history
 exports.getHistory = getHistory
-exports.ui = ui
+exports.beta = beta
