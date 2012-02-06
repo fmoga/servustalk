@@ -207,7 +207,7 @@ $(document).ready(function() {
     }
     else {
       var userMention = '@' + $('#loggedUser').html();
-      var processedMessage = processMessage(message, userMention);
+      var processedMessage = processMessage(message, userMention, wasScrolledToBottom);
       if (message.user.id == lastMessage.user.id && message.ts < lastMessage.ts + MAX_TIMESTAMP_DIFF ) {
         $('.author').last().append(processedMessage);
       } else {
@@ -231,8 +231,7 @@ $(document).ready(function() {
     }
   }
 
-  function processMessage(message, userMention){
-      var wasScrolledToBottom = isScrolledToBottom();
+  function processMessage(message, userMention, scroll){
       var result = handleLinksAndEscape(message.text);
       result.html = result.html.replace(/boian/g, 'ಠ_ಠ');
       result.html = handleMentions(result.html, userMention);
@@ -244,7 +243,7 @@ $(document).ready(function() {
       html += addYoutubeLinks(result.youtube);
       html += addMixcloudLinks(result.mixcloud);
       html += addSoundcloudLinks(result.soundcloud);
-      html += addImagery(result.imagery, wasScrolledToBottom);
+      html += addImagery(result.imagery, scroll);
       return html;
   }
 
@@ -392,8 +391,8 @@ $(document).ready(function() {
     return html;
   }
 
-  function addImagery(links, wasScrolledToBottom) {
-    var onload = wasScrolledToBottom ? 'onload="scrollToBottom()"' : '';
+  function addImagery(links, scroll) {
+    var onload = scroll ? 'onload="scrollToBottom()"' : '';
     var html = '';
     $.each(links, function(index, link) {
       html += '<a target="_tab" ' + onload + '  href="' + link + '"><img id="imageLink" src="' + link + '"/></a>';
