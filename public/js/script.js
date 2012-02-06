@@ -395,7 +395,7 @@ $(document).ready(function() {
     var onload = scroll ? 'onload="scrollToBottom()"' : '';
     var html = '';
     $.each(links, function(index, link) {
-      html += '<a target="_tab" ' + onload + '  href="' + link + '"><img id="imageLink" src="' + link + '"/></a>';
+      html += '<a target="_tab" href="' + link + '"><img id="imageLink" ' + onload + ' src="' + link + '"/></a>';
     });
     if (html !== '') {
       html = '<div id="imageDock">' + html + '</div>';
