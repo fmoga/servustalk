@@ -91,7 +91,7 @@ $(document).ready(function() {
       var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
       displayDesktopNotification(picture, message.user.name, message.text);
     }
-    displayMessage(message, true);
+    displayMessage(message, true, true);
   });
 
   socket.on('clients', function(clients) {
@@ -131,7 +131,7 @@ $(document).ready(function() {
   socket.on('history', function(history) {
     $('#messagebox .scrollr').empty();
     for (index in history) {
-      displayMessage(history[index], true);
+      displayMessage(history[index], true, true);
     }
     displayNotification('Fetched latest messages sent to the room', false, true);
     scrollToBottom();

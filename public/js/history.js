@@ -5,7 +5,7 @@ function getHistory(date) {
       success: function(data) {
           $("#messagebox .scrollr").empty();
           for (idx in data.messages) {
-              displayMessage(data.messages[idx], false);
+              displayMessage(data.messages[idx], false, false);
           }
       },
   });

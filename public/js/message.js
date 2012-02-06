@@ -34,7 +34,7 @@ var smyles= [
   { code: '\n', url:''}
 ];
 
-function displayMessage(message, autoscroll) {
+function displayMessage(message, autoscroll, displayInline) {
   var wasScrolledToBottom = isScrolledToBottom();
   if (message.text.indexOf('/') == 0) {
     // we now have command support
@@ -63,7 +63,7 @@ function displayMessage(message, autoscroll) {
   }
   else {
     var userMention = '@' + $('#loggedUser').html();
-    var processedMessage = processMessage(message, userMention, autoscroll && wasScrolledToBottom);
+    var processedMessage = processMessage(message, userMention, autoscroll && wasScrolledToBottom, displayInline);
     if (message.user.id == lastMessage.user.id && message.ts < lastMessage.ts + MAX_TIMESTAMP_DIFF ) {
       $('.author').last().append(processedMessage);
     } else {
@@ -87,7 +87,7 @@ function displayMessage(message, autoscroll) {
   }
 }
 
-function processMessage(message, userMention, scroll){
+function processMessage(message, userMention, scroll, displayInline){
     var result = handleLinksAndEscape(message.text);
     result.html = result.html.replace(/boian/g, 'ಠ_ಠ');
     result.html = handleMentions(result.html, userMention);
@@ -96,10 +96,12 @@ function processMessage(message, userMention, scroll){
       classes += ' mention';
     }
     var html = '<div class="' + classes + '">' + result.html + '</div>';
-    html += addYoutubeLinks(result.youtube);
-    html += addMixcloudLinks(result.mixcloud);
-    html += addSoundcloudLinks(result.soundcloud);
-    html += addImagery(result.imagery, scroll);
+    if (displayInline) {
+      html += addYoutubeLinks(result.youtube);
+      html += addMixcloudLinks(result.mixcloud);
+      html += addSoundcloudLinks(result.soundcloud);
+      html += addImagery(result.imagery, scroll);
+    }
     return html;
 }
 
