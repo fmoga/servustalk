@@ -232,6 +232,7 @@ $(document).ready(function() {
   }
 
   function processMessage(message, userMention){
+      var onload = isScrolledToBottom() ? 'onload="scrollToBottom()"' : '';
       var result = handleLinksAndEscape(message.text);
       result.html = result.html.replace(/boian/g, 'ಠ_ಠ');
       result.html = handleMentions(result.html, userMention);
@@ -243,7 +244,7 @@ $(document).ready(function() {
       html += addYoutubeLinks(result.youtube);
       html += addMixcloudLinks(result.mixcloud);
       html += addSoundcloudLinks(result.soundcloud);
-      html += addImagery(result.imagery);
+      html += addImagery(result.imagery, onload);
       return html;
   }
 
@@ -391,10 +392,10 @@ $(document).ready(function() {
     return html;
   }
 
-  function addImagery(links) {
+  function addImagery(links, onload) {
     var html = '';
     $.each(links, function(index, link) {
-      html += '<a target="_tab" href="' + link + '"><img id="imageLink" src="' + link + '"/></a>';
+      html += '<a target="_tab" ' + onload + '  href="' + link + '"><img id="imageLink" src="' + link + '"/></a>';
     });
     if (html !== '') {
       html = '<div id="imageDock">' + html + '</div>';
