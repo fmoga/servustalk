@@ -1,25 +1,27 @@
 extends layout
 
 block append scripts
+  script(src='http://balupton.github.com/jquery-syntaxhighlighter/scripts/jquery.syntaxhighlighter.min.js')
+  script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
+  script(src='/public/js/message.js')
   script(src='/public/js/history.js')
-  script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
 
 block header
   #header
     | Currently logged in as 
-    span.username #{everyauth.google.user.name}
+    span#loggedUser.username #{everyauth.google.user.name}
     span#logout
       a(href='/logout') Logout
     span#logout
         | |
     span#logout
-      a(href='/') Home
+      a(target='_blank',href='/') Home
 
 block content
   table
     tr
       td#messagebox
         .scrollr
-      td#buddylist(rowspan="2")
+      td#buddylist.calendar(rowspan="2")
         .scrollr
           #datepicker
