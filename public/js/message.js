@@ -2,7 +2,7 @@ var DEFAULT_PICTURE = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAA
 var MAX_TIMESTAMP_DIFF = 60 * 1000; // 1 min
 var NO_USER = { id: ''};
 var IDLE_TIMEOUT = 5 * 60 * 1000; // 5 min
-
+var MENTION_SOUND = '/public/audio/touche.wav';
 var lastMessage = {
   user: NO_USER
 };
@@ -111,6 +111,9 @@ function hasMention(text, mention) {
 
 function handleMentions(text, mention) {
     var r = new RegExp(mention, 'g');
+    if (!focused && text.match(r)) {
+      $('#noise').html('<embed src="' + MENTION_SOUND + '" hidden=true autostart=true loop=false>');
+    }
     return text.replace(r, '<strong>' + mention + '</strong>');
 }
 
