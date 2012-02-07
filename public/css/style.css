@@ -232,9 +232,17 @@ a.jPag-first, ul.jPag-pages li a, ul.jPag-pages li span, a.jPag-last {
   -webkit-border-radius: 6px;
 }
 
-::-webkit-scrollbar-thumb:vertical {
+::-webkit-scrollbar-thumb:vertical:hover {
   height: 50px;
-  background-color: #CCC;
-  border: 1px solid #CCC;
+  background-color: #AAA;
+  border: 1px solid #AAA;
   -webkit-border-radius: 6px;
 }
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 50px;
+  background-color: #CBCBCB;
+  border: 1px solid #CBCBCB;
+  -webkit-border-radius: 6px;
+}
+
