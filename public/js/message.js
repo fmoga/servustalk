@@ -15,10 +15,18 @@ var smyles= [
 	{ code: '>:D<', url:'public/smileys/6.gif'},
 	{ code: '>:d<', url:'public/smileys/6.gif'},
 	{ code: ':>', url:'public/smileys/15.gif'},
-  { code: ':D', url:'public/smileys/4.gif'},
+    { code: ':D', url:'public/smileys/4.gif'},
 	{ code: ':d', url:'public/smileys/4.gif'},
-	{ code: ';)', url:'public/smileys/3.gif'},
-	{ code: ':p', url:'public/smileys/10.gif'},
+	{ code: '=D>', url:'public/smileys/41.gif'},
+    { code: '\\m/', url:'public/smileys/111.gif'},
+    { code: ':o3', url:'public/smileys/108.gif'},
+    { code: ':O3', url:'public/smileys/108.gif'},
+    { code: ';)', url:'public/smileys/3.gif'},
+    { code: ':-h', url:'public/smileys/103.gif'},
+    { code: ':-H', url:'public/smileys/103.gif'},
+	{ code: ':-j', url:'public/smileys/71.gif'},
+    { code: ':-J', url:'public/smileys/71.gif'},
+    { code: ':p', url:'public/smileys/10.gif'},
 	{ code: ':P', url:'public/smileys/10.gif'},
 	{ code: ':|', url:'public/smileys/22.gif'},
 	{ code: '=))', url:'public/smileys/24.gif'},
@@ -36,32 +44,21 @@ var smyles= [
 
 function displayMessage(message, autoscroll, displayInline) {
   var wasScrolledToBottom = isScrolledToBottom();
-  if (message.text.indexOf('/') == 0) {
-    // we now have command support
-    if (message.text.indexOf('/announce') == 0) {
-      html = '';
-      html += '<div style="background: #CCFABE"><b>' + message.user.name + ':<b/> ';
-      html += htmlEncode(message.text.substring(message.text.indexOf(' ') + 1))  + ' </div>';
-      $('#messagebox .scrollr').append(html);
-      if (autoscroll && wasScrolledToBottom) scrollToBottom();
-    } else if (message.text.indexOf('/alert') == 0) {
-      html = '';
-      html += '<div style="background: #F9DACC"><b>' + message.user.name + ':<b/> ';
-      html += htmlEncode(message.text.substring(message.text.indexOf(' ') + 1))  + ' </div>';
-      $('#messagebox .scrollr').append(html);
-      if (autoscroll && wasScrolledToBottom) scrollToBottom();
-    } else if (message.text.indexOf('/#') == 0) {
-      var color = message.text.substring(1, message.text.indexOf(' '));
-      if (!color.match(/[a-fA-F0-9]{6}|[a-fA-F0-9]{3}/g)) color = '#AAAAAA';
-      html = '';
-      html += '<div id="alert" style="background: ' + color + '"><b>' + message.user.name + ':<b/> ';
-      html += htmlEncode(message.text.substring(message.text.indexOf(' ') + 1))  + ' </div>';
-      $('#messagebox .scrollr').append(html);
-      if (autoscroll && wasScrolledToBottom) scrollToBottom();
+  if (message.text.indexOf('/#') == 0) { // colored alert
+    var color = message.text.substring(1, message.text.indexOf(' '));
+    if (!color.match(/[a-fA-F0-9]{6}|[a-fA-F0-9]{3}/g)) {
+        color = '#3B5';
     }
-
-  }
-  else {
+    html = '';
+    html += '<div id="alert" style="background: ' + color + '"><b>' + message.user.name + ':<b/> ';
+    html += htmlEncode(message.text.substring(message.text.indexOf(' ') + 1))  + ' </div>';
+    $('#messagebox .scrollr').append(html);
+    if (autoscroll && wasScrolledToBottom) scrollToBottom();
+    lastMessage = { user: NO_USER };        
+    } else if (message.text.indexOf('/clear') == 0) {
+    $('#messagebox .scrollr').html('');
+    lastMessage = { user: NO_USER };
+  } else {
     var userMention = '@' + $('#loggedUser').html();
     var processedMessage = processMessage(message, userMention, autoscroll && wasScrolledToBottom, displayInline);
     if (message.user.id == lastMessage.user.id && message.ts < lastMessage.ts + MAX_TIMESTAMP_DIFF ) {
