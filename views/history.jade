@@ -1,8 +1,12 @@
 extends layout
 
+block append stylesheets
+  link(href='/public/jPaginate/css/style.css', rel='stylesheet', type='text/css')
+
 block append scripts
   script(src='http://balupton.github.com/jquery-syntaxhighlighter/scripts/jquery.syntaxhighlighter.min.js')
   script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
+  script(src='/public/jPaginate/jquery.paginate.js')
   script(src='/public/js/message.js')
   script(src='/public/js/history.js')
 
@@ -25,3 +29,4 @@ block content
       td#buddylist.calendar(rowspan="2")
         .scrollr
           #datepicker
+          #pagination
