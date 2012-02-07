@@ -59,7 +59,11 @@ function getMessages(lower_date, upper_date, callback) {
   messages.find({ts: { $gt: lower_date.getTime(), $lt: upper_date.getTime()} }).toArray(callback);
 }
 
-function updateUser(user) {
+function updateUser(id, properties) {
+  users.update({id: id}, {$set: properties});
+}
+
+function saveUser(user) {
   users.findOne({id: user.id}, function(err, db_user) {
     if (!err) {
       if (db_user === undefined) {
@@ -101,6 +105,7 @@ exports.init = init
 exports.saveMessage = saveMessage
 exports.getMessages = getMessages
 exports.updateUser = updateUser
+exports.saveUser = saveUser
 exports.getHistory = getHistory
 exports.getUser = getUser
 exports.getUsers = getUsers
