@@ -228,13 +228,13 @@ a.jPag-first, ul.jPag-pages li a, ul.jPag-pages li span, a.jPag-last {
 }
 
 ::-webkit-scrollbar-track-piece  {
-  background-color: #C0C0C0;
+  background-color: #F2F2F2;
   -webkit-border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:vertical {
   height: 50px;
-  background-color: #666;
-  border: 1px solid #eee;
+  background-color: #CCC;
+  border: 1px solid #CCC;
   -webkit-border-radius: 6px;
 }
