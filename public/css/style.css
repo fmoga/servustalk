@@ -215,3 +215,34 @@ a.jPag-first, ul.jPag-pages li a, ul.jPag-pages li span, a.jPag-last {
   float: right;
   margin-right: 5px;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment  {
+  height: 0;
+  display: block;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track-piece  {
+  background-color: #F2F2F2;
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:vertical:hover {
+  height: 50px;
+  background-color: #AAA;
+  border: 1px solid #AAA;
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 50px;
+  background-color: #CBCBCB;
+  border: 1px solid #CBCBCB;
+  -webkit-border-radius: 6px;
+}
+
