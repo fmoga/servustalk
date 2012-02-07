@@ -56,6 +56,8 @@ $(document).ready(function() {
     'theme': 'ubutalk'
   });
 
+  $("a#settingsLink").fancybox();
+
   originalDocTitle = document.title;
 
   socket = io.connect();

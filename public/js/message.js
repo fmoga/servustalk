@@ -111,9 +111,11 @@ function hasMention(text, mention) {
 
 function handleMentions(text, mention) {
     var r = new RegExp(mention, 'g');
+    /*
     if (!focused && text.match(r)) {
       $('#noise').html('<embed src="' + MENTION_SOUND + '" hidden=true autostart=true loop=false>');
     }
+    */
     return text.replace(r, '<strong>' + mention + '</strong>');
 }
 

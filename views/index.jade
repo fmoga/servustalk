@@ -1,7 +1,11 @@
 extends layout
 
+block append stylesheets
+  link(rel="stylesheet", href="public/fancybox/jquery.fancybox-1.3.4.css", type="text/css", media="screen")
+
 block append scripts
   script(src='http://balupton.github.com/jquery-syntaxhighlighter/scripts/jquery.syntaxhighlighter.min.js')
+  script(src='/public/fancybox/jquery.fancybox-1.3.4.pack.js')
   script(src='/socket.io/socket.io.js')
   script(src='/public/js/message.js')
   script(src='/public/js/script.js')
@@ -24,7 +28,6 @@ block content
         .scrollr
       td#buddylist(rowspan="2")
         .scrollr
-          span CACAT
           p 
             span#title Online
             a#toggle(href='#', full='1') &raquo;
@@ -36,6 +39,10 @@ block content
         #footer
           | Logged in as 
           span#loggedUser.username #{everyauth.google.user.name}
-          span#desktop
-            input#desknot(type='checkbox') 
-            span Desktop notifications
+          a#settingsLink(href='#settings') Settings
+
+  div(style='display:none')
+    div#settings
+      span#desktop
+        input#desknot(type='checkbox') 
+        span Desktop notifications

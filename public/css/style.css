@@ -137,7 +137,6 @@ hr {
 
 #desktop {
   color: #777;
-  float: right;
   padding-right: 5px;
 }
 
@@ -210,4 +209,9 @@ hr {
 
 a.jPag-first, ul.jPag-pages li a, ul.jPag-pages li span, a.jPag-last {
   font-weight: bold;
+}
+
+#settingsLink {
+  float: right;
+  margin-right: 5px;
 }
