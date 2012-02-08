@@ -227,7 +227,12 @@ a.jPag-first, ul.jPag-pages li a, ul.jPag-pages li span, a.jPag-last {
   background-color: transparent;
 }
 
-::-webkit-scrollbar-track-piece  {
+::-webkit-scrollbar-track  {
+  background-color: transparent;
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-track:hover  {
   background-color: #F2F2F2;
   -webkit-border-radius: 6px;
 }
