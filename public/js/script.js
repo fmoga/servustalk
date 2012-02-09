@@ -60,7 +60,14 @@ $(document).ready(function() {
 
   originalDocTitle = document.title;
 
-  socket = io.connect();
+  socket = io.connect('/', {
+    'force new connection' : true,
+    'connect timeout': 5000,
+    'try multiple transports': true,
+    'reconnect': true,
+    'reconnection delay': 1000,
+    'max reconnection attempts': 10
+  });
   socket.on('connect', function() {
     socket.emit('loadTitle');
   });
