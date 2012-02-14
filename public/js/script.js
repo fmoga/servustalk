@@ -68,8 +68,25 @@ $(document).ready(function() {
     'reconnection delay': 1000,
     'max reconnection attempts': 10
   });
+
   socket.on('connect', function() {
     socket.emit('loadTitle');
+  });
+
+  socket.on('reconnect', function(transport, attempts) {
+    console.log('DEBUG: reconnect: transport=' + transport + '; attempts=' + attempts);
+  });
+
+  socket.on('reconnecting', function(delay, attempts) {
+    console.log('DEBUG: reconnecting: delay=' + delay + '; attempts=' + attempts);
+  });
+
+  socket.on('reconnect_failed', function() {
+    console.log('DEBUG: reconnect_failed');
+  });
+
+  socket.on('ping', function() {
+    socket.emit('pong');
   });
 
   socket.on('loadTitle', function(title) {

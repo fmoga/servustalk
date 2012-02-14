@@ -7,11 +7,19 @@ var io = require('socket.io'),
 var online = {};
 var history = [];
 var title = config.defaultTitle;
+var PING_INTERVAL = 5 * 60 * 1000; // 5 min
+var MAX_LATENCY = 10 * 1000; // 10 sec
+
+setInterval(function() {
+  broadcast('ping');
+}, PING_INTERVAL);
 
 function broadcast(type, body) {
   var buddyListUpdate = false;
+  var now = new Date().getTime();
   for (id in online) {
-    if (online[id].disconnected) {
+    if (online[id].disconnected || now - online[id].lastPong > PING_INTERVAL + MAX_LATENCY) {
+      online[id].disconnect();
       delete online[id]; 
       buddyListUpdate = true;
     } else {
@@ -90,6 +98,12 @@ function init(app, sessionStore) {
         console.log('Connected: ' + socket.user.name);
         broadcast('clients', packClients());
         socket.emit('history', history);
+        socket.lastPong = new Date().getTime();
+        socket.emit('ping');
+
+        socket.on('pong', function() {
+          socket.lastPong = new Date().getTime();
+        });
 
         socket.on('message', function(message) {
           var completeMessage = {
