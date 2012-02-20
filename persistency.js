@@ -14,13 +14,11 @@ function mergeMessagesWithUsers(messages, users, callback) {
     // Maps user_id -> user
     users_by_id = {};
     for (idx in users) {
-      users[idx]._id = undefined;
       users_by_id[users[idx].id] = users[idx];
     }
 
     // message.user contains id, but we need a user object
     for (idx in messages) {
-      messages[idx]._id = undefined;
       messages[idx].user = users_by_id[messages[idx].user];
     }
 
@@ -56,7 +54,7 @@ function saveMessage(message) {
 }
 
 function getMessages(lower_date, upper_date, callback) {
-  messages.find({ts: { $gt: lower_date.getTime(), $lt: upper_date.getTime()} }).toArray(callback);
+  messages.find({ts: { $gt: lower_date.getTime(), $lt: upper_date.getTime()} }, { _id : 0 }).toArray(callback);
 }
 
 function updateUser(id, properties) {
@@ -64,7 +62,7 @@ function updateUser(id, properties) {
 }
 
 function saveUser(user) {
-  users.findOne({id: user.id}, function(err, db_user) {
+  users.findOne({id: user.id}, {_id : 0}, function(err, db_user) {
     if (!err) {
       if (db_user === undefined) {
         // First time user, save it
@@ -81,15 +79,15 @@ function saveUser(user) {
 }
 
 function getHistory(count, callback) {
-  messages.find().limit(count).sort({ts: -1}).toArray(callback);
+  messages.find({}, {_id : 0}).limit(count).sort({ts: -1}).toArray(callback);
 }
 
 function getUser(id, callback) {
-  users.findOne({id: id}, callback);
+  users.findOne({id: id}, {_id : 0}, callback);
 }
 
 function getUsers(callback) {
-  users.find().toArray(callback);
+  users.find({}, {_id : 0}).toArray(callback);
 }
 
 function saveTitle(title) {
@@ -97,7 +95,7 @@ function saveTitle(title) {
 }
 
 function getTitle(callback) {
-  titles.find({}).sort({ts: -1}).limit(1).toArray(callback);
+  titles.find({}, {_id : 0}).sort({ts: -1}).limit(1).toArray(callback);
 }
 
 exports.mergeMessagesWithUsers = mergeMessagesWithUsers

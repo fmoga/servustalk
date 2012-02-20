@@ -38,11 +38,10 @@ function getHistory(req, res) {
           console.warn('Error getting users: ' + err, err.stack);
           res.render('404');
         } else {
-          persistency.mergeMessagesWithUsers(messages, users, function(messages) {
-            data.messages = messages;
-            res.contentType('json');
-            res.send(data);
-          });
+          data.messages = messages;
+          data.users = users;
+          res.contentType('json');
+          res.send(data);
         }
       });
     }

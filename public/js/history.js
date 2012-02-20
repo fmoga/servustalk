@@ -1,5 +1,19 @@
 var MESSAGES_PER_PAGE = 100;
 
+function mergeMessagesWithUsers(messages, users) {
+  // Maps user_id -> user
+  users_by_id = {};
+  for (idx in users) {
+    users_by_id[users[idx].id] = users[idx];
+  }
+
+  // message.user contains id, but we need a user object
+  for (idx in messages) {
+    messages[idx].user = users_by_id[messages[idx].user];
+  }
+}
+
+
 function getHistory(date) {
   $.ajax({
       url: "/getHistory/"+date.getFullYear()+"/"+date.getMonth()+"/"+date.getDate()+"/",
@@ -9,6 +23,7 @@ function getHistory(date) {
           if (data.messages.length > 0) {
             count = Math.floor((data.messages.length-1) / MESSAGES_PER_PAGE) + 1;
           }
+          mergeMessagesWithUsers(data.messages, data.users);
           $('#pagination').paginate({
             count: count,
             start: 1,
