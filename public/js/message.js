@@ -215,6 +215,7 @@ function displayMessage(message, autoscroll, displayInline) {
 function processMessage(message, userMention, scroll, displayInline){
     var result = handleLinksAndEscape(message.text);
     result.html = result.html.replace(/boian/g, 'ಠ_ಠ');
+    result.html = result.html.replace(/loop/g, '<img src=\'/public/smileys/loop.gif\'></img>');
     result.html = handleMentions(result.html, userMention);
     var classes = 'messageContent';
     if (hasMention(result.html, userMention)) {
@@ -227,6 +228,7 @@ function processMessage(message, userMention, scroll, displayInline){
       html += addSoundcloudLinks(result.soundcloud);
       html += addImagery(result.imagery, scroll);
     }
+    result.html = result.html.replace(/loop/g, '<img src=\'..\\smileys\\loop.gif\'/>');
     return html;
 }
 
