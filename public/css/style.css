@@ -105,6 +105,10 @@ table {
   float: left;
 }
 
+#messagebox img.extra {
+  float: none;
+}
+
 #messagebox .scrollr {
   word-wrap: break-word;
 }
