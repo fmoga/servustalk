@@ -282,7 +282,7 @@ function handleLinksAndEscape(text) {
   var finish = index;
     while (finish < text.length && !isWhitespace(text[finish])) finish++;
     var link = text.substr(index, finish-index+1);
-    html += '<a target="_tab" href="' + link + '">' + $('<div/>').text(link).html() + '</a>';
+    html += '<a target="_blank" href="' + link + '">' + $('<div/>').text(link).html() + '</a>';
     // check for youtube links
     if (link.indexOf('http://www.youtube.com') == 0) {
       youtube.push(link); 
@@ -385,7 +385,7 @@ function addImagery(links, scroll) {
   var onload = scroll ? 'onload="scrollToBottom()"' : '';
   var html = '';
   $.each(links, function(index, link) {
-    html += '<a target="_tab" href="' + link + '"><img id="imageLink" ' + onload + ' src="' + link + '"/></a>';
+    html += '<a target="_blank" href="' + link + '"><img id="imageLink" ' + onload + ' src="' + link + '"/></a>';
   });
   if (html !== '') {
     html = '<div id="imageDock">' + html + '</div>';
