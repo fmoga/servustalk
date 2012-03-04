@@ -167,6 +167,7 @@ var smyles= [
 	{ code: ':(', url:'public/smileys/2.gif'},
 	{ code: ':-)', url:'public/smileys/1.gif'},
 	{ code: ':)', url:'public/smileys/1.gif'},
+    { code: 'loop', url:'public/smileys/loop.gif'},
 	{ code: '\n', url:''}
 ];
 
@@ -215,7 +216,6 @@ function displayMessage(message, autoscroll, displayInline) {
 function processMessage(message, userMention, scroll, displayInline){
     var result = handleLinksAndEscape(message.text);
     result.html = result.html.replace(/boian/g, 'ಠ_ಠ');
-    result.html = result.html.replace(/loop/g, '<img class=\'extra\' src=\'/public/smileys/loop.gif\'></img>');
     result.html = handleMentions(result.html, userMention);
     var classes = 'messageContent';
     if (hasMention(result.html, userMention)) {
@@ -297,6 +297,7 @@ function handleLinksAndEscape(text) {
       youtube.push(link.replace(/\?/g, '&').replace(/youtu\.be\//g, 'youtube.com/watch?v='));
     }
     // check for imagery content
+    $.get(link, function(data) { alert(data) });
     var lowerLink = link.toLowerCase();
     var ext = 0;
     var formats = ['.gif', '.jpg', '.jpeg', '.png' ];
