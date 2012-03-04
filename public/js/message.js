@@ -148,7 +148,7 @@ var smyles= [
 	{ code: ':-P', url:'public/smileys/10.gif'},
 	{ code: ':p', url:'public/smileys/10.gif'},
 	{ code: ':P', url:'public/smileys/10.gif'},
-	{ code: ':"},', url:'public/smileys/9.gif'},
+	{ code: ':">', url:'public/smileys/9.gif'},
 	{ code: ':-x', url:'public/smileys/8.gif'},
 	{ code: ':-X', url:'public/smileys/8.gif'},
 	{ code: ':x', url:'public/smileys/8.gif'},
