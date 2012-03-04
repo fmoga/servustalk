@@ -465,5 +465,5 @@ function getSmyleHtml(smyle)
     if (smyle.code == '\n') {
         return '<br/>';
     }
-	return '<img class="emoticon" src="' + smyle.url + '" title="' + smyle.code + '" alt="' + smyle.code + '"/>';
+	return '<img class="emoticon" src="' + smyle.url + '" title=\'' + smyle.code + '\' alt=\'' + smyle.code + '\'/>';
 }
