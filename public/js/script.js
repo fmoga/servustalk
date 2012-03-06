@@ -12,7 +12,7 @@ var unloading = false;
 var IDLE_TIMEOUT = 5 * 60 * 1000; // 5 min
 var FLICKER_INTERVAL = 2 * 1000; // 2 sec
 var GOOGLE_CALENDAR_LINK = 'http://www.google.com/calendar/feeds/fv690mq7i7jk6l0mhu9hd5uvms%40group.calendar.google.com/public/full';
-var HOURS_BEFORE = 6;
+var HOURS_BEFORE = 0;
 var DAYS_AFTER = 30;
 var CALENDAR_UPDATE_INTERVAL = 2 * 60 * 1000; // 2 mins
 
