@@ -10,6 +10,10 @@ var idlePromise;
 var tabHistory;
 var unloading = false;
 var FLICKER_INTERVAL = 2000;
+var GOOGLE_CALENDAR_LINK = 'http://www.google.com/calendar/feeds/fv690mq7i7jk6l0mhu9hd5uvms%40group.calendar.google.com/public/full';
+var HOURS_BEFORE = 6;
+var DAYS_AFTER = 30;
+var CALENDAR_UPDATE_INTERVAL = 10 * 60 * 1000; // 10 mins
 
 // jQuery plugin to get textarea cursor position
 (function ($, undefined) {
@@ -56,7 +60,10 @@ $(document).ready(function() {
     'theme': 'ubutalk'
   });
 
-  loadCalendar('http://www.google.com/calendar/feeds/fv690mq7i7jk6l0mhu9hd5uvms%40group.calendar.google.com/public/full', 6, 30);
+  loadCalendar(GOOGLE_CALENDAR_LINK, HOURS_BEFORE, DAYS_AFTER);
+  setInterval(function() {
+    loadCalendar(GOOGLE_CALENDAR_LINK, HOURS_BEFORE, DAYS_AFTER);
+  }, CALENDAR_UPDATE_INTERVAL);
 
   $("a#settingsLink").fancybox();
 

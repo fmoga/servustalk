@@ -80,9 +80,6 @@ function loadCalendarByAddress(calendarAddress) {
  * @param {string} calendarUrl is the URL for a public calendar feed
  */  
 function loadCalendar(calendarUrl, hours, days) {
-  if (days == null)	days = 60;
-  if (hours == null) hours = 6;
-
   var service = new google.gdata.calendar.CalendarService('gcal-loader');
   var query = new google.gdata.calendar.CalendarEventQuery(calendarUrl);
   
@@ -94,7 +91,7 @@ function loadCalendar(calendarUrl, hours, days) {
   var minDate = new Date();
   minDate.setHours(minDate.getHours() - hours); 
   var maxDate = new Date();
-  maxDate.setDate(maxDate.getDate()+days);  //add days offset
+  maxDate.setDate(maxDate.getDate() + days);  //add days offset
   
   var gMinDate = new google.gdata.DateTime(minDate);
   var gMaxDate = new google.gdata.DateTime(maxDate);
@@ -115,21 +112,15 @@ function loadCalendar(calendarUrl, hours, days) {
  * @param {Error} e is an instance of an Error 
  */
 function handleGDError(e) {
-  if (e instanceof Error) {
-    /* alert with the error line number, file and message */
-    alert('Error at line ' + e.lineNumber +
-          ' in ' + e.fileName + '\n' +
-          'Message: ' + e.message);
-    /* if available, output HTTP error code and status text */
-    if (e.cause) {
-      var status = e.cause.status;
-      var statusText = e.cause.statusText;
-      alert('Root cause: HTTP error ' + status + ' with status text of: ' + 
-            statusText);
-    }
-  } else {
-    alert(e.toString());
+  console.log(e.toString());
+}
+
+function isToday(date) {
+  var now = new Date();
+  if (now.getDate() == date.getDate() && date.getMonth() == now.getMonth()) {
+    return true;
   }
+  return false;
 }
 
 /**
@@ -154,6 +145,7 @@ function listEvents(feedRoot) {
   	document.getElementById('calendarTitle').innerHTML = "<p class=\"calendar_title\">" + feedRoot.feed.title.$t + "<p>";
   }  
   
+  eventDiv.innerHTML = '';
   /* loop through each event in the feed */
   var len = entries.length;
   for (var i = 0; i < len; i++) {
@@ -177,6 +169,14 @@ function listEvents(feedRoot) {
     var dateString = mapDay(startJSDate.getDay()) + ", ";
     dateString += startJSDate.getDate() + ' ' + mapMonth(startJSDate.getMonth()); 
     // + " " + startJSDate.getFullYear();
+    if (isToday(startJSDate)) {
+      dateString = 'Today';
+    }
+    dateMinusOneDay = new Date(startJSDate);
+    dateMinusOneDay.setDate(dateMinusOneDay.getDate() - 1);
+    if (isToday(dateMinusOneDay)) {
+      dateString = 'Tomorrow';
+    }
     
     /* Parse out the Time string */
     var timeString = "";
