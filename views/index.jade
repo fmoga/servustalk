@@ -9,6 +9,8 @@ block append scripts
   script(src='/socket.io/socket.io.js')
   script(src='/public/js/message.js')
   script(src='/public/js/script.js')
+  script(src='http://www.google.com/jsapi')
+  script(src='/public/js/qcal_loader.js')
 
 block header
   #header
@@ -30,9 +32,19 @@ block content
         .scrollr
           p 
             span#title Online
-            a#toggle(href='#', full='1') &raquo;
+            // a#toggle(href='#', full='1') &raquo;
           ul
           span#noise
+        hr
+        #calendar
+          table.fullheight
+            tr
+              td
+                a#calendar_link(target='_blank', href='https://www.google.com/calendar/render?cid=fv690mq7i7jk6l0mhu9hd5uvms%40group.calendar.google.com')
+                  img(src='/public/images/calendar.gif')
+            tr
+              td.fullheight
+                #events.scrollr
     tr
       td#inputbox
         textarea#inputfield(rows='2')
@@ -40,7 +52,7 @@ block content
           | Logged in as 
           span#loggedUser.username #{everyauth.google.user.name}
           a#settingsLink(href='#settings') Settings
-
+  
   div(style='display:none')
     div#settings
       span#desktop

@@ -45,6 +45,10 @@ a, a:visited, a:hover {
   vertical-align: top;
 }
 
+#buddylist > .scrollr{
+  height: 50%;
+}
+
 .scrollr {
   overflow-y: auto;
   height: 100%;
@@ -111,6 +115,42 @@ table {
 
 #messagebox .scrollr {
   word-wrap: break-word;
+}
+
+.fullheight {
+  height: 100%;
+}
+
+#calendar {
+  width: 100%;
+  height: 45%;
+  word-wrap: break-word;
+}
+
+#calendar_link {
+  margin-left: 3px;
+}
+
+.event_title a {
+  color: #333;
+  font-weight: bold;
+}
+
+.event_description, .event_date, .event_time, .event_location {
+  font-weight: normal;
+  color: #444;
+}
+
+#buddylist .event_listing {
+  margin-left: 10px;
+}
+
+.event_title {
+  margin-left: -5px;
+}
+
+.event_description {
+  font-style: italic;
 }
 
 .author {
@@ -197,10 +237,6 @@ hr {
 
 .mention {
   background-color: #FFFFAA;
-}
-
-#buddylist.calendar {
-  width: 280px;
 }
 
 #pagination {

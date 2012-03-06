@@ -56,6 +56,8 @@ $(document).ready(function() {
     'theme': 'ubutalk'
   });
 
+  loadCalendar('http://www.google.com/calendar/feeds/fv690mq7i7jk6l0mhu9hd5uvms%40group.calendar.google.com/public/full', 6, 30);
+
   $("a#settingsLink").fancybox();
 
   originalDocTitle = document.title;
