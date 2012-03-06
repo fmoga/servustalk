@@ -1,7 +1,6 @@
 var DEFAULT_PICTURE = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
 var MAX_TIMESTAMP_DIFF = 60 * 1000; // 1 min
 var NO_USER = { id: ''};
-var IDLE_TIMEOUT = 5 * 60 * 1000; // 5 min
 var MENTION_SOUND = '/public/audio/touche.wav';
 var lastMessage = {
   user: NO_USER
