@@ -136,7 +136,7 @@ table {
   font-weight: bold;
 }
 
-.event_description, .event_date, .event_time, .event_location {
+.event_description, .event_date, .event_time, .event_location, .event_description a {
   font-weight: normal;
   color: #444;
 }

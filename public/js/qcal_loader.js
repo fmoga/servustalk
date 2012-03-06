@@ -10,6 +10,25 @@ function init() {
   //loadTestCalendar();
 }
 
+if(!String.linkify) {
+  String.prototype.linkify = function() {
+
+    // http://, https://, ftp://
+    var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
+
+    // www. sans http:// or https://
+    var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+
+    // Email addresses
+    var emailAddressPattern = /\w+@[a-zA-Z_]+?(?:\.[a-zA-Z]{2,6})+/gim;
+
+    return this
+      .replace(urlPattern, '<a target="_blank" href="$&">$&</a>')
+      .replace(pseudoUrlPattern, '$1<a target="_blank" href="http://$2">$2</a>')
+      .replace(emailAddressPattern, '<a target="_blank" href="mailto:$&">$&</a>');
+  };
+}
+
 /**
  * Adds a leading zero to a single-digit number.  Used for displaying dates.
  */
@@ -236,7 +255,9 @@ function listEvents(feedRoot) {
     	descriptionArray = descriptionString.split("\n");
       for (var each in descriptionArray) {
         if (each > 0) descriptionSpan.appendChild(document.createElement('br'));
-    		descriptionSpan.appendChild(document.createTextNode(descriptionArray[each]));
+        textNode = document.createElement('span');
+        textNode.innerHTML = descriptionArray[each].linkify();
+    		descriptionSpan.appendChild(textNode);
     	}
     	pEvent.appendChild(descriptionSpan);
     } 
