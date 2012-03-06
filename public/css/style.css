@@ -251,7 +251,7 @@ a.jPag-first, ul.jPag-pages li a, ul.jPag-pages li span, a.jPag-last {
   font-weight: bold;
 }
 
-#settingsLink {
+#settingsLink, #desktop {
   float: right;
   margin-right: 5px;
 }

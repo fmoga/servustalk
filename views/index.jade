@@ -51,10 +51,10 @@ block content
         #footer
           | Logged in as 
           span#loggedUser.username #{everyauth.google.user.name}
-          a#settingsLink(href='#settings') Settings
+          span#desktop
+            input#desknot(type='checkbox') 
+            span Desktop notifications
   
   div(style='display:none')
     div#settings
-      span#desktop
-        input#desknot(type='checkbox') 
-        span Desktop notifications
+      a#settingsLink(href='#settings') Settings
