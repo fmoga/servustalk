@@ -225,7 +225,7 @@ function processMessage(message, userMention, scroll, displayInline){
       html += addYoutubeLinks(result.youtube);
       html += addMixcloudLinks(result.mixcloud);
       html += addSoundcloudLinks(result.soundcloud);
-      html += addImagery(result.imagery, scroll);
+      html += result.imagery;
     }
     return html;
 }
@@ -266,12 +266,20 @@ function padTime(number) {
   return number;
 }
 
+function getUuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    return v.toString(16);
+  });
+}
+  
+
 function handleLinksAndEscape(text) {
   var html = '';
   var youtube = [];
   var mixcloud = [];
   var soundcloud = [];
-  var imagery = [];
+  var imagery = '';
   var linkMatch = /http[s]?:///g
   var index = text.search(linkMatch);
   while (index != -1) {
@@ -296,17 +304,9 @@ function handleLinksAndEscape(text) {
       youtube.push(link.replace(/\?/g, '&').replace(/youtu\.be\//g, 'youtube.com/watch?v='));
     }
     // check for imagery content
-    $.get(link, function(data) { alert(data) });
-    var lowerLink = link.toLowerCase();
-    var ext = 0;
-    var formats = ['.gif', '.jpg', '.jpeg', '.png' ];
-    for (ext in formats) {
-      if (lowerLink.indexOf(formats[ext]) != -1) {
-        imagery.push(link);
-        break;
-      }
-    }
-    
+    var scrolled = isScrolledToBottom() ? ' onload="scrollToBottom()"' : '';
+    imagery += '<a href="' + link +'"><img id="imageLink" src="' + link + '"' + scrolled + ' onerror="this.style.display = \'none\'"></img></a>';
+
     if (finish == text.length) {
       text = '';
     } else {
@@ -319,6 +319,8 @@ function handleLinksAndEscape(text) {
   // handle [code]snippets[/code]
   html = html.replace("[code]", "<code class='highlight'>");
   html = html.replace("[/code]", "</code>");
+  
+  imagery = '<div id="imageDock">' + imagery + '</div>';
 
   return {
     html : html,
@@ -330,10 +332,13 @@ function handleLinksAndEscape(text) {
 }
 
 function paramize(text) {
-  if (!text.match(/\d\d?m\d\d?s/g)) {
-      return '';
+  if (!text.match(/(\d\d?m)?\d\d?s/g)) {
+    alert(text);
+    return '';
   };
-  var time = parseInt(text.substring(0, text.indexOf('m')));
+  var time = 0;
+  if (text.indexOf('m') >= 0)
+    time = parseInt(text.substring(0, text.indexOf('m')));
   time = time * 60 + parseInt(text.substring(text.indexOf('m') + 1, text.indexOf('s')));
   return '&start=' + time;
 }
