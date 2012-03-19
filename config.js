@@ -3,7 +3,7 @@ var jQuery = require('jquery');
 var config = {}
 
 config.server = {
-    port: 8000
+    port: 8080
 }
 
 config.mongo = {
@@ -11,8 +11,8 @@ config.mongo = {
 }
 
 config.app = {
-    google_client_id: "596685303616.apps.googleusercontent.com",
-    google_client_secret: "1lHPftfPbfQi-Ft9vJaml2sA",
+    google_client_id: "GOOGLE_CLIENT_ID",
+    google_client_secret: "GOOGLE_CLIENT_SECRET",
     history_size: 20,
     sio: {
         log_level: 3,

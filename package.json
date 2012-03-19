@@ -1,5 +1,5 @@
 {
-    "name": "ubuntalk",
+    "name": "servustalk",
     "main": "app.js",
     "dependencies": {
        "connect": "1.8.5",
