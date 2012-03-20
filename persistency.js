@@ -1,9 +1,10 @@
 var Mongolian = require("mongolian"),
-    jQuery = require('jquery');
+    jQuery = require('jquery'),
+    config = require('./config');
 
 var server = new Mongolian
 
-var db = server.db("ubuntalk")
+var db = server.db(config.mongo.db)
 
 var messages = db.collection("messages")
 var users = db.collection("users")

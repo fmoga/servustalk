@@ -34,6 +34,7 @@ app.configure(function() {
   app.set('view engine', 'jade');
   app.set('view options', {layout: false});
   app.use('/public', express.static(__dirname + '/public'));
+  app.use(express.favicon(__dirname + '/public/servustalk_favicon.png'));
   app.use(express.errorHandler());
 });
 
