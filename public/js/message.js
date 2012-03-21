@@ -305,7 +305,7 @@ function handleLinksAndEscape(text) {
     }
     // check for imagery content
     var scrolled = isScrolledToBottom() ? ' onload="scrollToBottom()"' : '';
-    imagery += '<a href="' + link +'"><img id="imageLink" src="' + link + '"' + scrolled + ' onerror="this.style.display = \'none\'"></img></a>';
+    imagery += '<a target="_blank" href="' + link +'"><img id="imageLink" src="' + link + '"' + scrolled + ' onerror="this.style.display = \'none\'"></img></a>';
 
     if (finish == text.length) {
       text = '';
