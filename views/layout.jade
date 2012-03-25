@@ -1,7 +1,7 @@
 !!! 5
 html(lang="en")
   head
-    title UbunTalk
+    title ServusTalk
     link(href='http://fonts.googleapis.com/css?family=Droid+Sans', rel='stylesheet', type='text/css')
     link(href='/public/css/style.css', rel='stylesheet', type='text/css')
     - if (everyauth.loggedIn)
@@ -15,4 +15,4 @@ html(lang="en")
       block header
       block content
     - else
-      a(href='/auth/google') Log in with Google
+      a(href='/auth/google') Login with Google Account

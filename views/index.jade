@@ -7,10 +7,11 @@ block append scripts
   script(src='http://balupton.github.com/jquery-syntaxhighlighter/scripts/jquery.syntaxhighlighter.min.js')
   script(src='/public/fancybox/jquery.fancybox-1.3.4.pack.js')
   script(src='/socket.io/socket.io.js')
+  script(src='/public/js/config.js')
   script(src='/public/js/message.js')
   script(src='/public/js/script.js')
   script(src='http://www.google.com/jsapi')
-  script(src='/public/js/qcal_loader.js')
+  script(src='/public/js/google_calendar.js')
 
 block header
   #header
@@ -40,7 +41,7 @@ block content
           table.fullheight
             tr
               td
-                a#calendar_link(target='_blank', href='https://www.google.com/calendar/render?cid=fv690mq7i7jk6l0mhu9hd5uvms%40group.calendar.google.com')
+                a#calendar_link(target='_blank', href='#{calendar_web_link}')
                   img(src='/public/images/calendar.gif')
             tr
               td.fullheight

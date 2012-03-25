@@ -18,6 +18,7 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 * Emoticons
 * Chat title (topic)
 * Announcements and alerts using `/#<hexcolor> text` syntax
+* Commands support (e.g. `/clear` will clear user's messagebox) 
 * Using long-polling as Comet technique so server push works on the vast majority of browsers including on Kindle, iOS and Android-based devices
 
 ### Installation
@@ -37,10 +38,15 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
             google_client_id: "GOOGLE_CLIENT_ID_TOKEN",
             google_client_secret: "GOOGLE_CLIENT_SECRET_TOKEN"
         }
+        my_config.calendar = {
+            web_link: 'https://www.google.com/calendar/render?cid=<GOOGLE_CALENDAR_ID>'
+        }
         module.exports = my_config
 
 This will override default configs in `config.js`.
 
+* Configure `GOOGLE_CLIENT_ID_TOKEN`, `GOOGLE_CLIENT_SECRET_TOKEN` and `GOOGLE_CALENDAR_ID` in `my_config.js`
+* Configure Google Calendar atom feed link in `public/js/config.js` using the `GOOGLE_CALENDAR_ATOM_FEED` key
 * Run `node app.js`
 * Open browser at `http://<server host>:8000`
 

@@ -1,4 +1,4 @@
-var MESSAGES_PER_PAGE = 100;
+// depends on config.js
 
 function mergeMessagesWithUsers(messages, users) {
   // Maps user_id -> user
@@ -21,7 +21,7 @@ function getHistory(date) {
       success: function(data) {
           var count = 1;
           if (data.messages.length > 0) {
-            count = Math.floor((data.messages.length-1) / MESSAGES_PER_PAGE) + 1;
+            count = Math.floor((data.messages.length-1) / HISTORY_MESSAGES_PER_PAGE) + 1;
           }
           mergeMessagesWithUsers(data.messages, data.users);
           $('#pagination').paginate({
@@ -40,7 +40,7 @@ function getHistory(date) {
             onChange: function(page) {
               var p = parseInt(page);
               resetDisplayArea();
-              for (i=(p-1)*MESSAGES_PER_PAGE; i < data.messages.length && i < p*MESSAGES_PER_PAGE; i++) {
+              for (i=(p-1)*HISTORY_MESSAGES_PER_PAGE; i < data.messages.length && i < p*HISTORY_MESSAGES_PER_PAGE; i++) {
                   displayMessage(data.messages[i], false, true);
               }
             }

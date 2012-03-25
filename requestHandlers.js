@@ -1,8 +1,11 @@
 var persistency = require('./persistency'),
-    date_utils = require('date-utils');
+    date_utils = require('date-utils'),
+    config = require('./config');
 
 function index(req, res) {
-  res.render('index');
+  res.render('index', {
+    calendar_web_link: config.calendar.web_link
+  });
 }
 
 function history(req, res) {

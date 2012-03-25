@@ -1,174 +1,10 @@
-var DEFAULT_PICTURE = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
-var MAX_TIMESTAMP_DIFF = 60 * 1000; // 1 min
+// depends on config.js
+
 var NO_USER = { id: ''};
-var MENTION_SOUND = '/public/audio/touche.wav';
-var lastMessage = {
+var NO_MESSAGE = {
   user: NO_USER
 };
-
-var smyles= [
-	{ code: '\[..\]', url:'public/smileys/transformer.gif'},
-	{ code: ':BZ', url:'public/smileys/115.gif'},
-	{ code: ':bZ', url:'public/smileys/115.gif'},
-	{ code: ':Bz', url:'public/smileys/115.gif'},
-	{ code: ':bz', url:'public/smileys/115.gif'},
-	{ code: '\^#(^', url:'public/smileys/114.gif'},
-	{ code: ':-Bd', url:'public/smileys/113.gif'},
-	{ code: ':-bD', url:'public/smileys/113.gif'},
-	{ code: ':-bd', url:'public/smileys/113.gif'},
-	{ code: ':-BD', url:'public/smileys/113.gif'},
-	{ code: ':-q', url:'public/smileys/112.gif'},
-	{ code: ':-Q', url:'public/smileys/112.gif'},
-	{ code: '\\m\/', url:'public/smileys/111.gif'},
-	{ code: '\\M\/', url:'public/smileys/111.gif'},
-	{ code: ':!!', url:'public/smileys/110.gif'},
-	{ code: 'x_x', url:'public/smileys/109.gif'},
-	{ code: 'X_x', url:'public/smileys/109.gif'},
-	{ code: 'x_x', url:'public/smileys/109.gif'},
-	{ code: 'X_X', url:'public/smileys/109.gif'},
-	{ code: ':o3', url:'public/smileys/108.gif'},
-	{ code: ':O3', url:'public/smileys/108.gif'},
-	{ code: '%-(', url:'public/smileys/107.gif'},
-	{ code: ':-??', url:'public/smileys/106.gif'},
-	{ code: '8->', url:'public/smileys/105.gif'},
-	{ code: ':-t', url:'public/smileys/104.gif'},
-	{ code: ':-T', url:'public/smileys/104.gif'},
-	{ code: ':-h', url:'public/smileys/103.gif'},
-	{ code: ':-H', url:'public/smileys/103.gif'},
-	{ code: '~x(', url:'public/smileys/102.gif'},
-	{ code: '~X(', url:'public/smileys/102.gif'},
-	{ code: ':-c', url:'public/smileys/101.gif'},
-	{ code: ':-C', url:'public/smileys/101.gif'},
-	{ code: ':)\]', url:'public/smileys/100.gif'},
-	{ code: '(\*)', url:'public/smileys/79.gif'},
-	{ code: ':-j', url:'public/smileys/78.gif'},
-	{ code: ':-J', url:'public/smileys/78.gif'},
-	{ code: '\^:)^', url:'public/smileys/77.gif'},
-	{ code: ':-@', url:'public/smileys/76.gif'},
-	{ code: '(%)', url:'public/smileys/75.gif'},
-	{ code: ';))', url:'public/smileys/71.gif'},
-	{ code: '>:\/', url:'public/smileys/70.gif'},
-	{ code: '\\:d\/', url:'public/smileys/69.gif'},
-	{ code: '\\:D\/', url:'public/smileys/69.gif'},
-	{ code: '\[-x', url:'public/smileys/68.gif'},
-	{ code: '\[-X', url:'public/smileys/68.gif'},
-	{ code: ':)>-', url:'public/smileys/67.gif'},
-	{ code: 'b-(', url:'public/smileys/66.gif'},
-	{ code: 'B-(', url:'public/smileys/66.gif'},
-	{ code: ':-"', url:'public/smileys/65.gif'},
-	{ code: '$-)', url:'public/smileys/64.gif'},
-	{ code: '\[-o<', url:'public/smileys/63.gif'},
-	{ code: '\[-O<', url:'public/smileys/63.gif'},
-	{ code: ':-l', url:'public/smileys/62.gif'},
-	{ code: ':-L', url:'public/smileys/62.gif'},
-	{ code: '>-)', url:'public/smileys/61.gif'},
-	{ code: '=:)', url:'public/smileys/60.gif'},
-	{ code: '8-x', url:'public/smileys/59.gif'},
-	{ code: '8-X', url:'public/smileys/59.gif'},
-	{ code: '\*-:)', url:'public/smileys/58.gif'},
-	{ code: '~o)', url:'public/smileys/57.gif'},
-	{ code: '~O)', url:'public/smileys/57.gif'},
-	{ code: '(~~)', url:'public/smileys/56.gif'},
-	{ code: '\*\*==', url:'public/smileys/55.gif'},
-	{ code: '%%-', url:'public/smileys/54.gif'},
-	{ code: '@};', url:'public/smileys/53.gif'},
-	{ code: '~:>', url:'public/smileys/52.gif'},
-	{ code: ':(|)', url:'public/smileys/51.gif'},
-	{ code: '3:-o', url:'public/smileys/50.gif'},
-	{ code: '3:-O', url:'public/smileys/50.gif'},
-	{ code: ':@)', url:'public/smileys/49.gif'},
-	{ code: '<):)', url:'public/smileys/48.gif'},
-	{ code: '>:p', url:'public/smileys/47.gif'},
-	{ code: '>:P', url:'public/smileys/47.gif'},
-	{ code: ':-<', url:'public/smileys/46.gif'},
-	{ code: ':-w', url:'public/smileys/45.gif'},
-	{ code: ':-W', url:'public/smileys/45.gif'},
-	{ code: ':^o', url:'public/smileys/44.gif'},
-	{ code: ':^O', url:'public/smileys/44.gif'},
-	{ code: '@-)', url:'public/smileys/43.gif'},
-	{ code: ':-sS', url:'public/smileys/42.gif'},
-	{ code: ':-Ss', url:'public/smileys/42.gif'},
-	{ code: ':-ss', url:'public/smileys/42.gif'},
-	{ code: ':-SS', url:'public/smileys/42.gif'},
-	{ code: '=d>', url:'public/smileys/41.gif'},
-	{ code: '=D>', url:'public/smileys/41.gif'},
-	{ code: '#-o', url:'public/smileys/40.gif'},
-	{ code: '#-O', url:'public/smileys/40.gif'},
-	{ code: ':-?', url:'public/smileys/39.gif'},
-	{ code: '=p~', url:'public/smileys/38.gif'},
-	{ code: '=P~', url:'public/smileys/38.gif'},
-	{ code: '(:|', url:'public/smileys/37.gif'},
-	{ code: '<:-p', url:'public/smileys/36.gif'},
-	{ code: '<:-P', url:'public/smileys/36.gif'},
-	{ code: '8-}', url:'public/smileys/35.gif'},
-	{ code: ':o)', url:'public/smileys/34.gif'},
-	{ code: ':O)', url:'public/smileys/34.gif'},
-	{ code: '\[-(', url:'public/smileys/33.gif'},
-	{ code: ':-\$', url:'public/smileys/32.gif'},
-	{ code: ':-&', url:'public/smileys/31.gif'},
-	{ code: 'l-)', url:'public/smileys/30.gif'},
-	{ code: 'L-)', url:'public/smileys/30.gif'},
-	{ code: '8-|', url:'public/smileys/29.gif'},
-	{ code: 'i-)', url:'public/smileys/28.gif'},
-	{ code: 'I-)', url:'public/smileys/28.gif'},
-	{ code: '=,', url:'public/smileys/27.gif'},
-	{ code: ':-b', url:'public/smileys/26.gif'},
-	{ code: ':-B', url:'public/smileys/26.gif'},
-	{ code: 'o:)', url:'public/smileys/25.gif'},
-	{ code: 'O:)', url:'public/smileys/25.gif'},
-	{ code: 'o:-)', url:'public/smileys/25.gif'},
-	{ code: 'O:-)', url:'public/smileys/25.gif'},
-	{ code: '=))', url:'public/smileys/24.gif'},
-	{ code: '\/:)', url:'public/smileys/23.gif'},
-	{ code: ':|', url:'public/smileys/22.gif'},
-	{ code: ':))', url:'public/smileys/21.gif'},
-	{ code: ':((', url:'public/smileys/20.gif'},
-	{ code: '>:)', url:'public/smileys/19.gif'},
-	{ code: '#:-s', url:'public/smileys/18.gif'},
-	{ code: '#:-S', url:'public/smileys/18.gif'},
-	{ code: ':-s', url:'public/smileys/17.gif'},
-	{ code: ':-S', url:'public/smileys/17.gif'},
-	{ code: 'b-)', url:'public/smileys/16.gif'},
-	{ code: 'B-)', url:'public/smileys/16.gif'},
-	{ code: ':>', url:'public/smileys/15.gif'},
-	{ code: ':->', url:'public/smileys/15.gif'},
-	{ code: 'x-(', url:'public/smileys/14.gif'},
-	{ code: 'X-(', url:'public/smileys/14.gif'},
-	{ code: 'x(', url:'public/smileys/14.gif'},
-	{ code: 'X(', url:'public/smileys/14.gif'},
-	{ code: ':o', url:'public/smileys/13.gif'},
-	{ code: ':O', url:'public/smileys/13.gif'},
-	{ code: ':-o', url:'public/smileys/13.gif'},
-	{ code: ':-O', url:'public/smileys/13.gif'},
-	{ code: '=((', url:'public/smileys/12.gif'},
-	{ code: ':\*', url:'public/smileys/11.gif'},
-	{ code: ':-\*', url:'public/smileys/11.gif'},
-	{ code: ':-p', url:'public/smileys/10.gif'},
-	{ code: ':-P', url:'public/smileys/10.gif'},
-	{ code: ':p', url:'public/smileys/10.gif'},
-	{ code: ':P', url:'public/smileys/10.gif'},
-	{ code: ':">', url:'public/smileys/9.gif'},
-	{ code: ':-x', url:'public/smileys/8.gif'},
-	{ code: ':-X', url:'public/smileys/8.gif'},
-	{ code: ':x', url:'public/smileys/8.gif'},
-	{ code: ':X', url:'public/smileys/8.gif'},
-	{ code: ':-\/', url:'public/smileys/7.gif'},
-	{ code: '>:d<', url:'public/smileys/6.gif'},
-	{ code: '>:D<', url:'public/smileys/6.gif'},
-	{ code: ';;)', url:'public/smileys/5.gif'},
-	{ code: ':-d', url:'public/smileys/4.gif'},
-	{ code: ':-D', url:'public/smileys/4.gif'},
-	{ code: ':d', url:'public/smileys/4.gif'},
-	{ code: ':D', url:'public/smileys/4.gif'},
-	{ code: ';-)', url:'public/smileys/3.gif'},
-	{ code: ';)', url:'public/smileys/3.gif'},
-	{ code: ':-(', url:'public/smileys/2.gif'},
-	{ code: ':(', url:'public/smileys/2.gif'},
-	{ code: ':-)', url:'public/smileys/1.gif'},
-	{ code: ':)', url:'public/smileys/1.gif'},
-    { code: 'loop', url:'public/smileys/loop.gif'},
-	{ code: '\n', url:''}
-];
+var lastMessage = NO_MESSAGE;
 
 function displayMessage(message, autoscroll, displayInline) {
   var wasScrolledToBottom = isScrolledToBottom();
@@ -182,10 +18,7 @@ function displayMessage(message, autoscroll, displayInline) {
     html += htmlEncode(message.text.substring(message.text.indexOf(' ') + 1))  + ' </div>';
     $('#messagebox .scrollr').append(html);
     if (autoscroll && wasScrolledToBottom) scrollToBottom();
-    lastMessage = { user: NO_USER };        
-    } else if (message.text.indexOf('/clear') == 0) {
-    $('#messagebox .scrollr').html('');
-    lastMessage = { user: NO_USER };
+    lastMessage = NO_MESSAGE;        
   } else {
     var userMention = '@' + $('#loggedUser').html();
     var processedMessage = processMessage(message, userMention, autoscroll && wasScrolledToBottom, displayInline);
@@ -214,7 +47,6 @@ function displayMessage(message, autoscroll, displayInline) {
 
 function processMessage(message, userMention, scroll, displayInline){
     var result = handleLinksAndEscape(message.text);
-    result.html = result.html.replace(/boian/g, 'ಠ_ಠ');
     result.html = handleMentions(result.html, userMention);
     var classes = 'messageContent';
     if (hasMention(result.html, userMention)) {
@@ -247,13 +79,11 @@ function handleMentions(text, mention) {
 function formatTimestamp(ts) {
   var timestamp = new Date(ts);
   var now = new Date();
-  var dayOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var date;
   if (timestamp.getDate() == now.getDate() && timestamp.getMonth() === now.getMonth() && timestamp.getFullYear() == timestamp.getFullYear()) {
     date = 'Today';  
   } else {
-    date = dayOfWeek[timestamp.getDay()] + ', ' + timestamp.getDate() + ' ' + month[timestamp.getMonth()] + ' ' + timestamp.getFullYear();
+    date = DAY_OF_WEEK[timestamp.getDay()] + ', ' + timestamp.getDate() + ' ' + MONTH[timestamp.getMonth()] + ' ' + timestamp.getFullYear();
   }
   var time = padTime(timestamp.getHours()) + ':' + padTime(timestamp.getMinutes()); 
   return date + ' at ' + time;
@@ -403,7 +233,7 @@ function displayNotification(notification, attention, autoscroll) {
   if (attention) classes += ' attention';
   var html = '<div class="' + classes + '">' + notification + '</div>';
   $('#messagebox .scrollr').append(html);
-  lastMessage = { user: NO_USER };
+  lastMessage = NO_MESSAGE;
   if (autoscroll && wasScrolledToBottom) scrollToBottom();
 }
 
@@ -450,24 +280,25 @@ function htmlDecode(value){
 
 function getHtmlWithSmilyes(text)
 {
-	for (var i = 0; i < smyles.length; i ++)
+	for (var i = 0; i < EMOTICONS.length; i ++)
 	{
-		var pos = text.indexOf(smyles[i].code);
+		var pos = text.indexOf(EMOTICONS[i].code);
 		if ( pos >= 0)
 		{
 			return getHtmlWithSmilyes(text.substring(0, pos)) + 
-				getSmyleHtml(smyles[i]) + 
-				getHtmlWithSmilyes(text.substring(pos+smyles[i].code.length, text.length));	
-		}	
+				getSmyleHtml(EMOTICONS[i]) + 
+				getHtmlWithSmilyes(text.substring(pos+EMOTICONS[i].code.length, text.length));	}	
 	}
 	return htmlEncode(text);
 }
 
 function getSmyleHtml(smyle)
 {
-    // sneaky newline check
-    if (smyle.code == '\n') {
-        return '<br/>';
-    }
+  // custom checks for text emoticons
+  if (smyle.code == '\n') {
+      return '<br/>';
+  } else if (smyle.code == 'boian') {
+    return 'ಠ_ಠ';
+  }
 	return '<img class="emoticon" src="' + smyle.url + '" title=\'' + smyle.code + '\' alt=\'' + smyle.code + '\'/>';
 }

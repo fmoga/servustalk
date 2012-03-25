@@ -1,3 +1,5 @@
+// depends on config.js and message.js
+
 var currentClients = [];
 var first = true;
 var popup;
@@ -9,12 +11,6 @@ var idle = false;
 var idlePromise;
 var tabHistory;
 var unloading = false;
-var IDLE_TIMEOUT = 5 * 60 * 1000; // 5 min
-var FLICKER_INTERVAL = 2 * 1000; // 2 sec
-var GOOGLE_CALENDAR_LINK = 'http://www.google.com/calendar/feeds/fv690mq7i7jk6l0mhu9hd5uvms%40group.calendar.google.com/public/full';
-var HOURS_BEFORE = 0;
-var DAYS_AFTER = 30;
-var CALENDAR_UPDATE_INTERVAL = 2 * 60 * 1000; // 2 mins
 
 // jQuery plugin to get textarea cursor position
 (function ($, undefined) {
@@ -61,10 +57,10 @@ $(document).ready(function() {
     'theme': 'ubutalk'
   });
 
-  loadCalendar(GOOGLE_CALENDAR_LINK, HOURS_BEFORE, DAYS_AFTER);
+  loadCalendar(GOOGLE_CALENDAR_ATOM_FEED, 0, GOOGLE_CALENDAR_DAYS_INTERVAL);
   setInterval(function() {
-    loadCalendar(GOOGLE_CALENDAR_LINK, HOURS_BEFORE, DAYS_AFTER);
-  }, CALENDAR_UPDATE_INTERVAL);
+    loadCalendar(GOOGLE_CALENDAR_ATOM_FEED, 0, GOOGLE_CALENDAR_DAYS_INTERVAL);
+  }, GOOGLE_CALENDAR_UPDATE_INTERVAL);
 
   $("a#settingsLink").fancybox();
 
@@ -120,7 +116,7 @@ $(document).ready(function() {
 	      } else {
           document.title = originalDocTitle;	
         }
-      }, FLICKER_INTERVAL);
+      }, FLICKER_TITLE_INTERVAL);
     }
     // desktop notification
     if (!focused && $('#desknot').prop('checked') && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
@@ -212,7 +208,13 @@ $(document).ready(function() {
       var text = $.trim($('#inputfield').val()); 
       $('#inputfield').val('');
       if (text !== '') {
-        socket.emit('message', text);
+        if (text == '/clear') {
+          // handle /clear command
+          $('#messagebox .scrollr').html('');
+          lastMessage = NO_MESSAGE;
+        } else {
+          socket.emit('message', text);
+        }
       }
       return false;
     }

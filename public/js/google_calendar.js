@@ -1,3 +1,5 @@
+// depends on config.js
+
 /* Calendar output variables */
 var days_to_show = 30;
 
@@ -40,13 +42,12 @@ function padNumber(num) {
 }
 
 function mapDay(day_num) {
-	var dayMap = new Array("Sun","Mon","Tue","Wed","Thu","Fri","Sat");
-	return dayMap[day_num];
+  // Google Calendar week starts on Sunday
+	return DAY_OF_WEEK[(day_num+6)%7];
 }
 
 function mapMonth(day_num) {
-	var dayMonth = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
-	return dayMonth[day_num];
+	return MONTH[day_num];
 }
 
 function extractTime(date) {
