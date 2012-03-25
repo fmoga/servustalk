@@ -157,13 +157,29 @@ table {
   margin-left: 35px;
 }
 
+input, textarea {
+  border: 1px solid #BBB;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -khtml-border-radius: 2px;
+}
+
 #inputbox {
   width: 100%
 }
 
 #inputfield {
   width: 98%;
-  border: 1px solid #BBB;
+}
+
+#newTitle, #submitTitle {
+  line-height: 130%;
+}
+
+#newTitle {
+  width: 250px;
+  margin-right: 5px;
 }
 
 hr {

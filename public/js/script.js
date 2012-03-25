@@ -6,6 +6,7 @@ var popup;
 var focused = true;
 var flickeringTitle;
 var originalDocTitle;
+var roomTitle;
 var socket;
 var idle = false;
 var idlePromise;
@@ -63,6 +64,34 @@ $(document).ready(function() {
   }, GOOGLE_CALENDAR_UPDATE_INTERVAL);
 
   $("a#settingsLink").fancybox();
+  $("a#changeTitle").fancybox();
+
+  $("a#changeTitle").click(function() {
+    newTitleField = $('#newTitle');
+    newTitleField.val(roomTitle.text);
+    newTitleField.select();
+    newTitleField.focus();
+  });
+
+  $('#newTitle').live('keydown', function(e) { 
+    var keyCode = e.keyCode || e.which; 
+    if (keyCode == 13 && !event.shiftKey) { // Enter
+      submitTitle();
+      return false;
+    }
+  });
+
+  $("#submitTitle").click(function() {
+    submitTitle();
+  });
+
+  function submitTitle() {
+    var newTitleText = $('#newTitle').val();
+    if ($.trim(newTitleText) !== '') { 
+      socket.emit('updateTitle', newTitleText);
+      $.fancybox.close();
+    }
+  }
 
   originalDocTitle = document.title;
 
@@ -96,11 +125,13 @@ $(document).ready(function() {
   });
 
   socket.on('loadTitle', function(title) {
+    roomTitle = title;
     var result = handleLinksAndEscape(title.text);
     $('#roomTitle').html(result.html);
   });
 
   socket.on('updateTitle', function(title) {
+    roomTitle = title;
     var result = handleLinksAndEscape(title.text);
     $('#roomTitle').html(result.html);
     displayNotification(title.user + ' changed chat title', false, true);
@@ -297,13 +328,6 @@ $(document).ready(function() {
   } else if (window.webkitNotifications.checkPermission() == 0) {
     $('#desknot').prop('checked', true);
   }
-
-  $('#changeTitle').click(function() {
-    var newTitleText = prompt("Enter new chat title", "");
-    if ($.trim(newTitleText) !== '') { 
-      socket.emit('updateTitle', newTitleText);
-    }
-  });
 });
 
 window.addEventListener('focus', function() {

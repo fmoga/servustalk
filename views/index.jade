@@ -16,7 +16,7 @@ block append scripts
 block header
   #header
     span#roomTitle
-    a#changeTitle(href='#') Change title
+    a#changeTitle(href='#changeTitleForm') Change title
     span#logout
       a(href='/logout') Logout
     span#logout
@@ -57,5 +57,6 @@ block content
             span Desktop notifications
   
   div(style='display:none')
-    div#settings
-      a#settingsLink(href='#settings') Settings
+    #changeTitleForm
+      input#newTitle(type='text')
+      input#submitTitle(type='button', value='Change title')
