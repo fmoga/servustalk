@@ -95,7 +95,6 @@ function init(app, sessionStore) {
         socket.user = socket.handshake.session.auth.google.user;
         socket.user.idle = false;
         online[socket.id] = socket;
-        console.log('Connected: ' + socket.user.name);
         broadcast('clients', packClients());
         socket.emit('history', history);
         socket.lastPong = new Date().getTime();

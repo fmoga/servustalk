@@ -2,8 +2,11 @@ extends layout
 
 block append stylesheets
   link(href='/public/jPaginate/css/style.css', rel='stylesheet', type='text/css')
+  link(href='/public/css/jquery-ui-1.8.17.custom.css', rel='stylesheet', type='text/css')
 
 block append scripts
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
+  script(src='/public/js/jquery-ui-1.8.17.custom.min.js');
   script(src='http://balupton.github.com/jquery-syntaxhighlighter/scripts/jquery.syntaxhighlighter.min.js')
   script(src='/public/jPaginate/jquery.paginate.js')
   script(src='/public/js/config.js')

@@ -1,6 +1,7 @@
 var Mongolian = require("mongolian"),
     jQuery = require('jquery'),
-    config = require('./config');
+    config = require('./config'),
+    util = require('util');
 
 var server = new Mongolian
 
@@ -71,7 +72,7 @@ function saveUser(user) {
       } else {
         // Update existing user
         jQuery.extend(true, db_user, user);
-        users.insert(db_user);
+        users.update({id: db_user.id}, db_user, /*upsert*/ false, /*multi*/ false);
       }
     } else {
       console.warn('Error searching for user: ' + err);

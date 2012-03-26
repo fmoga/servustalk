@@ -11,10 +11,10 @@ var express = require('express'),
 everyauth.google
   .appId(config.app.google_client_id)
   .appSecret(config.app.google_client_secret)
-  .scope('https://www.googleapis.com/auth/userinfo.profile')
+  .scope('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email')
   .moduleTimeout(-1)
   .findOrCreateUser( function (session, accessToken, accessTokenExtra, googleUserMetadata) {
-      console.log('Fetched from Google: ' + util.inspect(googleUserMetadata));
+      console.log(util.inspect(googleUserMetadata));
       persistency.saveUser(googleUserMetadata);
       return googleUserMetadata;
   })
@@ -35,7 +35,7 @@ app.configure(function() {
   app.set('view options', {layout: false});
   app.use('/public', express.static(__dirname + '/public'));
   app.use(express.favicon(__dirname + '/public/servustalk_favicon.png'));
-  app.use(express.errorHandler());
+  app.use(express.errorHandler({ showStack: true, dumpExceptions: true })); 
 });
 
 everyauth.helpExpress(app);
