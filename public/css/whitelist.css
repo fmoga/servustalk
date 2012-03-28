@@ -1,0 +1,51 @@
+.user {
+  font-weight: bold;
+  color: #333;
+}
+
+.detail {
+  font-weight: bold;
+  color: #777;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.avatar {
+  max-height: 30px;
+  max-width: 30px;
+  vertical-align: middle;
+  margin-right: 5px;
+  border-radius: 2px;
+}
+
+table {
+  width: auto;
+  height: auto;
+  table-layout: auto;
+}
+
+table tr {
+  height: 35px;
+}
+
+table a {
+  margin-left: 30px;
+  margin-right: 10px;
+}
+
+.even {
+  background-color: #EEE;
+}
+
+a.accept {
+  color: #070;  
+}
+
+a.ban {
+  color: #A00;
+}
+
+body {
+  height: auto;
+  padding-bottom: 20px;
+}

@@ -98,6 +98,10 @@ function whitelist(req, res) {
         accepted = [];
         banned = [];
         userMap = {};
+        // exclude system user
+        users = users.filter(function(user) {
+          return user.id !== 'ServusTalk';
+        });
         for (i in users) {
           if (users[i].acceptedBy && users[i].bannedBy) {
             console.log('User ' + users[i].email + ' cannot be both banned and accepted at the same time');

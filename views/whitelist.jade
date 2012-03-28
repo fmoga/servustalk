@@ -1,29 +1,75 @@
 extends layout
 
+block append stylesheets
+  link(href='/public/css/whitelist.css', rel='stylesheet', type='text/css')
+
+block append scripts
+  script(src='/public/js/config.js');
+  script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
+  | <script type='text/javascript'>
+  |   $('img.default').each(function() {
+  |     this.src = DEFAULT_PICTURE;
+  |   });
+  | </script>
+
+block header
+  #header
+    | Currently logged in as 
+    span#loggedUser.username #{everyauth.google.user.name}
+    span#logout
+      a(href='/logout') Logout
+    span#logout
+        | |
+    span#logout
+      a(target='_blank',href='/history') History
+    span#logout
+        | |
+    span#logout
+      a(target='_blank',href='/') Chat
+
 block content
   h3 #{pending.length} Pending
-  ul
-  - pending.forEach(function(user) {
-    li
-      span #{user.name}
-      &nbsp;
-      a(href='/accept/#{user.id}') Accept
-      &nbsp;
-      a(href='/ban/#{user.id}') Ban
-  - })
-  h3 #{accepted.length} Accepted
-  ul
-  - accepted.forEach(function(user) {
-    li
-      span #{user.name} accepted by #{userMap[user.acceptedBy].name}
-      &nbsp;
-      a(href='/ban/#{user.id}') Ban
-  - })
-  h3 #{banned.length} Banned
-  ul
-  - banned.forEach(function(user) {
-    li
-      span #{user.name} banned by #{userMap[user.bannedBy].name}
-      &nbsp;
-      a(href='/accept/#{user.id}') Accept
-  - })
+  table
+    each user, index in pending
+      tr(class='#{index % 2 ? 'odd' : 'even'}')
+        td
+          - if (user.picture) {
+            img.avatar(src='#{user.picture}')
+          - } else {
+            img.avatar.default 
+          - }
+          span.user #{user.name}
+          - if (user.email)
+            span.detail &nbsp;&nbsp;#{user.email}
+        td
+          a.accept(href='/accept/#{user.id}') Accept
+        td
+          a.ban(href='/ban/#{user.id}') Ban
+  h3 #{accepted.length} Whitelisted
+  table
+    each user, index in accepted
+      tr(class='#{index % 2 ? 'odd' : 'even'}')
+        td
+          - if (user.picture) {
+            img.avatar(src='#{user.picture}')
+          - } else {
+            img.avatar.default 
+          - }
+          span.user #{user.name}
+          span.detail &nbsp;&nbsp;accepted by #{userMap[user.acceptedBy].name}
+        td
+          a.ban(href='/ban/#{user.id}') Ban
+  h3 #{banned.length} Blacklisted
+  table
+    each user, index in banned
+      tr(class='#{index % 2 ? 'odd' : 'even'}')
+        td
+          - if (user.picture) {
+            img.avatar(src='#{user.picture}')
+          - } else {
+            img.avatar.default 
+          - }
+          span.user #{user.name}
+          span.detail &nbsp;&nbsp;banned by #{userMap[user.bannedBy].name}
+        td
+          a.accept(href='/accept/#{user.id}') Accept

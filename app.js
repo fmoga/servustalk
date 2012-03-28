@@ -29,7 +29,7 @@ everyauth.google
         else {
           promise.fulfill(savedUser);
           if (isFirstTimeUser) {
-            realtime.pushSystemMessage('FFC125', savedUser.name + ' is requesting permission to join the group chat. Use the whitelist page to grant of revoke permission.')
+            realtime.pushSystemMessage('FFC125', savedUser.name + ' (' + savedUser.email + ') is requesting permission to join the group chat. Use the whitelist page to grant of revoke permission.')
           }
         }
       });
