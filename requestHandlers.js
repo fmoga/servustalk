@@ -4,39 +4,44 @@ var persistency = require('./persistency'),
     config = require('./config'),
     util = require('util');
 
-function isUserAllowed(req, res) {
-  if (!req.loggedIn) {
-    res.redirect('/login'); 
-    return false;
-  }
-  if (!req.session.loggedUser.acceptedBy) {
-    res.redirect('/access');
-    return false;
-  }
-  return true;
+var realtime;
+
+
+function setRealtimeEngine(engine) {
+  realtime = engine;
 }
 
+function isUserAllowed(req, res, success) {
+  if (!req.loggedIn) {
+    res.redirect('/login'); 
+  } else {
+    persistency.isUserWhitelisted(req.session.auth.google.user.id, function(whitelisted) {
+      if (whitelisted) success();
+      else res.redirect('/access');
+    });
+  }
+}
 
 function login(req, res) {
   res.render('login');
 }
 
 function index(req, res) {
-  if (isUserAllowed(req, res)) {
+  isUserAllowed(req, res, function() {
     res.render('index', {
       calendar_web_link: config.calendar.web_link
     });
-  }
+  });
 }
 
 function history(req, res) {
-  if (isUserAllowed(req, res)) {
+  isUserAllowed(req, res, function() {
     res.render('history');
-  }
+  });
 }
 
 function getHistory(req, res) {
-  if (isUserAllowed(req, res)) {
+  isUserAllowed(req, res, function() {
     year = parseInt(req.params.year);
     month = parseInt(req.params.month);
     day = parseInt(req.params.day);
@@ -73,19 +78,19 @@ function getHistory(req, res) {
         });
       }
     });
-  }
+  });
 }
 
 function beta(req, res) {
-  if (isUserAllowed(req, res)) {
+  isUserAllowed(req, res, function() {
     res.render('beta', {
       calendar_web_link: config.calendar.web_link
     });
-  }
+  });
 }
 
 function whitelist(req, res) {
-  if (isUserAllowed(req, res)) {
+  isUserAllowed(req, res, function() {
     persistency.getUsers(function(err, users) {
       if (err) handleError(err);
       else {
@@ -113,7 +118,7 @@ function whitelist(req, res) {
         });
       }
     });
-  }
+  });
 }
 
 function handleError(err) {
@@ -122,51 +127,59 @@ function handleError(err) {
 }
 
 function acceptUser(req, res) {
-  if (isUserAllowed(req, res)) {
+  isUserAllowed(req, res, function() {
     userId = req.params.userid;
     persistency.getUser(userId, function(err, user) {
       if (err) handleError(err);
       else {
         if (!user.acceptedBy) {
           delete user.bannedBy;
-          user.acceptedBy = req.session.loggedUser.id;
+          user.acceptedBy = req.session.auth.google.user.id;
           persistency.updateUser(user);
+          if (realtime) {
+            realtime.pushSystemMessage('99CC32', user.name + ' has been whitelisted by ' + req.session.auth.google.user.name);
+          }
         }
         res.redirect('/whitelist');
       }
     });
-  }
-  // TODO send notification to chat
+  });
 }
 
 function banUser(req, res) {
-  if (isUserAllowed(req, res)) {
+  isUserAllowed(req, res, function() {
     userId = req.params.userid;
     persistency.getUser(userId, function(err, user) {
       if (err) handleError(err);
       else {
         if (!user.bannedBy) {
           delete user.acceptedBy;
-          user.bannedBy = req.session.loggedUser.id;
+          user.bannedBy = req.session.auth.google.user.id;
           persistency.updateUser(user);
+          if (realtime) {
+            realtime.disconnectUser(userId);
+            realtime.pushSystemMessage('FF6A6A', user.name + ' has been blacklisted by ' + req.session.auth.google.user.name);
+          }
         }
         res.redirect('/whitelist');
       }
     });
-  }
-  // TODO send notification to chat
+  });
 }
 
 function access(req, res) {
   if (!req.loggedIn) {
     res.redirect('/login');
-    return;
-  }
-  if (req.session.loggedUser.acceptedBy) {
-    res.redirect('/whitelist');
   } else {
-    res.render('access');
+    persistency.isUserWhitelisted(req.session.auth.google.user.id, function(whitelisted) {
+      if (whitelisted) {
+        res.redirect('/');
+      } else {
+        res.render('access');
+      }
+    });
   }
+
 }
 
 exports.index = index
@@ -178,3 +191,4 @@ exports.beta = beta
 exports.whitelist = whitelist
 exports.acceptUser = acceptUser
 exports.banUser = banUser
+exports.setRealtimeEngine = setRealtimeEngine

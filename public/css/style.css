@@ -244,10 +244,11 @@ hr {
   padding-bottom: 2px;
 }
 
-#alert {
+.alert {
   border-radius: 4px;
   padding: 3px 3px 3px 8px;
   margin-bottom: 4px;
+  font-weight: bold;
 }
 
 .mention {

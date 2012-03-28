@@ -4,8 +4,11 @@ var express = require('express'),
     persistency = require('./persistency'),
     config = require('./config'),
     route = require('./route'),
-    MemoryStore = express.session.MemoryStore,
-    sessionStore = new MemoryStore(),
+    MongoStore = require('connect-mongo'),
+    sessionStore = new MongoStore({
+      db: config.mongo.db,
+      clear_interval: 60 * 30 // clear expired sessions from mongo each 30 min
+    }),
     realtime = require('./realtime');
 
 everyauth.google
@@ -25,9 +28,8 @@ everyauth.google
         if (err) promise.fail(err);
         else {
           promise.fulfill(savedUser);
-          session.loggedUser = savedUser;
           if (isFirstTimeUser) {
-            // TODO send group chat message for new user
+            realtime.pushSystemMessage('FFC125', savedUser.name + ' is requesting permission to join the group chat. Use the whitelist page to grant of revoke permission.')
           }
         }
       });
@@ -41,6 +43,7 @@ app.configure(function() {
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.session({
+    cookie: {maxAge: 60000 * 30}, // 30 min session timeout
     store: sessionStore,
     secret: config.app.google_client_secret,
     key: 'express.sid'
@@ -56,8 +59,9 @@ app.configure(function() {
 
 everyauth.helpExpress(app);
 
-route.addRoutes(app);
 realtime.init(app, sessionStore);
 persistency.init();
+route.addRoutes(app);
+route.setRealtimeEngine(realtime);
 
 app.listen(config.server.port);

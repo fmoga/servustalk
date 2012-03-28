@@ -12,4 +12,9 @@ function addRoutes(app) {
     app.get('/access', requestHandlers.access);
 }
 
+function setRealtimeEngine(engine) {
+  requestHandlers.setRealtimeEngine(engine);
+}
+
 exports.addRoutes = addRoutes;
+exports.setRealtimeEngine = setRealtimeEngine

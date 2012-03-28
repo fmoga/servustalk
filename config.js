@@ -26,7 +26,6 @@ config.calendar = {
 
 config.defaultTitle = {
   text: 'UbunTalk - chat for humans (and dancers)',
-  user: 'UbunTalk'
 }
 
 try {

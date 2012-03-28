@@ -11,6 +11,12 @@ var messages = db.collection("messages")
 var users = db.collection("users")
 var titles = db.collection("titles")
 
+var SERVUSTALK_USER = { // used for system messages
+  id: 'ServusTalk',
+  name: 'ServusTalk',
+  picture: 'http://www.albinoblacksheep.com/download/icon/googletalk.png'
+};
+
 function mergeMessagesWithUsers(messages, users, callback) {
   merge = function(messages, users) {
     // Maps user_id -> user
@@ -24,8 +30,7 @@ function mergeMessagesWithUsers(messages, users, callback) {
       messages[idx].user = users_by_id[messages[idx].user];
     }
 
-    callback(messages);
-  };
+    callback(messages); };
 
   if (users == null) {
     getUsers(function(err, users) {
@@ -44,6 +49,11 @@ function init() {
   users.ensureIndex({id: 1});
   messages.ensureIndex({ts: 1});
   titles.ensureIndex({ts: 1});
+  saveUser(SERVUSTALK_USER, function(err) {
+    if (err) {
+      console.error('Default ServusTalk system user could not be saved. Check persistency.');
+    }
+  });
 }
 
 function saveMessage(message) {
@@ -59,6 +69,15 @@ function getMessages(lower_date, upper_date, callback) {
   messages.find({ts: { $gt: lower_date.getTime(), $lt: upper_date.getTime()} }, { _id : 0 }).toArray(callback);
 }
 
+function isUserWhitelisted(userId, callback) {
+  users.count({id: userId, acceptedBy: {$exists: true}}, function(err, count) {
+    if (count > 0) 
+      callback(true);
+    else 
+      callback(false);
+  });
+}
+
 function updateUser(user, callback) {
   users.update({id: user.id}, user, {safe: true}, callback);
 }
@@ -71,8 +90,8 @@ function saveUser(user, callback) {
         users.insert(user, function(err) {
           if (err) {
             console.warn('Error inserting new user: ' + user.id);
-            if (callback) callback(err);
-          } else if (callback) {
+            callback(err);
+          } else {
             callback(false, user, true);
           }
         });
@@ -82,8 +101,8 @@ function saveUser(user, callback) {
         updateUser(db_user, function(err) {
           if (err) {
             console.warn('Error updating user: ' + db_user.id); 
-            if (callback) callback(err);
-          } else if (callback) {
+            callback(err);
+          } else {
             callback(false, db_user, false);
           }
         });
@@ -130,3 +149,5 @@ exports.getUsers = getUsers
 exports.saveTitle = saveTitle
 exports.getTitle = getTitle
 exports.getAcceptedUserCount = getAcceptedUserCount
+exports.isUserWhitelisted = isUserWhitelisted
+exports.SERVUSTALK_USER = SERVUSTALK_USER

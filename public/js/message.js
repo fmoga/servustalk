@@ -14,7 +14,11 @@ function displayMessage(message, autoscroll, displayInline) {
         color = '#3B5';
     }
     html = '';
-    html += '<div id="alert" style="background: ' + color + '"><b>' + message.user.name + ':<b/> ';
+    html += '<div class="alert" style="background: ' + color + '">';
+    if (message.user.id !== 'ServusTalk') {
+      // not system announcement, add user name
+      html += message.user.name + ': ';
+    }
     html += htmlEncode(message.text.substring(message.text.indexOf(' ') + 1))  + ' </div>';
     $('#messagebox .scrollr').append(html);
     if (autoscroll && wasScrolledToBottom) scrollToBottom();

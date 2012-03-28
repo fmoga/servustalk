@@ -39,6 +39,36 @@ function packClients() {
   return clients;
 }
 
+function pushSystemMessage(hexcolor, message) {
+  handleMessage(persistency.SERVUSTALK_USER, '/#' + hexcolor + ' ' + message);
+}
+
+function disconnectUser(userId) {
+  var buddyListUpdate = false;
+  for (id in online) {
+    if (online[id].user.id == userId) {
+      online[id].disconnect();
+      delete online[id]; 
+      buddyListUpdate = true;
+    }
+  }
+  if (buddyListUpdate) {
+    broadcast('clients', packClients());
+  }
+}
+
+function handleMessage(user, message) {
+  var completeMessage = {
+    user: user,
+    text: message,
+    ts: new Date().getTime(),
+  }
+  history.push(completeMessage);
+  persistency.saveMessage(completeMessage);
+  if (history.length > config.app.history_size) history.shift();
+  broadcast('message', completeMessage);
+}
+
 function init(app, sessionStore) {
     persistency.getTitle(function(err, titles) {
         if (err) {
@@ -78,11 +108,22 @@ function init(app, sessionStore) {
         sessionStore.get(data.sessionID, function (err, session) {
           if (err || !session) {
             // if we cannot grab a session, turn down the connection
-            accept('Error', false);
+            accept('Cannot grab session', false);
           } else {
-            // save the session data and accept the connection
-            data.session = session;
-            accept(null, true);
+            if (session.auth) {
+              // check if user is whitelisted
+              persistency.isUserWhitelisted(session.auth.google.user.id, function(whitelisted) {
+                if (whitelisted) {
+                  // save the session data and accept the connection
+                  data.session = session;
+                  accept(null, true);
+                } else {
+                  accept('User not whitelisted', false);
+                }
+              });
+            } else {
+              return accept('Not authenticated', false);
+            }
           }
         });
       } else {
@@ -91,8 +132,8 @@ function init(app, sessionStore) {
     });
 
     sio.sockets.on('connection', function(socket) {
-      if (socket.handshake.session.loggedUser) {
-        socket.user = socket.handshake.session.loggedUser;
+      if (socket.handshake.session.auth) {
+        socket.user = socket.handshake.session.auth.google.user;
         socket.user.idle = false;
         online[socket.id] = socket;
         broadcast('clients', packClients());
@@ -105,15 +146,7 @@ function init(app, sessionStore) {
         });
 
         socket.on('message', function(message) {
-          var completeMessage = {
-            user: socket.user,
-            text: message,
-            ts: new Date().getTime(),
-          }
-          history.push(completeMessage);
-          persistency.saveMessage(completeMessage);
-          if (history.length > config.app.history_size) history.shift();
-          broadcast('message', completeMessage);
+          handleMessage(socket.user, message);
         });
 
         socket.on('disconnect', function() {
@@ -154,3 +187,5 @@ function init(app, sessionStore) {
 }
 
 exports.init = init
+exports.pushSystemMessage = pushSystemMessage
+exports.disconnectUser = disconnectUser
