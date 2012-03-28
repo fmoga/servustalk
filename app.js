@@ -14,9 +14,25 @@ everyauth.google
   .scope('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email')
   .moduleTimeout(-1)
   .findOrCreateUser( function (session, accessToken, accessTokenExtra, googleUserMetadata) {
-      console.log(util.inspect(googleUserMetadata));
-      persistency.saveUser(googleUserMetadata);
-      return googleUserMetadata;
+    promise = new this.Promise();
+    persistency.getAcceptedUserCount(function(err, count) {
+      if (count == 0) {
+        // accept first person to login so he can handle user moderation from then on
+        console.log('Autoaccepting first logged in user');
+        googleUserMetadata.acceptedBy = googleUserMetadata.id;
+      }
+      persistency.saveUser(googleUserMetadata, function(err, savedUser, isFirstTimeUser) {
+        if (err) promise.fail(err);
+        else {
+          promise.fulfill(savedUser);
+          session.loggedUser = savedUser;
+          if (isFirstTimeUser) {
+            // TODO send group chat message for new user
+          }
+        }
+      });
+    });
+    return promise;
   })
   .redirectPath('/');
 

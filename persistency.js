@@ -59,20 +59,34 @@ function getMessages(lower_date, upper_date, callback) {
   messages.find({ts: { $gt: lower_date.getTime(), $lt: upper_date.getTime()} }, { _id : 0 }).toArray(callback);
 }
 
-function updateUser(id, properties) {
-  users.update({id: id}, {$set: properties});
+function updateUser(user, callback) {
+  users.update({id: user.id}, user, {safe: true}, callback);
 }
 
-function saveUser(user) {
+function saveUser(user, callback) {
   users.findOne({id: user.id}, {_id : 0}, function(err, db_user) {
     if (!err) {
       if (db_user === undefined) {
         // First time user, save it
-        users.insert(user);
+        users.insert(user, function(err) {
+          if (err) {
+            console.warn('Error inserting new user: ' + user.id);
+            if (callback) callback(err);
+          } else if (callback) {
+            callback(false, user, true);
+          }
+        });
       } else {
         // Update existing user
         jQuery.extend(true, db_user, user);
-        users.update({id: db_user.id}, db_user, /*upsert*/ false, /*multi*/ false);
+        updateUser(db_user, function(err) {
+          if (err) {
+            console.warn('Error updating user: ' + db_user.id); 
+            if (callback) callback(err);
+          } else if (callback) {
+            callback(false, db_user, false);
+          }
+        });
       }
     } else {
       console.warn('Error searching for user: ' + err);
@@ -100,14 +114,19 @@ function getTitle(callback) {
   titles.find({}, {_id : 0}).sort({ts: -1}).limit(1).toArray(callback);
 }
 
+function getAcceptedUserCount(callback) {
+  users.count({acceptedBy : {$exists:true}}, callback);
+}
+
 exports.mergeMessagesWithUsers = mergeMessagesWithUsers
 exports.init = init
 exports.saveMessage = saveMessage
 exports.getMessages = getMessages
-exports.updateUser = updateUser
 exports.saveUser = saveUser
+exports.updateUser = updateUser
 exports.getHistory = getHistory
 exports.getUser = getUser
 exports.getUsers = getUsers
 exports.saveTitle = saveTitle
 exports.getTitle = getTitle
+exports.getAcceptedUserCount = getAcceptedUserCount

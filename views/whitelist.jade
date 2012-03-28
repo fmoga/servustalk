@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  h3 #{pending.length} Pending
+  ul
+  - pending.forEach(function(user) {
+    li
+      span #{user.name}
+      &nbsp;
+      a(href='/accept/#{user.id}') Accept
+      &nbsp;
+      a(href='/ban/#{user.id}') Ban
+  - })
+  h3 #{accepted.length} Accepted
+  ul
+  - accepted.forEach(function(user) {
+    li
+      span #{user.name} accepted by #{userMap[user.acceptedBy].name}
+      &nbsp;
+      a(href='/ban/#{user.id}') Ban
+  - })
+  h3 #{banned.length} Banned
+  ul
+  - banned.forEach(function(user) {
+    li
+      span #{user.name} banned by #{userMap[user.bannedBy].name}
+      &nbsp;
+      a(href='/accept/#{user.id}') Accept
+  - })

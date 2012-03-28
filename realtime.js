@@ -91,8 +91,8 @@ function init(app, sessionStore) {
     });
 
     sio.sockets.on('connection', function(socket) {
-      if (socket.handshake.session.auth) {
-        socket.user = socket.handshake.session.auth.google.user;
+      if (socket.handshake.session.loggedUser) {
+        socket.user = socket.handshake.session.loggedUser;
         socket.user.idle = false;
         online[socket.id] = socket;
         broadcast('clients', packClients());
@@ -118,7 +118,6 @@ function init(app, sessionStore) {
 
         socket.on('disconnect', function() {
           delete online[socket.id];
-          console.log('Disconnected: ' + socket.user.name);
           broadcast('clients', packClients());
         });
 
