@@ -15,18 +15,20 @@ setInterval(function() {
 }, PING_INTERVAL);
 
 function broadcast(type, body) {
-  var buddyListUpdate = false;
+  var toDelete = [];
   var now = new Date().getTime();
   for (id in online) {
     if (online[id].disconnected || now - online[id].lastPong > PING_INTERVAL + MAX_LATENCY) {
-      online[id].disconnect();
-      delete online[id]; 
-      buddyListUpdate = true;
+      toDelete.push(id);
     } else {
       online[id].emit(type, body);
     }
   }
-  if (buddyListUpdate) {
+  if (toDelete.length > 0) {
+    for (i in toDelete) {
+      online[toDelete[i]].disconnect();
+      delete online[toDelete[i]]; 
+    }
     broadcast('clients', packClients());
   }
 }
@@ -44,15 +46,17 @@ function pushSystemMessage(hexcolor, message) {
 }
 
 function disconnectUser(userId) {
-  var buddyListUpdate = false;
+  var toDelete = [];
   for (id in online) {
-    if (online[id].user.id == userId) {
-      online[id].disconnect();
-      delete online[id]; 
-      buddyListUpdate = true;
+    if (online[id].user.id === userId) {
+      toDelete.push(id);
     }
   }
-  if (buddyListUpdate) {
+  if (toDelete.length > 0) {
+    for (i in toDelete) {
+      online[toDelete[i]].disconnect();
+      delete online[toDelete[i]]; 
+    }
     broadcast('clients', packClients());
   }
 }

@@ -104,7 +104,7 @@ function whitelist(req, res) {
         });
         for (i in users) {
           if (users[i].acceptedBy && users[i].bannedBy) {
-            console.log('User ' + users[i].email + ' cannot be both banned and accepted at the same time');
+            console.error('User ' + users[i].email + ' cannot be both banned and accepted at the same time');
             res.statusCode = 500;
             res.send('<h1>Error</h1>');
             return;

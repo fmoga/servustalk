@@ -28,7 +28,7 @@ everyauth.google
         if (err) promise.fail(err);
         else {
           promise.fulfill(savedUser);
-          if (isFirstTimeUser) {
+          if (isFirstTimeUser && count > 0) {
             realtime.pushSystemMessage('FFC125', savedUser.name + ' (' + savedUser.email + ') is requesting permission to join the group chat. Use the whitelist page to grant of revoke permission.')
           }
         }
