@@ -43,7 +43,6 @@ app.configure(function() {
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.session({
-    cookie: {maxAge: 60000 * 30}, // 30 min session timeout
     store: sessionStore,
     secret: config.app.google_client_secret,
     key: 'express.sid'

@@ -10,6 +10,7 @@ function addRoutes(app) {
     app.get('/accept/:userid', requestHandlers.acceptUser);
     app.get('/ban/:userid', requestHandlers.banUser);
     app.get('/access', requestHandlers.access);
+    app.get('/pay', requestHandlers.pay);
 }
 
 function setRealtimeEngine(engine) {

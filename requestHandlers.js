@@ -104,10 +104,8 @@ function whitelist(req, res) {
         });
         for (i in users) {
           if (users[i].acceptedBy && users[i].bannedBy) {
+	    // TODO this will happen for first person to login after everyone has been blacklisted
             console.error('User ' + users[i].email + ' cannot be both banned and accepted at the same time');
-            res.statusCode = 500;
-            res.send('<h1>Error</h1>');
-            return;
           }
           if (users[i].acceptedBy) accepted.push(users[i]);
           else if (users[i].bannedBy) banned.push(users[i]);
@@ -186,6 +184,12 @@ function access(req, res) {
 
 }
 
+function pay(req, res) {
+  isUserAllowed(req, res, function() {
+    res.render('pay');
+  });
+}
+
 exports.index = index
 exports.login = login
 exports.access = access
@@ -196,3 +200,4 @@ exports.whitelist = whitelist
 exports.acceptUser = acceptUser
 exports.banUser = banUser
 exports.setRealtimeEngine = setRealtimeEngine
+exports.pay = pay
