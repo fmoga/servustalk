@@ -89,6 +89,7 @@ var EMOTICONS = [
   { code: ':^o', url:'public/smileys/44.gif'},
   { code: ':^O', url:'public/smileys/44.gif'},
   { code: '@-)', url:'public/smileys/43.gif'},
+  { code: '@_@', url:'public/smileys/43.gif'},
   { code: ':-sS', url:'public/smileys/42.gif'},
   { code: ':-Ss', url:'public/smileys/42.gif'},
   { code: ':-ss', url:'public/smileys/42.gif'},
