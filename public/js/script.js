@@ -233,12 +233,14 @@ $(document).ready(function() {
     }
   });
 
-  $('#inputfield').live('keydown', function(e) { 
+  $('#inputfield').live('keydown', function(e) {
+  	var input = $('#inputfield'); 
     var keyCode = e.keyCode || e.which; 
     if (keyCode == 13 && !event.shiftKey) { // Enter
-      var text = $.trim($('#inputfield').val()); 
-      $('#inputfield').val('');
+      var text = $.trim(input.val()); 
+      input.val('');
       if (text !== '') {
+      	inputHistory.push(text);//add input history
         if (text == '/clear') {
           // handle /clear command
           $('#messagebox .scrollr').html('');
@@ -249,7 +251,16 @@ $(document).ready(function() {
       }
       return false;
     }
-    if (keyCode === 9) { // Tab
+    else if (keyCode === 38) { // KEY_UP
+    	 var newVal = inputHistory.getPrev() || "";
+         	 input.val(newVal);
+    }
+    else if (keyCode === 40) { // KEY_DOWN
+    	 var newVal = inputHistory.getNext() || "";
+             input.val(newVal);
+    }
+    
+    else if (keyCode === 9) { // Tab
       event.preventDefault();
       if (tabHistory) {
         showTabResult();

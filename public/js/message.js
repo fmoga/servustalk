@@ -309,3 +309,30 @@ function getSmyleHtml(smyle)
   }
 	return '<img class="emoticon" src="' + smyle.url + '" title=\'' + smyle.code + '\' alt=\'' + smyle.code + '\'/>';
 }
+//=========Input History=================
+//  inputHistory  object is a  FIFO queue that keeps track of the list of inputs
+var inputHistory = {
+    _history: [""],
+    _index: 0,
+
+    push: function(cmd) {
+        this._history.push(cmd);
+        this._index = this.length();
+    },
+    length: function() {
+        return this._history.length;
+    },
+    getNext: function() {
+        this._index += 1;
+        var cmd = this._history[this._index] || "";
+        this._index = Math.min(this.length(), this._index);
+
+        return cmd;
+    },
+    getPrev: function() {
+        this._index = Math.max(0, this._index - 1);
+        return this._history[this._index];
+    }
+};
+
+//=========END Input History=============
