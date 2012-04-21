@@ -123,6 +123,9 @@ function handleLinksAndEscape(text) {
   var finish = index;
     while (finish < text.length && !isWhitespace(text[finish])) finish++;
     var link = text.substr(index, finish-index+1);
+    if(link){
+    	link = link.replace('"', '%22');
+    }
     html += '<a target="_blank" href="' + link + '">' + $('<div/>').text(link).html() + '</a>';
     // check for youtube links
     if (link.indexOf('http://www.youtube.com') == 0) {
