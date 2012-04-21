@@ -11,6 +11,7 @@ function addRoutes(app) {
     app.get('/ban/:userid', requestHandlers.banUser);
     app.get('/access', requestHandlers.access);
     app.get('/pay', requestHandlers.pay);
+    app.post('/vote', requestHandlers.vote);
 }
 
 function setRealtimeEngine(engine) {

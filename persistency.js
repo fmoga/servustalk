@@ -10,6 +10,7 @@ var db = server.db(config.mongo.db)
 var messages = db.collection("messages")
 var users = db.collection("users")
 var titles = db.collection("titles")
+var message_votes = db.collection("message_votes")
 
 var SERVUSTALK_USER = { // used for system messages
   id: 'ServusTalk',
@@ -49,6 +50,7 @@ function init() {
   users.ensureIndex({id: 1});
   messages.ensureIndex({ts: 1});
   titles.ensureIndex({ts: 1});
+  message_votes.ensureIndex({message_ts: 1, user_id: 1}, {unique: true});
   saveUser(SERVUSTALK_USER, function(err) {
     if (err) {
       console.error('Default ServusTalk system user could not be saved. Check persistency.');
@@ -137,6 +139,49 @@ function getAcceptedUserCount(callback) {
   users.count({acceptedBy : {$exists:true}}, callback);
 }
 
+function calculateVotes(message, callback) {
+  uptokes = 0;
+  downtokes = 0;
+
+  message_votes.find({message_ts: message.ts}).forEach(function(message_vote) {
+    if (message_vote.vote > 0) {
+      ++uptokes;
+    }
+    if (message_vote.vote < 0) {
+      ++downtokes;
+    }
+  }, function(err) {
+    if (!err) {
+      message.uptokes = uptokes;
+      message.downtokes = downtokes;
+      delete message._id;
+      messages.update({ts: message.ts}, message, function(err, value) {
+        callback(message);
+      });
+    } else {
+      console.warn('Error finding message for saving uptokes.');
+    }
+  });
+}
+
+function saveVote(message_ts, user_id, vote, callback) {
+  message_vote = {
+    message_ts: message_ts,
+    user_id: user_id,
+    vote: vote
+  };
+  messages.findOne({ts: message_ts}, function(err, message) {
+    if (message) {
+      message_votes.save(message_vote);
+      delete message_vote._id
+      message_votes.update({message_ts: message_ts, user_id: user_id}, message_vote);
+      calculateVotes(message, callback);
+    } else {
+      console.warn('Invalid message_ts for vote: ' + message_ts);
+    }
+  });
+}
+
 exports.mergeMessagesWithUsers = mergeMessagesWithUsers
 exports.init = init
 exports.saveMessage = saveMessage
@@ -150,4 +195,5 @@ exports.saveTitle = saveTitle
 exports.getTitle = getTitle
 exports.getAcceptedUserCount = getAcceptedUserCount
 exports.isUserWhitelisted = isUserWhitelisted
+exports.saveVote = saveVote
 exports.SERVUSTALK_USER = SERVUSTALK_USER

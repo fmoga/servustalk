@@ -200,6 +200,10 @@ $(document).ready(function() {
     scrollToBottom();
   });
 
+  socket.on('vote', function(message) {
+    updateScore(message);
+  });
+
   socket.on('disconnect', function() {
     if (!unloading) {
       var message = 'You have been disconnected from server for maintenance. Please refresh and log in again.';

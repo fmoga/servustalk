@@ -6,14 +6,32 @@ var NO_MESSAGE = {
 };
 var lastMessage = NO_MESSAGE;
 
+function updateScore(message) {
+    score = 0;
+    if (message.downtokes != undefined && message.uptokes != undefined) {
+      score = message.uptokes - message.downtokes;
+    }
+
+    $('#ts_'+message.ts).html(score);
+}
+
+function sendVote(message_ts, vote) {
+  $.ajax({
+    type: 'POST',
+    url: '/vote',
+    data: {vote: vote, message_ts: message_ts}
+  });
+}
+
 function displayMessage(message, autoscroll, displayInline) {
   var wasScrolledToBottom = isScrolledToBottom();
+
+  var html = '';
   if (message.text.indexOf('/#') == 0) { // colored alert
     var color = message.text.substring(1, message.text.indexOf(' '));
     if (!color.match(/[a-fA-F0-9]{6}|[a-fA-F0-9]{3}/g)) {
         color = '#3B5';
     }
-    html = '';
     html += '<div class="alert" style="background: ' + color + '">';
     if (message.user.id !== 'ServusTalk') {
       // not system announcement, add user name
@@ -29,16 +47,36 @@ function displayMessage(message, autoscroll, displayInline) {
     if (message.user.id == lastMessage.user.id && message.ts < lastMessage.ts + MAX_TIMESTAMP_DIFF ) {
       $('.author').last().append(processedMessage);
     } else {
-      var html = '';
       if (lastMessage.user.id != NO_USER.id) {
         html += '<hr/>'; 
+        html += '<div style="clear: both">';
+        html += '</div>';
       }
       var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
+
+      html += '<div style="float: left">';
+      html += '<strong id="ts_' + message.ts + '"></strong>';
+      html += '<a id="ts_' + message.ts + '_plus" href="/vote?vote=1&message_ts=' + message.ts + '">+</a>';
+      html += '<a id="ts_' + message.ts + '_minus" href="/vote?vote=-1&message_ts=' + message.ts + '">-</a>';
+      html += '</div>';
+
       html += '<img class="profilepic" src="' + picture + '"/>';
       html += '<div class="author"><strong>' + $('<div/>').text(message.user.name).html() + '</strong><span class="timestamp">' + formatTimestamp(message.ts) + '</span>';
       html += processedMessage;
       html += '</div>';
       $('#messagebox .scrollr').append(html);
+
+      updateScore(message);
+
+      $('#ts_' + message.ts + '_plus').click(function(e) {
+        e.preventDefault();
+        sendVote(message.ts, 1);
+      });
+
+      $('#ts_' + message.ts + '_minus').click(function(e) {
+        e.preventDefault();
+        sendVote(message.ts, -1);
+      });
     }
 
     $('code').syntaxHighlight();
@@ -63,6 +101,7 @@ function processMessage(message, userMention, scroll, displayInline){
       html += addSoundcloudLinks(result.soundcloud);
       html += result.imagery;
     }
+
     return html;
 }
 

@@ -190,6 +190,23 @@ function pay(req, res) {
   });
 }
 
+function vote(req, res) {
+  user_id = req.session.auth.google.user.id;
+  if (req.body.vote === undefined || req.body.message_ts === undefined ||
+      !(req.body.vote <= 1 && req.body.vote >= -1)) {
+    res.statusCode = 400;
+    res.end('Invalid request');
+    return;
+  }
+
+  message_ts = parseInt(req.body.message_ts);
+  vote = parseInt(req.body.vote);
+  persistency.saveVote(message_ts, user_id, vote, function(message) {
+    realtime.broadcast('vote', message);
+  });
+  res.end('uptokes!');
+}
+
 exports.index = index
 exports.login = login
 exports.access = access
@@ -201,3 +218,4 @@ exports.acceptUser = acceptUser
 exports.banUser = banUser
 exports.setRealtimeEngine = setRealtimeEngine
 exports.pay = pay
+exports.vote = vote

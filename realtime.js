@@ -5,7 +5,6 @@ var io = require('socket.io'),
     parseCookie = require('connect').utils.parseCookie;
 
 var online = {};
-var history = [];
 var title = config.defaultTitle;
 var PING_INTERVAL = 5 * 60 * 1000; // 5 min
 var MAX_LATENCY = 10 * 1000; // 10 sec
@@ -67,9 +66,7 @@ function handleMessage(user, message) {
     text: message,
     ts: new Date().getTime(),
   }
-  history.push(completeMessage);
   persistency.saveMessage(completeMessage);
-  if (history.length > config.app.history_size) history.shift();
   broadcast('message', completeMessage);
 }
 
@@ -83,16 +80,6 @@ function init(app, sessionStore) {
             } else {
                 title = titles[0];
             }
-        }
-    });
-
-    persistency.getHistory(config.app.history_size, function(err, messages) {
-        if (err) {
-            console.warn('Error getting history: ' + err, err.stack);
-        } else {
-            persistency.mergeMessagesWithUsers(messages, null, function(messages) {
-              history = messages.reverse();
-            });
         }
     });
 
@@ -141,7 +128,18 @@ function init(app, sessionStore) {
         socket.user.idle = false;
         online[socket.id] = socket;
         broadcast('clients', packClients());
-        socket.emit('history', history);
+
+        persistency.getHistory(config.app.history_size, function(err, messages) {
+          if (err) {
+              console.warn('Error getting history: ' + err, err.stack);
+          } else {
+            persistency.mergeMessagesWithUsers(messages, null, function(messages) {
+              history = messages.reverse();
+              socket.emit('history', history);
+            });
+          }
+        });
+
         socket.lastPong = new Date().getTime();
         socket.emit('ping');
 
@@ -191,5 +189,6 @@ function init(app, sessionStore) {
 }
 
 exports.init = init
+exports.broadcast = broadcast
 exports.pushSystemMessage = pushSystemMessage
 exports.disconnectUser = disconnectUser
