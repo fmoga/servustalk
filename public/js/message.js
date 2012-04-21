@@ -87,7 +87,7 @@ function formatTimestamp(ts) {
   if (timestamp.getDate() == now.getDate() && timestamp.getMonth() === now.getMonth() && timestamp.getFullYear() == timestamp.getFullYear()) {
     date = 'Today';  
   } else {
-    date = DAY_OF_WEEK[timestamp.getDay()] + ', ' + timestamp.getDate() + ' ' + MONTH[timestamp.getMonth()] + ' ' + timestamp.getFullYear();
+    date = DAY_OF_WEEK[(timestamp.getDay()+6)%7] + ', ' + timestamp.getDate() + ' ' + MONTH[timestamp.getMonth()] + ' ' + timestamp.getFullYear();
   }
   var time = padTime(timestamp.getHours()) + ':' + padTime(timestamp.getMinutes()); 
   return date + ' at ' + time;
