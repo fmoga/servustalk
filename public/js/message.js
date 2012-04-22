@@ -13,6 +13,11 @@ function updateScore(message) {
     }
 
     $('#ts_'+message.ts).html(score);
+
+    // Add a zero class if the score is 0
+    if (score == 0) {
+      $('#ts_'+message.ts).parent().addClass("zero");
+    }
 }
 
 function sendVote(message_ts, vote) {
@@ -20,6 +25,32 @@ function sendVote(message_ts, vote) {
     type: 'POST',
     url: '/vote',
     data: {vote: vote, message_ts: message_ts}
+  });
+}
+
+function addTimestampHandler(message) {
+  updateScore(message);
+
+  $('#ts_' + message.ts + '_plus').click(function(e) {
+    e.preventDefault();
+    sendVote(message.ts, 1);
+
+    // Not a 0 vote anymore
+    $(this).parent().removeClass("zero");
+
+    $(this).parent().removeClass("voted-minus");
+    $(this).parent().addClass("voted-plus");
+  });
+
+  $('#ts_' + message.ts + '_minus').click(function(e) {
+    e.preventDefault();
+    sendVote(message.ts, -1);
+
+    // Not a 0 vote anymore
+    $(this).parent().removeClass("zero");
+
+    $(this).parent().removeClass("voted-plus");
+    $(this).parent().addClass("voted-minus");
   });
 }
 
@@ -44,6 +75,7 @@ function displayMessage(message, autoscroll, displayInline) {
   } else {
     var userMention = '@' + $('#loggedUser').html();
     var processedMessage = processMessage(message, userMention, autoscroll && wasScrolledToBottom, displayInline);
+
     if (message.user.id == lastMessage.user.id && message.ts < lastMessage.ts + MAX_TIMESTAMP_DIFF ) {
       $('.author').last().append(processedMessage);
     } else {
@@ -54,29 +86,11 @@ function displayMessage(message, autoscroll, displayInline) {
       }
       var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
 
-      html += '<div style="float: left">';
-      html += '<strong id="ts_' + message.ts + '"></strong>';
-      html += '<a id="ts_' + message.ts + '_plus" href="/vote?vote=1&message_ts=' + message.ts + '">+</a>';
-      html += '<a id="ts_' + message.ts + '_minus" href="/vote?vote=-1&message_ts=' + message.ts + '">-</a>';
-      html += '</div>';
-
       html += '<img class="profilepic" src="' + picture + '"/>';
       html += '<div class="author"><strong>' + $('<div/>').text(message.user.name).html() + '</strong><span class="timestamp">' + formatTimestamp(message.ts) + '</span>';
       html += processedMessage;
       html += '</div>';
       $('#messagebox .scrollr').append(html);
-
-      updateScore(message);
-
-      $('#ts_' + message.ts + '_plus').click(function(e) {
-        e.preventDefault();
-        sendVote(message.ts, 1);
-      });
-
-      $('#ts_' + message.ts + '_minus').click(function(e) {
-        e.preventDefault();
-        sendVote(message.ts, -1);
-      });
     }
 
     $('code').syntaxHighlight();
@@ -84,6 +98,10 @@ function displayMessage(message, autoscroll, displayInline) {
     if (autoscroll && wasScrolledToBottom) {
       scrollToBottom();
     }
+
+    // Add vote handlers
+    addTimestampHandler(message);
+
   }
 }
 
@@ -94,7 +112,35 @@ function processMessage(message, userMention, scroll, displayInline){
     if (hasMention(result.html, userMention)) {
       classes += ' mention';
     }
-    var html = '<div class="' + classes + '">' + result.html + '</div>';
+
+    // Votes wrapper
+    var votes = $('<div>').addClass("vote");
+
+    // Downvote link
+    $('<a>').attr('href',"/vote?vote=-1&message_ts='" + message.ts + "'")
+            .attr('id','ts_' + message.ts + '_minus')
+            .addClass('vote-minus')
+            .html("-")
+            .appendTo(votes);    
+
+    // Vote display
+    $('<span>').attr('id',"ts_" + message.ts)
+        .addClass("vote-display")
+        .appendTo(votes);
+
+    // Upvote link
+    $('<a>').attr('href',"/vote?vote=1&message_ts='" + message.ts + "'")
+            .attr('id','ts_' + message.ts + '_plus')
+            .addClass('vote-plus')
+            .html("+")
+            .appendTo(votes);
+    
+    var html = '<div class="' + classes + '">' + 
+                // Append the html string inside the vote div
+                $('<div>').append(votes.clone()).html() + 
+                // Append the processed message
+                result.html + '</div>';
+
     if (displayInline) {
       html += addYoutubeLinks(result.youtube);
       html += addMixcloudLinks(result.mixcloud);

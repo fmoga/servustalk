@@ -55,6 +55,7 @@ body, input, textarea {
   font-size: 12px;
   font-style: italic;
   margin-left: 5px;
+  display: block;
 }
 
 /* Full height */
@@ -195,6 +196,55 @@ html, body {
   word-wrap: break-word;
 }
 
+/* Vote */
+
+.vote {
+  position: relative;
+  float: left;
+  
+  font-weight: bold;
+  font-size: .9em;
+
+  width: 42px;
+  text-align: left;
+}
+
+.vote .vote-display {
+  padding: 0 3px;
+}
+
+.vote:hover .vote-plus {
+  color: green;
+}
+
+.vote:hover .vote-minus {
+  color: red;
+}
+
+.vote.voted-plus .vote-display{
+  color: green;
+}
+
+.vote.voted-plus .vote-plus {
+}
+
+.vote.voted-minus .vote-display{
+  color: red;
+}
+
+.vote.zero {
+  color: #fff;
+}
+
+.vote.zero:hover {
+  color: #000;
+}
+
+.vote a {
+  color: #fff;
+  text-decoration: none;
+}
+
 /* Calendar */
 
 #calendar {
@@ -229,9 +279,6 @@ html, body {
   font-style: italic;
 }
 
-.author {
-  margin-left: 35px;
-}
 
 /* Buddy List */
 
