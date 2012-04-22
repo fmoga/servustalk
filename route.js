@@ -12,6 +12,8 @@ function addRoutes(app) {
     app.get('/access', requestHandlers.access);
     app.get('/pay', requestHandlers.pay);
     app.post('/vote', requestHandlers.vote);
+    app.post('/getMessages/:timestamp', requestHandlers.getMessages);
+    app.get('/getMessages/:timestamp', requestHandlers.getMessages);
 }
 
 function setRealtimeEngine(engine) {

@@ -207,6 +207,19 @@ function vote(req, res) {
   res.end('uptokes!');
 }
 
+function getMessages(req, res) {
+  timestamp = parseInt(req.params.timestamp);
+  if (isNaN(timestamp)) {
+    res.render('404');
+  }
+  persistency.getMessagesChunk(timestamp, 100, function(err, messages) {
+    persistency.mergeMessagesWithUsers(messages, null, function(messages) {
+      res.contentType('json');
+      res.send(messages);
+    });
+  });
+}
+
 exports.index = index
 exports.login = login
 exports.access = access
@@ -219,3 +232,4 @@ exports.banUser = banUser
 exports.setRealtimeEngine = setRealtimeEngine
 exports.pay = pay
 exports.vote = vote
+exports.getMessages = getMessages
