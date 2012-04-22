@@ -11,16 +11,13 @@ block append scripts
   script(src='/socket.io/socket.io.js')
   script(src='/public/js/config.js')
   script(src='/public/js/message.js')
-  script(src='/public/js/script.js')
+  script(src='/public/js/script.js')fheader
   script(src='http://www.google.com/jsapi')
   script(src='/public/js/google_calendar.js')
   script(src='http://maps.googleapis.com/maps/api/js?sensor=true')
 
 block header
   #header.row-fluid
-    span#roomTitle
-    a#changeTitle(href='#changeTitleForm') Change title
-
     ul.inline.unstyled.pull-right#menu
       li
         a(href='/logout') Logout
@@ -28,6 +25,9 @@ block header
         a(href='/whitelist',target='_blank') Whitelist
       li
         a(href='/history',target='_blank') History
+
+    span#roomTitle
+    a#changeTitle(href='#changeTitleForm') Change title
 
 block content
   #content.row-fluid

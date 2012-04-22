@@ -15,9 +15,6 @@ block append scripts
 
 block header
   #header.row-fluid
-    | Currently logged in as 
-    span#loggedUser.username #{everyauth.google.user.name}
-
     ul.inline.unstyled.pull-right#menu
       li
         a(href='/logout') Logout
@@ -25,6 +22,9 @@ block header
         a(href='/whitelist',target='_blank') Whitelist
       li
         a(target='_blank',href='/') Chat
+
+    | Currently logged in as 
+    span#loggedUser.username #{everyauth.google.user.name}
 
 block content
   #content.row-fluid

@@ -44,6 +44,20 @@ body, input, textarea {
   filter: alpha(opacity=50); /* For IE8 and earlier */
 }
 
+.profilename {
+  position: relative;
+  top: -7px;
+}
+
+.location {
+  display: block;
+  margin-left: 37px;
+  font-size: .8em;
+  position: relative;
+  top: -16px;
+  font-style: italic;
+}
+
 /* Misc. */
 
 .attention {
