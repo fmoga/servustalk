@@ -1,4 +1,6 @@
-addProfileName = function(client, nameStyle) {
+getProfileName = function(client, nameStyle) {
+  // this line is still duplicated in getProfilePic
+  // TODO: fix later its late
   var idle = client.idle ? 'idle' : '';
   var profileName = $('<span>');
   profileName.addClass('profilename');
@@ -8,7 +10,7 @@ addProfileName = function(client, nameStyle) {
   return profileName;
 }
 
-addProfilePic = function(client) {
+getProfilePic = function(client) {
   var picture = client.picture ? client.picture : DEFAULT_PICTURE;
   var idle = client.idle ? 'idle' : '';
   var profilePic = $('<img>'); // profile pic
@@ -20,7 +22,7 @@ addProfilePic = function(client) {
   return profilePic;
 }
 
-addLocation = function(client) {
+getProfileLocation = function(client) {
   var locationSpan = $('<span>');
   locationSpan.addClass('location');
   locationSpan.html(client.location);
@@ -28,7 +30,7 @@ addLocation = function(client) {
   return profileLocation;
 }
 
-addIdleSince = function(client) {
+getProfileIdle = function(client) {
   var idleSpan = $('<span>');
   idleSpan.addClass('idleSpan');
   idleSpan.attr('idleSince', (new Date().getTime() - client.idleFor));
@@ -37,10 +39,10 @@ addIdleSince = function(client) {
 }
 
 addClient = function(client, buddylist, nameStyle) {
-  var profilePic = addProfilePic(client);
-  var profileName = addProfileName(client, nameStyle);
-  var profileLocation = addLocation(client);
-  var idleSince = addIdleSince(client);
+  var profilePic = getProfilePic(client);
+  var profileName = getProfileName(client, nameStyle);
+  var profileLocation = getProfileLocation(client);
+  var idleSince = getProfileIdle(client);
 
   var li = $('<li>');
   li.append(profilePic);
