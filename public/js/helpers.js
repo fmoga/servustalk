@@ -47,8 +47,8 @@ addClient = function(client, buddylist, nameStyle) {
   var li = $('<li>');
   li.append(profilePic);
   li.append(profileName);
-  li.append(idleSince);
   li.append(profileLocation);
+  li.append(idleSince);
 
   buddylist.append(li);
 }

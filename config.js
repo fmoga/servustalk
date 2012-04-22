@@ -16,7 +16,7 @@ config.app = {
   history_size: 20,
   sio: {
     log_level: 1,
-    transports: ['xhr-polling', 'jsonp-polling']
+    transports: ['websocket', 'xhr-polling', 'jsonp-polling']
   }
 }
 
