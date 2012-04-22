@@ -78,8 +78,8 @@ $(document).ready(function() {
   });
 
   $('#newTitle').live('keydown', function(e) { 
-    var keyCode = e.keyCode || e.which; 
-    if (keyCode == 13 && !event.shiftKey) { // Enter
+    var keyCode = e.which; 
+    if (keyCode == 13 && !e.shiftKey) { // Enter
       submitTitle();
       return false;
     }
@@ -244,10 +244,10 @@ $(document).ready(function() {
     }
   });
 
-  $('#inputfield').live('keydown', function(e) {
+  $('#inputfield').bind('keydown', function(e) {
   	var input = $('#inputfield'); 
-    var keyCode = e.keyCode || e.which; 
-    if (keyCode == 13 && !event.shiftKey) { // Enter
+    var keyCode = e.which; 
+    if (keyCode == 13 && !e.shiftKey) { // Enter
       var text = $.trim(input.val()); 
       input.val('');
       if (text !== '') {
@@ -270,9 +270,8 @@ $(document).ready(function() {
     	 var newVal = inputHistory.getNext() || "";
              input.val(newVal);
     }
-    
     else if (keyCode === 9) { // Tab
-      event.preventDefault();
+      e.preventDefault();
       if (tabHistory) {
         showTabResult();
         return false;
@@ -324,8 +323,8 @@ $(document).ready(function() {
     }
   }
 
-  $(document).keyup(function(event) {
-    if (event.which == 27) {
+  $(document).keyup(function(e) {
+    if (e.which == 27) {
       $('#inputfield').focus();
     }
   });
