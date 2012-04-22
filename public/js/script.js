@@ -143,6 +143,7 @@ $(document).ready(function() {
     'force new connection' : true,
     'connect timeout': 5000,
     'try multiple transports': true,
+    'transports': ['websocket', 'xhr-polling'],
     'reconnect': true,
     'reconnection delay': 1000,
     'max reconnection attempts': 10
