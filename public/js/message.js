@@ -61,6 +61,7 @@ function processMessage(message, userMention, scroll, displayInline){
       html += addYoutubeLinks(result.youtube);
       html += addMixcloudLinks(result.mixcloud);
       html += addSoundcloudLinks(result.soundcloud);
+      html += addMp3s(result.mp3s);
       html += result.imagery;
     }
     return html;
@@ -113,6 +114,7 @@ function handleLinksAndEscape(text) {
   var youtube = [];
   var mixcloud = [];
   var soundcloud = [];
+  var mp3s = [];
   var imagery = '';
   var linkMatch = /http[s]?:///g
   var index = text.search(linkMatch);
@@ -140,7 +142,10 @@ function handleLinksAndEscape(text) {
     // check for imagery content
     var scrolled = isScrolledToBottom() ? ' onload="scrollToBottom()"' : '';
     imagery += '<a target="_blank" href="' + link +'"><img id="imageLink" src="' + link + '"' + scrolled + ' onerror="this.style.display = \'none\'"></img></a>';
-
+    // check for mp3s
+    if (link.substr(-4) === '.mp3') {
+      mp3s.push(link);
+    };
     if (finish == text.length) {
       text = '';
     } else {
@@ -161,7 +166,8 @@ function handleLinksAndEscape(text) {
     youtube : youtube,
     mixcloud: mixcloud,
     soundcloud: soundcloud,
-    imagery : imagery
+    imagery : imagery,
+    mp3s: mp3s,
   }
 }
 
@@ -228,6 +234,14 @@ function addImagery(links, scroll) {
   if (html !== '') {
     html = '<div id="imageDock">' + html + '</div>';
   }
+  return html;
+}
+
+function addMp3s(links, scroll) {
+  var html = '';
+  $.each(links, function(index, link) {
+    html += '<audio style="width: 420px" controls="controls"> <source src="' + link + '" type="audio/mp3" />';
+  });
   return html;
 }
 
