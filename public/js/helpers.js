@@ -1,32 +1,47 @@
-addClient = function(client, buddylist, nameStyle) {
+addProfileName = function(client, nameStyle) {
+  var idle = client.idle ? 'idle' : '';
+  var profileName = $('<span>');
+  profileName.addClass('profilename');
+  profileName.addClass(idle);
+  profileName.addClass(nameStyle);
+  profileName.html(client.name);
+  return profileName;
+}
+
+addProfilePic = function(client) {
   var picture = client.picture ? client.picture : DEFAULT_PICTURE;
   var idle = client.idle ? 'idle' : '';
-
   var profilePic = $('<img>'); // profile pic
   profilePic.addClass('profilepic');
   profilePic.addClass(idle);
   profilePic.addClass('middle');
   profilePic.attr('title', client.name);
   profilePic.attr('src', picture);
+  return profilePic;
+}
 
-  var profileName = $('<span>'); // profile name
-  profileName.addClass('profilename');
-  profileName.addClass(idle);
-  profileName.addClass(nameStyle);
-  profileName.html(client.name);
-
+addLocation = function(client) {
   var locationSpan = $('<span>');
   locationSpan.addClass('location');
   locationSpan.html(client.location);
-  var profileLocation = client.location ? locationSpan : ''; // location
-  
+  var profileLocation = client.location ? locationSpan : '';
+  return profileLocation;
+}
+
+addIdleSince = function(client) {
   var idleSpan = $('<span>');
   idleSpan.addClass('idleSpan');
   idleSpan.attr('idleSince', (new Date().getTime() - client.idleFor));
-  idleSpan = '<span class="idleSince" idleSince="' + (new Date().getTime() - client.idleFor) + '"></span>';
-  var idleSince = client.idle ? idleSpan : ''; // idle since
+  var idleSince = client.idle ? idleSpan : '';
+  return idleSince;
+}
 
-  // the li
+addClient = function(client, buddylist, nameStyle) {
+  var profilePic = addProfilePic(client);
+  var profileName = addProfileName(client, nameStyle);
+  var profileLocation = addLocation(client);
+  var idleSince = addIdleSince(client);
+
   var li = $('<li>');
   li.append(profilePic);
   li.append(profileName);
