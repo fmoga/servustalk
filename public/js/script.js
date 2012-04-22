@@ -218,7 +218,7 @@ $(document).ready(function() {
       var idle = client.idle ? 'idle' : '';
       var idleSince = client.idle ? '<span class="idleSince" idleSince="' + (new Date().getTime() - client.idleFor) + '"></span>' : '';
       var user_loc = client.location ? '<span class="location">' + client.location + '</span>' : '';
-      $(buddylist).append('<li><img class="profilepic ' + idle + ' middle" title="' +client.name + '" src="' + picture + '"/><span class="profilename ' + idle + '" ' + nameStyle + '>' + client.name + '</span>' + user_loc + idleSince +'</li>'); 
+      $(buddylist).append('<li><img class="profilepic ' + idle + '" title="' +client.name + '" src="' + picture + '"/><span class="profilename ' + idle + '" ' + nameStyle + '>' + client.name + '</span>' + idleSince + user_loc  +'</li>'); 
     });
 
     $('#clients-count').html(clients.length);

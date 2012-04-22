@@ -32,13 +32,6 @@ body, input, textarea {
   font-style: italic;
 }
 
-.idleSince {
-  font-size: 12px;
-  color: #AAA;
-  font-style: italic;
-  margin-left: 5px;
-}
-
 .profilepic.idle {
   opacity: 0.5;
   filter: alpha(opacity=50); /* For IE8 and earlier */
@@ -56,6 +49,15 @@ body, input, textarea {
   position: relative;
   top: -16px;
   font-style: italic;
+}
+
+.idleSince {
+  font-size: 12px;
+  color: #AAA;
+  font-style: italic;
+  margin-left: 5px;
+  position: relative;
+  top: -7px; 
 }
 
 /* Misc. */
