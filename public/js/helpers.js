@@ -13,7 +13,7 @@ getProfileName = function(client, nameStyle) {
 getProfilePic = function(client) {
   var picture = client.picture ? client.picture : DEFAULT_PICTURE;
   var idle = client.idle ? 'idle' : '';
-  var profilePic = $('<img>'); // profile pic
+  var profilePic = $('<img>');
   profilePic.addClass('profilepic');
   profilePic.addClass(idle);
   profilePic.addClass('middle');
@@ -49,6 +49,10 @@ addClient = function(client, buddylist, nameStyle) {
   li.append(profileName);
   li.append(profileLocation);
   li.append(idleSince);
+
+  li.bind('click', function() {
+    $('textarea#inputfield').append("@" + profileName.html() + " ");
+  });
 
   buddylist.append(li);
 }
