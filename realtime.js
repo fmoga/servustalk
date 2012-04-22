@@ -91,7 +91,6 @@ function init(app, sessionStore) {
     var sio = io.listen(app);
     sio.configure(function(){
       sio.set('log level', config.app.sio.log_level);
-      sio.set('transports', config.app.sio.transports);
     });
 
 
