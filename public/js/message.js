@@ -17,6 +17,8 @@ function updateScore(message) {
     // Add a zero class if the score is 0
     if (score == 0) {
       $('#ts_'+message.ts).parent().addClass("zero");
+    } else {
+      $('#ts_'+message.ts).parent().removeClass("zero");
     }
 }
 
