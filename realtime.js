@@ -186,6 +186,11 @@ function init(app, sessionStore) {
           socket.user.idle = false;
           broadcast('clients', packClients());
         });
+
+        socket.on('location', function(newLocation) {
+          socket.user.location = newLocation;
+          broadcast('clients', packClients());
+        });
       } else {
         socket.disconnect();
       }
