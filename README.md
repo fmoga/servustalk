@@ -9,7 +9,7 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 * Authentication using Google Account via OAuth 2
 * HTML5 desktop notifications
 * Inline display of image links
-* Inline display of Youtube, Soundcloud, Mixcloud links
+* Inline display of Youtube, Soundcloud, Mixcloud and mp3 links
 * Displays upcoming events in a public Google Calendar
 * Basic idle detection
 * Mentions support with `@name` syntax and autocompletion using Tab key
@@ -28,7 +28,7 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 
 * Install [node.js][1] (0.6.9)
 * Install [npm][2] (1.1.0-3)
-* if on Windows, remove forever from package.json as it is only used in production and fails to compile on Windows
+* If on Windows, remove `forever` dependency from `package.json` as it is only used in production and fails to compile on Windows
 * Run `npm install` in the root folder 
 * Install [mongodb][3] and create database named after definition in `config.js`
 * Register Google App via [Google APIs Console][4]. OAuth callback endpoint can be found at `/auth/google/callback`.

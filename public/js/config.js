@@ -1,8 +1,11 @@
-var IDLE_TIMEOUT = 5 * 60 * 1000; // 5 min
-var FLICKER_TITLE_INTERVAL = 2 * 1000; // 2 sec
+var ONE_SECOND = 1000;
+var ONE_MINUTE = 60 * ONE_SECOND;
+var ONE_HOUR = 60 * ONE_MINUTE;
+var IDLE_TIMEOUT = 5 * ONE_MINUTE; // 5 min
+var FLICKER_TITLE_INTERVAL = 2 * ONE_SECOND; // 2 sec
 var GOOGLE_CALENDAR_ATOM_FEED = 'http://www.google.com/calendar/feeds/fv690mq7i7jk6l0mhu9hd5uvms%40group.calendar.google.com/public/full';
 var GOOGLE_CALENDAR_DAYS_INTERVAL = 30;
-var GOOGLE_CALENDAR_UPDATE_INTERVAL = 2 * 60 * 1000; // 2 mins
+var GOOGLE_CALENDAR_UPDATE_INTERVAL = 2 * ONE_MINUTE; // 2 mins
 var HISTORY_MESSAGES_PER_PAGE = 100;
 var DEFAULT_PICTURE = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
 var MAX_TIMESTAMP_DIFF = 60 * 1000; // 1 min

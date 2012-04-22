@@ -34,8 +34,13 @@ function broadcast(type, body) {
 
 function packClients() {
   clients = [];
+  now = new Date().getTime();
   for (id in online) {
-    clients.push(online[id].user);
+    user = online[id].user;
+    if (user.idle) {
+      user.idleFor = now - user.idle; 
+    }
+    clients.push(user);
   }
   return clients;
 }
@@ -172,8 +177,8 @@ function init(app, sessionStore) {
             persistency.saveTitle(title);
         });
 
-        socket.on('idle', function() {
-          socket.user.idle = true;
+        socket.on('idle', function(data) {
+          socket.user.idle = new Date().getTime() - data.since;
           broadcast('clients', packClients());
         });
 

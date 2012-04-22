@@ -63,6 +63,10 @@ $(document).ready(function() {
     loadCalendar(GOOGLE_CALENDAR_ATOM_FEED, 0, GOOGLE_CALENDAR_DAYS_INTERVAL);
   }, GOOGLE_CALENDAR_UPDATE_INTERVAL);
 
+  setInterval(function() {
+    refreshIdleTimes();
+  }, ONE_MINUTE);
+
   $("a#settingsLink").fancybox();
   $("a#changeTitle").fancybox();
 
@@ -110,6 +114,7 @@ $(document).ready(function() {
 
   socket.on('reconnect', function(transport, attempts) {
     console.log('DEBUG: reconnect: transport=' + transport + '; attempts=' + attempts);
+    reportIdleness();  
   });
 
   socket.on('reconnecting', function(delay, attempts) {
@@ -167,7 +172,8 @@ $(document).ready(function() {
     $.each(clients, function(index, client) {
       var picture = client.picture ? client.picture : DEFAULT_PICTURE;
       var idle = client.idle ? 'idle' : '';
-      $(buddylist).append('<li><img class="profilepic ' + idle + ' middle" title="' +client.name + '" src="' + picture + '"/><span class="profilename ' + idle + '" ' + nameStyle + '>' + client.name + '</span></li>'); 
+      var idleSince = client.idle ? '<span class="idleSince" idleSince="' + (new Date().getTime() - client.idleFor) + '"></span>' : '';
+      $(buddylist).append('<li><img class="profilepic ' + idle + ' middle" title="' +client.name + '" src="' + picture + '"/><span class="profilename ' + idle + '" ' + nameStyle + '>' + client.name + '</span>' + idleSince + '</li>'); 
     });
 
     if (first) {
@@ -189,6 +195,7 @@ $(document).ready(function() {
       }
     }
     currentClients = clients;
+    refreshIdleTimes();
   });
 
   socket.on('history', function(history) {
@@ -357,7 +364,7 @@ window.addEventListener('focus', function() {
   // idle
   if (idle) {
     idle = false;
-    socket.emit('not idle');
+    reportIdleness();
   } else {
     if (idlePromise) clearTimeout(idlePromise);
   }
@@ -368,10 +375,35 @@ window.addEventListener('blur', function() {
   // idle
   if (idlePromise) clearTimeout(idlePromise);
   idlePromise = setTimeout(function() {
-    idle = true;
-    socket.emit('idle');
+    idle = new Date().getTime();
+    reportIdleness();
   }, IDLE_TIMEOUT);
 });
+
+
+function reportIdleness() {
+  if (idle) {
+    socket.emit('idle', {since: new Date().getTime() - idle});
+  } else {
+    socket.emit('not idle');
+  }
+}
+
+function refreshIdleTimes() {
+  now = new Date().getTime();
+  $('.idleSince').each(function() {
+    since = now - parseInt($(this).attr('idleSince'));
+    readableTime = '';
+    if (since > ONE_HOUR) {
+      readableTime = Math.floor(since / ONE_HOUR) + 'h';
+    } else if (since > ONE_MINUTE) {
+      readableTime = Math.floor(since / ONE_MINUTE) + 'm';
+    } else {
+      readableTime = 'just now';
+    }
+    $(this).text(readableTime);
+  });
+}
 
 $(window).bind('beforeunload', function() {
   unloading = true;
