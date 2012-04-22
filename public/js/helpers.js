@@ -5,8 +5,14 @@ addPorfilePic = function(client) {
 }
 
 addProfileName = function(client, nameStyle) {
-  var idleSince = client.idle ? '<span class="idleSince" idleSince="' + (new Date().getTime() - client.idleFor) + '"></span>' : '';
-  return '<span class="profilename ' + idle + '" ' + nameStyle + '>' + client.name + '</span>' + idleSince
+  var idleSpan = $('<span>');
+  idleSpan.addClass('idleSince');
+  idleSpan.attr('idleSince', (new Date().getTime() - client.idleFor));
+  
+  var idleSince = client.idle ? idleSpan.html() : '';
+  pName = $('<span>');
+  pName.addClass('idleSince').addClass(nameStyle).html(client.name);
+  return pName.html() + idleSince;
 }
 
 addClient = function(client, buddylist, nameStyle) {
