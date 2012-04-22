@@ -1,0 +1,10 @@
+@media (max-width: 767px) {
+  #sidebar {
+    display: none;
+  }
+
+  .container-fluid {
+    padding-left: 5px;
+    padding-right: 10px;
+  }
+}

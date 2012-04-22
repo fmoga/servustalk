@@ -176,6 +176,8 @@ $(document).ready(function() {
       $(buddylist).append('<li><img class="profilepic ' + idle + ' middle" title="' +client.name + '" src="' + picture + '"/><span class="profilename ' + idle + '" ' + nameStyle + '>' + client.name + '</span>' + idleSince + '</li>'); 
     });
 
+    $('#clients-count').html(clients.length);
+
     if (first) {
       first = false;
     } else {

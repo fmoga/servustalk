@@ -6,7 +6,6 @@
        "date-utils": "1.2.7",
        "everyauth": "0.2.29",
        "express": "2.5.6",
-       "forever": "0.8.5",
        "jade": "0.20.0",
        "jquery": "1.6.3",
        "mongolian": "0.1.16",

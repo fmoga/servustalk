@@ -1,0 +1,336 @@
+/********************************** 
+
+  General 
+
+**********************************/
+
+/* Typography */
+
+body, input, textarea {
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 14px;
+}
+
+/* Profile pics & user info */
+
+.profilepic {
+  width: 32px;
+  height: 32px;
+  margin-right: 5px;
+}
+
+.middle {
+  vertical-align: middle;
+}
+
+.username {
+  font-style: italic;
+}
+
+.profilename.idle {
+  color: #777;
+  font-style: italic;
+}
+
+.profilepic.idle {
+  opacity: 0.5;
+  filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+/* Misc. */
+
+.attention {
+  color: #CD3333;
+}
+
+.timestamp {
+  color: #777;
+  font-size: 12px;
+  font-style: italic;
+  margin-left: 5px;
+}
+
+/* Full height */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.container-fluid {
+  height: auto !important;
+  height: 100%;
+  min-height: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Scrollr */
+
+.scrollr {
+  overflow-y: scroll;
+  height: 100%;
+}
+
+/********************************** 
+
+  Sections 
+
+**********************************/
+
+/* Layout General */
+
+/* Header */
+
+#header {
+  font-size: 1em;
+  line-height: 1.2em;
+  border-bottom: 1px solid #ccc;
+  
+  padding-top: 10px;
+  padding-bottom: 5px;
+  min-height: 20px;
+}
+
+#roomTitle {
+  font-weight: bold;
+}
+
+#menu li {
+ margin-left: .5em;
+}
+
+/* Title */
+
+#submitTitle {
+  margin-left: 5px;
+}
+
+#changeTitle {
+  margin-left: .5em;
+}
+
+/* Content */
+
+#content {
+  min-height: 100%;
+  max-height: 100%;
+}
+
+#content #chat, #content #sidebar {
+  height: 100%;
+}
+
+#chat {
+  position: relative;
+}
+
+/* Footer */
+
+#footer {
+  line-height: 1.2em;
+  border-top: 1px solid #ccc;
+
+  display: absolute;
+  bottom: 0;
+
+  padding-top: 5px;
+  padding-bottom: 10px;
+  
+}
+
+/* Input box */
+
+#inputfield {
+  width: 99%;
+  
+  height: 40px;
+
+  position: absolute;
+  bottom: 0;
+}
+
+/* Message box */
+
+#messagebox {
+  width: 100%;
+  height: 100%;
+
+  padding: 1% 0;
+
+  padding-bottom: 60px;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+#messagebox.history {
+  padding-bottom: 0 !important;
+}
+
+#messagebox img.emoticon {
+  float: none;
+  height: 18px;
+}
+
+#messagebox img {
+  float: left;
+}
+
+#messagebox img.extra {
+  float: none;
+}
+
+#messagebox .scrollr {
+  word-wrap: break-word;
+}
+
+/* Calendar */
+
+#calendar {
+  width: 100%;
+  height: 48%;
+  margin-top: 2%;
+  
+  position: relative;
+  word-wrap: break-word;
+  overflow-y: hidden;
+}
+
+#calendar_link {
+  margin-left: 3px;
+}
+
+.event_title a {
+  color: #333;
+  font-weight: bold;
+}
+
+.event_description, .event_date, .event_time, .event_location, .event_description a {
+  font-weight: normal;
+  color: #444;
+}
+
+.event_listing {
+  margin-left: 10px;
+}
+
+.event_description {
+  font-style: italic;
+}
+
+.author {
+  margin-left: 35px;
+}
+
+/* Buddy List */
+
+#buddylist {
+  height: 48%;
+  margin-top: 2%;
+  position: relative;
+}
+
+#buddylist ul {
+  list-style-type: none;
+  padding-left: 10px;
+  margin-top: 10px;
+}
+
+#buddylist ul li {
+  margin-bottom: 5px;
+}
+
+#buddylist p {
+  font-weight: bold;
+  margin: 5px;
+  color: #777;
+}
+
+#buddylist #title {
+  margin-right: 5px;
+}
+
+
+/* Embeds */
+
+#imageDock {
+  overflow : auto;
+}
+
+#imageLink {
+  max-width: 45%;
+  max-height : 315px;
+}
+
+.soundcloud {
+  width: 90%;
+}
+
+/* Separators */
+
+hr {
+  border-top: 1px solid #DDD !important;
+  border-bottom: 0 !important;
+
+  margin: 5px 10px 5px 0 !important;
+}
+
+/* Notifications */
+
+.notification {
+  font-style: italic;
+  color: #777;
+  padding-top: 2px;
+  padding-bottom: 3px;
+}
+
+#desktop {
+  color: #777;
+  padding-right: 5px;
+}
+
+/********************************** 
+
+  Custom browser styles
+
+**********************************/
+
+/* Scrollbars on Webkit */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment  {
+  height: 0;
+  display: block;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track  {
+  background-color: transparent;
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-track:hover  {
+  background-color: #F2F2F2;
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:vertical:hover {
+  height: 50px;
+  background-color: #AAA;
+  border: 1px solid #AAA;
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 50px;
+  background-color: #CBCBCB;
+  border: 1px solid #CBCBCB;
+  -webkit-border-radius: 6px;
+}

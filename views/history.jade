@@ -14,26 +14,26 @@ block append scripts
   script(src='/public/js/history.js')
 
 block header
-  #header
+  #header.row-fluid
     | Currently logged in as 
     span#loggedUser.username #{everyauth.google.user.name}
-    span#logout
-      a(href='/logout') Logout
-    span#logout
-        | |
-    span#logout
-      a(target='_blank',href='/whitelist') Whitelist
-    span#logout
-        | |
-    span#logout
-      a(target='_blank',href='/') Chat
+
+    ul.inline.unstyled.pull-right#menu
+      li
+        a(href='/logout') Logout
+      li
+        a(href='/whitelist',target='_blank') Whitelist
+      li
+        a(target='_blank',href='/') Chat
 
 block content
-  table
-    tr
-      td#messagebox
+  #content.row-fluid
+    div.span9#chat
+      #messagebox.history
         .scrollr
-      td#buddylist.calendar(rowspan="2")
+
+    div.span3#chat
+      #buddylist.calendar
         .scrollr
           #datepicker
           #pagination

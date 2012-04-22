@@ -5,7 +5,6 @@ block append stylesheets
   link(rel="stylesheet", href="public/fancybox/jquery.fancybox-1.3.4.css", type="text/css", media="screen")
 
 block append scripts
-  script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
   script(src='/public/js/jquery-ui-1.8.17.custom.min.js');
   script(src='http://balupton.github.com/jquery-syntaxhighlighter/scripts/jquery.syntaxhighlighter.min.js')
   script(src='/public/fancybox/jquery.fancybox-1.3.4.pack.js')
@@ -17,53 +16,54 @@ block append scripts
   script(src='/public/js/google_calendar.js')
 
 block header
-  #header
+  #header.row-fluid
     span#roomTitle
     a#changeTitle(href='#changeTitleForm') Change title
-    span#logout
-      a(href='/logout') Logout
-    span#logout
-        | |
-    span#logout
-      a(href='/whitelist',target='_blank') Whitelist
-    span#logout
-        | |
-    span#logout
-      a(href='/history',target='_blank') History
+
+    ul.inline.unstyled.pull-right#menu
+      li
+        a(href='/logout') Logout
+      li
+        a(href='/whitelist',target='_blank') Whitelist
+      li
+        a(href='/history',target='_blank') History
 
 block content
-  table
-    tr
-      td#messagebox
+  #content.row-fluid
+    div.span9#chat
+      #messagebox
         .scrollr
-      td#buddylist(rowspan="2")
+      
+      textarea#inputfield(rows='2',placeholder='Type something funny and hit enter')
+
+    div.span3#sidebar
+      #buddylist(rowspan="2")
         .scrollr
-          p 
-            span#title Online
-            // a#toggle(href='#', full='1') &raquo;
-          ul
-          span#noise
-        hr
-        #calendar
-          table.fullheight
-            tr
-              td
-                a#calendar_link(target='_blank', href='#{calendar_web_link}')
-                  img(src='/public/images/calendar.gif')
-            tr
-              td.fullheight
-                #events.scrollr
-    tr
-      td#inputbox
-        textarea#inputfield(rows='2')
-        #footer
-          | Logged in as 
-          span#loggedUser.username #{everyauth.google.user.name}
-          span#desktop
-            input#desknot(type='checkbox') 
-            span Desktop notifications
+          .alt.pull-right
+            span#clients-count
+              |0
+            |&nbsp;nerd(s)
+
+          h4 Online
+          ul.unstyled
+        
+      #calendar
+        .scrollr
+          a.pull-right#calendar_link(target='_blank', href='#{calendar_web_link}')
+            img(src='/public/images/calendar.gif')
+          
+          h4 Events
+          #events
+
+  #footer.row-fluid
+    |Logged in as 
+    span#loggedUser.username.alt #{everyauth.google.user.name}
+    span.pull-right#desktop
+      label(class='checkbox')
+        input#desknot(type='checkbox') 
+        |Desktop notifications
   
   div(style='display:none')
-    #changeTitleForm
+    #changeTitleForm.form-horizontal
       input#newTitle(type='text')
-      input#submitTitle(type='button', value='Change title')
+      input#submitTitle(type='button', value='Change title', class='btn btn-primary')

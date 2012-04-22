@@ -13,63 +13,67 @@ block append scripts
   | </script>
 
 block header
-  #header
+  #header.row-fluid
     | Currently logged in as 
     span#loggedUser.username #{everyauth.google.user.name}
-    span#logout
-      a(href='/logout') Logout
-    span#logout
-        | |
-    span#logout
-      a(target='_blank',href='/history') History
-    span#logout
-        | |
-    span#logout
-      a(target='_blank',href='/') Chat
+    
+    ul.inline.unstyled.pull-right#menu
+      li
+        a(href='/logout') Logout
+      li
+        a(target='_blank',href='/') Chat
+      li
+        a(href='/history',target='_blank') History
 
 block content
-  h3 #{pending.length} Pending
-  table
-    each user, index in pending
-      tr(class='#{index % 2 ? 'odd' : 'even'}')
-        td
-          - if (user.picture) {
-            img.avatar(src='#{user.picture}')
-          - } else {
-            img.avatar.default 
-          - }
-          span.user #{user.name}
-          - if (user.email)
-            span.detail &nbsp;&nbsp;#{user.email}
-        td
-          a.accept(href='/accept/#{user.id}') Accept
-        td
-          a.ban(href='/ban/#{user.id}') Ban
-  h3 #{accepted.length} Whitelisted
-  table
-    each user, index in accepted
-      tr(class='#{index % 2 ? 'odd' : 'even'}')
-        td
-          - if (user.picture) {
-            img.avatar(src='#{user.picture}')
-          - } else {
-            img.avatar.default 
-          - }
-          span.user #{user.name}
-          span.detail &nbsp;&nbsp;accepted by #{userMap[user.acceptedBy].name}
-        td
-          a.ban(href='/ban/#{user.id}') Ban
-  h3 #{banned.length} Blacklisted
-  table
-    each user, index in banned
-      tr(class='#{index % 2 ? 'odd' : 'even'}')
-        td
-          - if (user.picture) {
-            img.avatar(src='#{user.picture}')
-          - } else {
-            img.avatar.default 
-          - }
-          span.user #{user.name}
-          span.detail &nbsp;&nbsp;banned by #{userMap[user.bannedBy].name}
-        td
-          a.accept(href='/accept/#{user.id}') Accept
+  .row-fluid
+    .span4
+      h3 #{pending.length} Pending
+      table
+        each user, index in pending
+          tr(class='#{index % 2 ? 'odd' : 'even'}')
+            td
+              - if (user.picture) {
+                img.avatar(src='#{user.picture}')
+              - } else {
+                img.avatar.default 
+              - }
+              span.user #{user.name}
+              - if (user.email)
+                span.detail &nbsp;&nbsp;#{user.email}
+            td
+              a.accept(href='/accept/#{user.id}') Accept
+            td
+              a.ban(href='/ban/#{user.id}') Ban
+    
+    .span4
+      h3 #{accepted.length} Whitelisted
+      table
+        each user, index in accepted
+          tr(class='#{index % 2 ? 'odd' : 'even'}')
+            td
+              - if (user.picture) {
+                img.avatar(src='#{user.picture}')
+              - } else {
+                img.avatar.default 
+              - }
+              span.user #{user.name}
+              span.detail &nbsp;&nbsp;accepted by #{userMap[user.acceptedBy].name}
+            td
+              a.ban(href='/ban/#{user.id}') Ban
+
+    .span4
+      h3 #{banned.length} Blacklisted
+      table
+        each user, index in banned
+          tr(class='#{index % 2 ? 'odd' : 'even'}')
+            td
+              - if (user.picture) {
+                img.avatar(src='#{user.picture}')
+              - } else {
+                img.avatar.default 
+              - }
+              span.user #{user.name}
+              span.detail &nbsp;&nbsp;banned by #{userMap[user.bannedBy].name}
+            td
+              a.accept(href='/accept/#{user.id}') Accept
