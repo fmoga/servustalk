@@ -12,6 +12,42 @@ var idle = false;
 var idlePromise;
 var tabHistory;
 var unloading = false;
+var userLocation;
+
+
+//Get the latitude and the longitude;
+function successFunction(position) {
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    initialize()
+    codeLatLng(lat, lng)
+}
+
+function errorFunction(){
+    alert("Geocoder failed");
+}
+
+function initialize() {
+    geocoder = new google.maps.Geocoder();
+}
+
+function codeLatLng(lat, lng) {
+
+    var latlng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode({'latLng': latlng}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+      if (results.length > 0) {
+         //formatted address
+	 userLocation = results[0].formatted_address;
+	if(socket){	 
+	  socket.emit('location', userLocation);
+        }
+      }else {
+	userLocation = 'Location unavailable';
+      } 
+    } 
+    });
+}
 
 // jQuery plugin to get textarea cursor position
 (function ($, undefined) {
@@ -57,6 +93,10 @@ $(document).ready(function() {
     'themes' : ['ubutalk'],
     'theme': 'ubutalk'
   });
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+}
 
   loadCalendar(GOOGLE_CALENDAR_ATOM_FEED, 0, GOOGLE_CALENDAR_DAYS_INTERVAL);
   setInterval(function() {
@@ -110,6 +150,9 @@ $(document).ready(function() {
 
   socket.on('connect', function() {
     socket.emit('loadTitle');
+    if(userLocation) {    
+      socket.emit('location', userLocation);
+    }
   });
 
   socket.on('reconnect', function(transport, attempts) {
