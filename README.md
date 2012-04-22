@@ -18,6 +18,8 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 * Emoticons
 * Chat title (topic)
 * Announcements and alerts using `/#<hexcolor> text` syntax
+* Input history using the up arrow
+* Uptoke system similar to reddit.com
 * Commands support (e.g. `/clear` will clear user's messagebox) 
 * User moderation. Chat access is based on a whitelisting process. New users can't access the group chat until a whitelisted user accepts their request. First user to connect to the group chat is automatically accepted (he's probably the administrator) and then the whitelisting process continues normally. New requests, whitelisting/blacklisting trigger notifications in the chat area and they have realtime effects (e.g. blacklisting a user will instantly disconnect him from all active sessions).
 * Using long-polling as Comet technique so server push works on the vast majority of browsers including on Kindle, iOS and Android-based devices
@@ -26,7 +28,8 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 
 * Install [node.js][1] (0.6.9)
 * Install [npm][2] (1.1.0-3)
-* Run `npm install` in the root folder
+* if on Windows, remove forever from package.json as it is only used in production and fails to compile on Windows
+* Run `npm install` in the root folder 
 * Install [mongodb][3] and create database named after definition in `config.js`
 * Register Google App via [Google APIs Console][4]. OAuth callback endpoint can be found at `/auth/google/callback`.
 * Add `my_config.js` file as described below
