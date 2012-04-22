@@ -32,6 +32,13 @@ body, input, textarea {
   font-style: italic;
 }
 
+.idleSince {
+  font-size: 12px;
+  color: #AAA;
+  font-style: italic;
+  margin-left: 5px;
+}
+
 .profilepic.idle {
   opacity: 0.5;
   filter: alpha(opacity=50); /* For IE8 and earlier */
@@ -71,6 +78,7 @@ html, body {
 .scrollr {
   overflow-y: scroll;
   height: 100%;
+  padding-right: 10px;
 }
 
 /********************************** 
@@ -285,6 +293,10 @@ hr {
   color: #777;
   padding-top: 2px;
   padding-bottom: 3px;
+}
+
+.attention {
+  color: #CD3333;
 }
 
 #desktop {
