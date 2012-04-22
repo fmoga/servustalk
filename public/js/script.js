@@ -24,7 +24,7 @@ function successFunction(position) {
 }
 
 function errorFunction(){
-    alert("Geocoder failed");
+    console.log("Geocoder failed");
 }
 
 function initialize() {
@@ -213,11 +213,7 @@ $(document).ready(function() {
        nameStyle = 'style="display: none"';
     }
     $.each(clients, function(index, client) {
-      var picture = client.picture ? client.picture : DEFAULT_PICTURE;
-      var idle = client.idle ? 'idle' : '';
-      var idleSince = client.idle ? '<span class="idleSince" idleSince="' + (new Date().getTime() - client.idleFor) + '"></span>' : '';
-      var user_loc = client.location ? '<span class="location">' + client.location + '</span>' : '';
-      $(buddylist).append('<li><img class="profilepic ' + idle + '" title="' +client.name + '" src="' + picture + '"/><span class="profilename ' + idle + '" ' + nameStyle + '>' + client.name + '</span>' + idleSince + user_loc  +'</li>'); 
+      addClient(client, buddylist, nameStyle);
     });
 
     $('#clients-count').html(clients.length);
