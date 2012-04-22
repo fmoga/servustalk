@@ -3,3 +3,4 @@ node_modules/
 servustalk.err
 servustalk.log
 my_config.js
+*~
