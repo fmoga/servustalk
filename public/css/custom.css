@@ -312,6 +312,8 @@ html, body {
 
 #buddylist ul li {
   margin-bottom: 5px;
+  height: 32px;
+  overflow: hidden;
 }
 
 #buddylist p {
