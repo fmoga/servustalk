@@ -140,9 +140,10 @@ function processMessage(message, userMention, scroll, displayInline){
     var html = '<div class="' + classes + '">' + 
                 // Append the html string inside the vote div
                 $('<div>').append(votes.clone()).html() + 
-                // Append the processed message
-                '<div class="content">' + result.html + '</div>' + '</div>';
+                // Append the processed message content
+                '<div class="content">' + result.html;
 
+    // Append embeds, still in content
     if (displayInline) {
       html += addYoutubeLinks(result.youtube);
       html += addMixcloudLinks(result.mixcloud);
@@ -150,6 +151,9 @@ function processMessage(message, userMention, scroll, displayInline){
       html += addMp3s(result.mp3s);
       html += result.imagery;
     }
+
+    // Close content and messageContent
+    html += '</div>' + '</div>';
 
     return html;
 }
