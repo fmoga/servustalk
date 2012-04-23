@@ -211,13 +211,14 @@ function getMessages(req, res) {
   timestamp = parseInt(req.params.timestamp);
   if (isNaN(timestamp)) {
     res.render('404');
-  }
-  persistency.getMessagesChunk(timestamp, 100, function(err, messages) {
-    persistency.mergeMessagesWithUsers(messages, null, function(messages) {
-      res.contentType('json');
-      res.send(messages);
+  } else {
+    persistency.getMessagesChunk(timestamp, 100, function(err, messages) {
+      persistency.mergeMessagesWithUsers(messages, null, function(messages) {
+        res.contentType('json');
+        res.send(messages);
+      });
     });
-  });
+  {
 }
 
 exports.index = index
