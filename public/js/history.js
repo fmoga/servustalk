@@ -1,6 +1,8 @@
 // depends on config.js
 
 var lastTimestamp = 0;
+var HISTORY_SCROLL_THRESHOLD = 200;
+var loading = false;
 
 function mergeMessagesWithUsers(messages, users) {
   // Maps user_id -> user
@@ -15,19 +17,39 @@ function mergeMessagesWithUsers(messages, users) {
   }
 }
 
+function addMessages(messages, clear) {
+  if (clear) {
+    resetDisplayArea();
+  }
+  for (i = 0; i < messages.length; ++i) {
+    displayMessage(messages[i], false, true);
+    lastTimestamp = messages[i].ts;
+  }
+  if (messages.length == 0) {
+    if ($('#no_more_items').length == 0) {
+      div = $('<div>');
+	  div.attr('id', 'no_more_items');
+	  div.html('No more messages to load');
+      $('#messagebox .scrollr').append(div);
+    }
+  } else {
+    $('#no_more_items').remove();
+  }
+  loading = false;
+}
+
 
 function getHistory(date) {
   var timestamp = date.getTime();
+  loading = true;
   $.ajax({
     url: "/getMessages/"+timestamp,
     type: "POST",
     success: function(messages) {
-      console.log(messages);
-      resetDisplayArea();
-      for (i = 0; i < messages.length; ++i) {
-        displayMessage(messages[i], false, true);
-        lastTimestamp = messages[i].ts;
-      }
+      addMessages(messages, true);
+    },
+    error: function() {
+      loading = false;
     },
   });
 }
@@ -38,14 +60,15 @@ function resetDisplayArea() {
 }
 
 function loadMore() {
+  loading = true;
   $.ajax({
     url: "/getMessages/"+lastTimestamp,
     type: "POST",
     success: function(messages) {
-      for (i = 0; i < messages.length; ++i) {
-        displayMessage(messages[i], false, true);
-        lastTimestamp = messages[i].ts;
-      }
+      addMessages(messages, false);
+    },
+    error: function() {
+      loading = false;
     },
   });
 }
@@ -67,11 +90,13 @@ $(document).ready(function() {
 
   $('.scrollr').scroll(function(){
     var elem = $('#messagebox .scrollr');
-    if (elem[0].scrollHeight - elem.scrollTop() <= elem.outerHeight() + 100) {
-      loadMore();
+    if (elem[0].scrollHeight - elem.scrollTop() <= elem.outerHeight() + HISTORY_SCROLL_THRESHOLD) {
+      if (!loading) {
+        loadMore();
+      }
     }
   });
 
   var today = new Date();
-  getHistory(new Date(today.getYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0));
+  getHistory(new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0));
 });
