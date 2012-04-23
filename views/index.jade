@@ -22,14 +22,14 @@ block header
   #header.row-fluid
     ul.inline.unstyled.pull-right#menu
       li
-        a(href='/logout') Logout
+        a(href='/history',target='_blank') History
       li
         a(href='/whitelist',target='_blank') Whitelist
       li
-        a(href='/history',target='_blank') History
+        a(href='/logout') Logout
 
-    span#roomTitle
-    a#changeTitle(href='#changeTitleForm') Change title
+    span#roomTitle.hidden-phone
+    a#changeTitle.hidden-phone(href='#changeTitleForm') Change title
 
 block content
   #content.row-fluid
@@ -61,7 +61,7 @@ block content
   #footer.row-fluid
     |Logged in as 
     span#loggedUser.username.alt #{everyauth.google.user.name}
-    span.pull-right#desktop
+    span.pull-right#desktop.hidden-phone
       label(class='checkbox')
         input#desknot(type='checkbox') 
         |Desktop notifications
