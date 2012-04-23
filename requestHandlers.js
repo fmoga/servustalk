@@ -29,7 +29,7 @@ function login(req, res) {
 function index(req, res) {
   isUserAllowed(req, res, function() {
     res.render('index', {
-      calendar_web_link: config.calendar.web_link
+      calendar_web_link: config.app.calendar
     });
   });
 }
@@ -84,7 +84,7 @@ function getHistory(req, res) {
 function beta(req, res) {
   isUserAllowed(req, res, function() {
     res.render('beta', {
-      calendar_web_link: config.calendar.web_link
+      calendar_web_link: config.app.calendar
     });
   });
 }

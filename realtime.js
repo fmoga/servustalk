@@ -5,7 +5,7 @@ var io = require('socket.io'),
     parseCookie = require('connect').utils.parseCookie;
 
 var online = {};
-var title = config.defaultTitle;
+var title = config.app.defaultTitle;
 var PING_INTERVAL = 5 * 60 * 1000; // 5 min
 var MAX_LATENCY = 10 * 1000; // 10 sec
 
@@ -81,7 +81,7 @@ function init(app, sessionStore) {
             console.warn('Error getting title: ' + err, err.stack);
         } else {
             if (titles.length == 0) {
-                title = config.defaultTitle;
+                title = config.app.defaultTitle;
             } else {
                 title = titles[0];
             }

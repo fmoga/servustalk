@@ -138,13 +138,13 @@ $(document).ready(function() {
 
   socket.on('loadTitle', function(title) {
     roomTitle = title;
-    var result = handleLinksAndEscape(title.text);
+    var result = handleLinksAndEscape(title);
     $('#roomTitle').html(result.html);
   });
 
   socket.on('updateTitle', function(title) {
     roomTitle = title;
-    var result = handleLinksAndEscape(title.text);
+    var result = handleLinksAndEscape(title);
     $('#roomTitle').html(result.html);
     displayNotification(title.user + ' changed chat title', false, true);
   });

@@ -17,15 +17,9 @@ config.app = {
   sio: {
     log_level: 1,
     transports: ['websocket', 'xhr-polling']
-  }
-}
-
-config.calendar = {
-  web_link: 'https://www.google.com/calendar/render?cid=<GOOGLE_CALENDAR_ID>' 
-}
-
-config.defaultTitle = {
-  text: 'UbunTalk - chat for humans (and dancers)',
+  },
+  calendar: 'https://www.google.com/calendar/render?cid=<GOOGLE_CALENDAR_ID>',
+  defaultTitle: 'UbunTalk - chat for humans (and dancers)'
 }
 
 try {
