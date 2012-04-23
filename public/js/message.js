@@ -18,10 +18,14 @@ function updateScore(message) {
     }
 
     $('#ts_'+message.ts).html(score);
-    $('#ts_'+message.ts).tooltip({
-      placement: "top",
-      title: function() { return "-" + downtokes + " +" + uptokes; },
-    });
+
+    // Add a detailed vote counter, unless we're on the history panel
+    if (!$("#messagebox").hasClass("history")) {
+      $('#ts_'+message.ts).tooltip({
+        placement: "top",
+        title: function() { return "-" + downtokes + " +" + uptokes; },
+      });
+    }
 
     // Add a zero class if the score is 0
     if (score == 0) {

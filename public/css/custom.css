@@ -11,10 +11,6 @@ body, input, textarea, p {
   font-size: 14px;
 }
 
-* {
-  font-family: 'Droid Sans', sans-serif;
-}
-
 /* Profile pics & user info */
 
 .profilepic {
@@ -172,11 +168,12 @@ html, body {
 
 #inputfield {
   width: 99%;
-  
   height: 40px;
 
   position: absolute;
   bottom: 0;
+
+  color : #000 !important;
 }
 
 /* Message box */
@@ -252,7 +249,7 @@ html, body {
 }
 
 .vote.voted-minus .vote-minus {
-  
+
 }
 
 .vote.voted-plus .vote-display {
@@ -296,6 +293,10 @@ html, body {
 
 #calendar_link {
   margin-left: 3px;
+}
+
+#events {
+  margin-top: .5em;
 }
 
 .event_title a {
