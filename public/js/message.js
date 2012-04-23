@@ -141,7 +141,7 @@ function processMessage(message, userMention, scroll, displayInline){
                 // Append the html string inside the vote div
                 $('<div>').append(votes.clone()).html() + 
                 // Append the processed message
-                result.html + '</div>';
+                '<div class="content">' + result.html + '</div>' + '</div>';
 
     if (displayInline) {
       html += addYoutubeLinks(result.youtube);
