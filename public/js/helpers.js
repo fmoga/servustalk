@@ -2,23 +2,21 @@ getProfileName = function(client, nameStyle) {
   // this line is still duplicated in getProfilePic
   // TODO: fix later its late
   var idle = client.idle ? 'idle' : '';
-  var profileName = $('<span>');
-  profileName.addClass('profilename');
-  profileName.addClass(idle);
-  profileName.addClass(nameStyle);
-  profileName.html(client.name);
+  var profileName = $('<span>').addClass('profilename')
+                               .addClass(idle)
+                               .addClass(nameStyle)
+                               .html(client.name);
   return profileName;
 }
 
 getProfilePic = function(client) {
   var picture = client.picture ? client.picture : DEFAULT_PICTURE;
   var idle = client.idle ? 'idle' : '';
-  var profilePic = $('<img>');
-  profilePic.addClass('profilepic');
-  profilePic.addClass(idle);
-  profilePic.addClass('middle');
-  profilePic.attr('title', client.name);
-  profilePic.attr('src', picture);
+  var profilePic = $('<img>').addClass('profilepic')
+                             .addClass(idle)
+                             .addClass('middle')
+                             .attr('title', client.name)
+                             .attr('src', picture);
   return profilePic;
 }
 
@@ -28,18 +26,18 @@ getMockLocation = function() {
 }
 
 getProfileLocation = function(client) {
-  var locationSpan = $('<span>');
-  locationSpan.addClass('location');
-  locationSpan.html(client.location ? client.location : getMockLocation());
-  return locationSpan;
+  return $('<span>').addClass('location')
+                    .html(client.location ? client.location : getMockLocation());
+}
+
+idleSince = function(client) {
+  return new Date().getTime() - client.idleFor;
 }
 
 getProfileIdle = function(client) {
-  var idleSpan = $('<span>');
-  idleSpan.addClass('idleSpan');
-  idleSpan.attr('idleSince', (new Date().getTime() - client.idleFor));
-  var idleSince = client.idle ? idleSpan : '';
-  return idleSince;
+  var idleSpan = $('<span>').addClass('idleSpan')
+                            .attr('idleSince', idleSince(client));
+  return client.idle ? idleSpan : '';
 }
 
 addClient = function(client, buddylist, nameStyle) {
@@ -48,18 +46,16 @@ addClient = function(client, buddylist, nameStyle) {
   var profileLocation = getProfileLocation(client);
   var idleSince = getProfileIdle(client);
 
-  var li = $('<li>');
-  li.append(profilePic);
-  li.append(profileName);
-  li.append(idleSince);
-  li.append(profileLocation);
+  var li = $('<li>').append(profilePic)
+                    .append(profileName)
+                    .append(idleSince)
+                    .append(profileLocation);
   
   var inputField = $('textarea#inputfield');
 
-  // When clicking a user in the buddy list, mention that user and focus
   li.on('click', function() {
-    inputField.val(inputField.val() + '@' + client.name + ' ');
-    inputField.setCursorPosition(inputField.val().length).focus();
+    inputField.val(inputField.val() + '@' + client.name + ' ')
+              .setCursorPosition(inputField.val().length).focus();
   });
 
   buddylist.append(li);

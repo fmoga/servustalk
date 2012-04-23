@@ -149,13 +149,13 @@ function processMessage(message, userMention, scroll, displayInline){
             .attr('id','ts_' + message.ts + '_minus')
             .addClass('vote-minus')
             .html("-")
-            .appendTo(votes);    
+            .appendTo(votes);
 
     // Vote display
     $('<span>').attr('id',"ts_" + message.ts)
         .addClass("vote-display")
         .attr("rel","tooltip")
-        .appendTo(votes)
+        .appendTo(votes);
 
     // Upvote link
     $('<a>').attr('href',"/vote?vote=1&message_ts='" + message.ts + "'")
