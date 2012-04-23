@@ -433,8 +433,8 @@ function reportIdleness() {
 
 function refreshIdleTimes() {
   now = new Date().getTime();
-  $('.idleSince').each(function() {
-    since = now - parseInt($(this).attr('idleSince'));
+  $('.idleSpan').each(function() {
+    since = now - parseInt($(this).attr('idlesince'));
     readableTime = '';
     if (since > ONE_HOUR) {
       readableTime = Math.floor(since / ONE_HOUR) + 'h';
