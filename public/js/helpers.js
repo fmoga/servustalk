@@ -50,10 +50,12 @@ addClient = function(client, buddylist, nameStyle) {
   li.append(idleSince);
   li.append(profileLocation);
   
+  var inputField = $('textarea#inputfield');
 
-  // When clicking a user in the buddy list, mention that user.
+  // When clicking a user in the buddy list, mention that user and focus
   li.on('click', function() {
-    $('textarea#inputfield').append("@" + client.name + " ");
+    inputField.val(inputField.val() + '@' + client.name + ' ');
+    inputField.setCursorPosition(inputField.val().length).focus();
   });
 
   buddylist.append(li);

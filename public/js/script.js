@@ -86,6 +86,14 @@ function codeLatLng(lat, lng) {
   }
 })(jQuery);
 
+// jQuery plugin to set textarea cursor position wrapper
+(function ($, undefined) {
+  $.fn.setCursorPosition = function(index) {
+    this.selectRange(index, index);
+    return this;
+  }
+})(jQuery);
+
 $(document).ready(function() {
   $.SyntaxHighlighter.init({
     'lineNumbers': true,
