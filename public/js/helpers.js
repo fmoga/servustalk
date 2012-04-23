@@ -23,7 +23,7 @@ getProfilePic = function(client) {
 }
 
 getMockLocation = function() {
-  var messages = ["20.000 leagues under the sea", "the underworld", "higher then the empire state", "moon"];
+  var messages = ["20.000 leagues under the sea", "the underworld", "higher than the empire state", "moon"];
   return messages[Math.floor(Math.random() * messages.length)];
 }
 
