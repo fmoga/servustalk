@@ -52,8 +52,8 @@ addClient = function(client, buddylist, nameStyle) {
   
 
   // When clicking a user in the buddy list, mention that user.
-  li.live('click', function() {
-    $('textarea#inputfield').append("@" + profileName.html() + " ");
+  li.on('click', function() {
+    $('textarea#inputfield').append("@" + client.name + " ");
   });
 
   buddylist.append(li);
