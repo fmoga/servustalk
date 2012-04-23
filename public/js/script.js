@@ -319,8 +319,8 @@ $(document).ready(function() {
     if (tabHistory.pos < tabHistory.names.length) {
       name = tabHistory.names[tabHistory.pos];
     }
-    $('#inputfield').val(tabHistory.left + '@' + name + tabHistory.right);
-    var cursor = tabHistory.left.length + 1 + name.length;
+    $('#inputfield').val(tabHistory.left + '@' + name + tabHistory.right + " ");
+    var cursor = tabHistory.left.length + name.length + 2; // + 2 because of @ and ' '
     $('#inputfield').setCursorPosition(cursor);
     if (tabHistory.pos == tabHistory.names.length) {
       tabHistory.pos = 0;
