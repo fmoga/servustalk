@@ -41,7 +41,7 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
         }
         my_config.app = {
             google_client_id: "GOOGLE_CLIENT_ID_TOKEN",
-            google_client_secret: "GOOGLE_CLIENT_SECRET_TOKEN"
+            google_client_secret: "GOOGLE_CLIENT_SECRET_TOKEN",
             calendar: 'https://www.google.com/calendar/render?cid=<GOOGLE_CALENDAR_ID>'
         }
         module.exports = my_config
