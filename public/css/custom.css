@@ -331,6 +331,7 @@ html, body {
 
 #imageDock {
   overflow : auto;
+  margin-left: 42px;
 }
 
 #imageLink {
@@ -358,6 +359,19 @@ hr {
   color: #777;
   padding-top: 2px;
   padding-bottom: 3px;
+}
+
+.alert {
+  border-radius: 4px;
+  padding: 3px 3px 3px 8px !important;
+  margin-bottom: 4px !important;
+  font-weight: bold;
+  border: 1px solid #eee !important;
+  color: #000 !important;
+}
+
+.mention {
+  background-color: #FFFFAA;
 }
 
 .attention {
