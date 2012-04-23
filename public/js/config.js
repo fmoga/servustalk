@@ -177,3 +177,4 @@ var EMOTICONS = [
   { code: 'boian', url:''},
   { code: '\n', url:''}
 ];
+var MOCK_LOCATIONS = ["20.000 leagues under the sea", "the underworld", "higher than the empire state", "moon"];
