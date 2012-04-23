@@ -6,9 +6,13 @@
 
 /* Typography */
 
-body, input, textarea {
+body, input, textarea, p {
   font-family: 'Droid Sans', sans-serif;
   font-size: 14px;
+}
+
+* {
+  font-family: 'Droid Sans', sans-serif;
 }
 
 /* Profile pics & user info */
@@ -330,6 +334,9 @@ html, body {
   margin-bottom: 5px;
   height: 32px;
   overflow: hidden;
+
+  cursor: hand;
+  cursor: pointer;
 }
 
 #buddylist p {
@@ -382,7 +389,6 @@ hr {
   padding: 3px 3px 3px 8px !important;
   margin-bottom: 4px !important;
   font-weight: bold;
-  border: 1px solid #eee !important;
   color: #000 !important;
 }
 
