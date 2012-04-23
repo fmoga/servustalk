@@ -218,7 +218,7 @@ function getMessages(req, res) {
         res.send(messages);
       });
     });
-  {
+  }
 }
 
 exports.index = index
