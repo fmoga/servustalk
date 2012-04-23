@@ -138,13 +138,13 @@ $(document).ready(function() {
 
   socket.on('loadTitle', function(title) {
     roomTitle = title;
-    var result = handleLinksAndEscape(title);
+    var result = handleLinksAndEscape(title.text);
     $('#roomTitle').html(result.html);
   });
 
   socket.on('updateTitle', function(title) {
     roomTitle = title;
-    var result = handleLinksAndEscape(title);
+    var result = handleLinksAndEscape(title.text);
     $('#roomTitle').html(result.html);
     displayNotification(title.user + ' changed chat title', false, true);
   });
@@ -155,7 +155,7 @@ $(document).ready(function() {
       if (flickeringTitle) clearInterval(flickeringTitle);
       flickeringTitle = setInterval(function(){
         if(document.title === originalDocTitle) {
-          document.title = message.user.name + ' has messaged UbunTalk';
+          document.title = message.user.name + ' has messaged ...';
 	      } else {
           document.title = originalDocTitle;	
         }
