@@ -22,12 +22,16 @@ getProfilePic = function(client) {
   return profilePic;
 }
 
+getMockLocation = function() {
+  var messages = ["20.000 leagues under the sea", "the underworld", "higher then the empire state", "moon"];
+  return messages[Math.floor(Math.random() * messages.length)];
+}
+
 getProfileLocation = function(client) {
   var locationSpan = $('<span>');
   locationSpan.addClass('location');
-  locationSpan.html(client.location);
-  var profileLocation = client.location ? locationSpan : '';
-  return profileLocation;
+  locationSpan.html(client.location ? client.location : getMockLocation());
+  return locationSpan;
 }
 
 getProfileIdle = function(client) {
