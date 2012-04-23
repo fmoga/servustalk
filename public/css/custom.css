@@ -251,11 +251,12 @@ html, body {
   color: red;
 }
 
-.vote.voted-plus .vote-display{
-  color: green;
+.vote.voted-minus .vote-minus {
+  
 }
 
-.vote.voted-plus .vote-plus {
+.vote.voted-plus .vote-display {
+  color: green;
 }
 
 .vote.voted-minus .vote-display{
@@ -379,8 +380,8 @@ hr {
 .notification {
   font-style: italic;
   color: #777;
-  padding-top: 2px;
-  padding-bottom: 3px;
+  padding-top: 10px;
+  padding-bottom: 5px;
 }
 
 .alert {

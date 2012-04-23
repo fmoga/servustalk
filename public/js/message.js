@@ -8,11 +8,20 @@ var lastMessage = NO_MESSAGE;
 
 function updateScore(message) {
     score = 0;
+    uptokes = 0;
+    downtokes = 0;
+
     if (message.downtokes != undefined && message.uptokes != undefined) {
+      uptokes = message.uptokes;
+      downtokes = message.downtokes;
       score = message.uptokes - message.downtokes;
     }
 
     $('#ts_'+message.ts).html(score);
+    $('#ts_'+message.ts).tooltip({
+      placement: "top",
+      title: function() { return "-" + downtokes + " +" + uptokes; },
+    });
 
     // Add a zero class if the score is 0
     if (score == 0) {
@@ -33,26 +42,39 @@ function sendVote(message_ts, vote) {
 function addTimestampHandler(message) {
   updateScore(message);
 
-  $('#ts_' + message.ts + '_plus').click(function(e) {
+  $('#ts_' + message.ts + '_plus').on("click",function(e) {
     e.preventDefault();
-    sendVote(message.ts, 1);
+
+    // If we already voted plus, remove the vote
+    if ($(this).parent().hasClass("voted-plus")) {
+      sendVote(message.ts, 0);
+      $(this).parent().removeClass("voted-plus");
+    } else {
+      sendVote(message.ts, 1);
+      $(this).parent().addClass("voted-plus");
+    }
 
     // Not a 0 vote anymore
     $(this).parent().removeClass("zero");
-
+    // Not a minus vote either
     $(this).parent().removeClass("voted-minus");
-    $(this).parent().addClass("voted-plus");
   });
 
-  $('#ts_' + message.ts + '_minus').click(function(e) {
+  $('#ts_' + message.ts + '_minus').on("click",function(e) {
     e.preventDefault();
-    sendVote(message.ts, -1);
+
+    // If we already voted minus, remove the vote
+    if ($(this).parent().hasClass("voted-minus")) {
+      sendVote(message.ts, 0);
+      $(this).parent().removeClass("voted-minus");
+    } else {
+      sendVote(message.ts, -1);
+      $(this).parent().addClass("voted-minus");
+    }
 
     // Not a 0 vote anymore
     $(this).parent().removeClass("zero");
-
     $(this).parent().removeClass("voted-plus");
-    $(this).parent().addClass("voted-minus");
   });
 }
 
@@ -128,7 +150,8 @@ function processMessage(message, userMention, scroll, displayInline){
     // Vote display
     $('<span>').attr('id',"ts_" + message.ts)
         .addClass("vote-display")
-        .appendTo(votes);
+        .attr("rel","tooltip")
+        .appendTo(votes)
 
     // Upvote link
     $('<a>').attr('href',"/vote?vote=1&message_ts='" + message.ts + "'")
