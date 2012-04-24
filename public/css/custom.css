@@ -354,12 +354,12 @@ html, body {
 
 /* Embeds */
 
-#imageDock {
+.imageDock {
   overflow : auto;
 }
 
-#imageLink {
-  max-width: 45%;
+.imageLink {
+  max-width: 60%;
   max-height : 315px;
 }
 

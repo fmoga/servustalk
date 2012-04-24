@@ -262,7 +262,7 @@ function handleLinksAndEscape(text) {
     }
     // check for imagery content
     var scrolled = isScrolledToBottom() ? ' onload="scrollToBottom()"' : '';
-    imagery += '<a target="_blank" href="' + link +'"><img id="imageLink" src="' + link + '"' + scrolled + ' onerror="this.style.display = \'none\'"></img></a>';
+    imagery += '<a target="_blank" href="' + link +'"><img class="imageLink" src="' + link + '"' + scrolled + ' onerror="this.style.display = \'none\'"></img></a>';
     // check for mp3s
     if (link.substr(-4) === '.mp3') {
       mp3s.push(link);
@@ -280,7 +280,7 @@ function handleLinksAndEscape(text) {
   html = html.replace("[code]", "<code class='highlight'>");
   html = html.replace("[/code]", "</code>");
   
-  imagery = '<div id="imageDock">' + imagery + '</div>';
+  imagery = '<div class="imageDock">' + imagery + '</div>';
 
   return {
     html : html,
