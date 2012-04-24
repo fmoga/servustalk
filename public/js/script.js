@@ -170,6 +170,13 @@ $(document).ready(function() {
   });
 
   socket.on('clients', function(clients) {
+    // sort clients in reverse order of login time and increasing order of idle times
+    var now = new Date().getTime();
+    clients = clients.reverse().sort(function(a, b) {
+      var idleA = a.idle ? a.idleFor : 0;
+      var idleB = b.idle ? b.idleFor : 0;
+      return idleA - idleB;
+    });
     var buddylist = $('#buddylist ul');
     $(buddylist).empty();
     var nameStyle = '';
