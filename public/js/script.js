@@ -173,8 +173,8 @@ $(document).ready(function() {
     // sort clients in reverse order of login time and increasing order of idle times
     var now = new Date().getTime();
     clients = clients.reverse().sort(function(a, b) {
-      var idleA = a.idle ? a.idleFor : 0;
-      var idleB = b.idle ? b.idleFor : 0;
+      var idleA = a.idle ? a.idleFor : -1;
+      var idleB = b.idle ? b.idleFor : -1;
       return idleA - idleB;
     });
     var buddylist = $('#buddylist ul');
