@@ -129,13 +129,26 @@ function displayMessage(message, autoscroll, displayInline) {
 
     // Add vote handlers
     addTimestampHandler(message);
+  }
+}
 
+function handleMeme(html) {
+  memeCmd = html.split(' ');
+  if (memeCmd[0] == '/meme') {
+    selectedMeme = memeCmd[1];
+    img = $('<img>').attr('src', '/public/img/ggg.jpg').addClass('imgimg');
+    imgContainer = $('<div>').addClass('meme').append("<span class='toptop'>top text</span><br/>").append(img).append("<span class='botbot'>bottom text</span>");
+    meme = $("<div>").append(imgContainer.clone()).html();
+    return meme;
+  } else {
+    return html;
   }
 }
 
 function processMessage(message, userMention, scroll, displayInline){
     var result = handleLinksAndEscape(message.text);
     result.html = handleMentions(result.html, userMention);
+    result.html = handleMeme(result.html);
     var classes = 'messageContent';
     if (hasMention(result.html, userMention)) {
       classes += ' mention';
