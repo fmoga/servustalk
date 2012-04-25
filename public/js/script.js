@@ -16,37 +16,40 @@ var userLocation;
 
 
 //Get the latitude and the longitude;
-function successFunction(position) {
-    var lat = position.coords.latitude;
-    var lng = position.coords.longitude;
-    initialize()
-    codeLatLng(lat, lng)
+function geolocationSuccess(position) {
+  var lat = position.coords.latitude;
+  var lng = position.coords.longitude;
+  var acc = position.coords.accuracy;
+  codeLatLng(lat, lng, acc)
 }
 
-function errorFunction(){
-    console.log("Geocoder failed");
+function geolocationError(){
+  console.log("Geocoder failed");
 }
 
-function initialize() {
-    geocoder = new google.maps.Geocoder();
-}
-
-function codeLatLng(lat, lng) {
-
-    var latlng = new google.maps.LatLng(lat, lng);
-    geocoder.geocode({'latLng': latlng}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-      if (results.length > 0) {
-         //formatted address
-	 userLocation = results[0].formatted_address;
-	if(socket){	 
-	  socket.emit('location', userLocation);
+function codeLatLng(lat, lng, accuracy) {
+  var latlng = new google.maps.LatLng(lat, lng);
+  geocoder.geocode({'latLng': latlng}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (accuracy < ACCEPTABLE_ACCURACY) {
+        // exact location, display all details
+        userLocation = results[0].formatted_address;
+      } else {
+        // inexact location, display city if available and country
+        for(var i in results) {
+          if ($.inArray('locality', results[i].types) > -1 || $.inArray('country', results[i].types) > -1) {
+            userLocation = results[i].formatted_address;
+            break;
+          }
         }
-      }else {
-	userLocation = 'Location unavailable';
-      } 
-    } 
-    });
+      }
+      if(socket) {	 
+        socket.emit('location', userLocation);
+      }
+    } else {
+      userLocation = 'Location unavailable';
+    }
+  });
 }
 
 $(document).ready(function() {
@@ -58,8 +61,9 @@ $(document).ready(function() {
   });
 
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
-}
+    geocoder = new google.maps.Geocoder();
+    navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
+  }
 
   loadCalendar(GOOGLE_CALENDAR_ATOM_FEED, 0, GOOGLE_CALENDAR_DAYS_INTERVAL);
   setInterval(function() {

@@ -9,6 +9,7 @@ var GOOGLE_CALENDAR_UPDATE_INTERVAL = 2 * ONE_MINUTE; // 2 mins
 var HISTORY_MESSAGES_PER_PAGE = 100;
 var DEFAULT_PICTURE = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
 var MAX_TIMESTAMP_DIFF = 60 * 1000; // 1 min
+var ACCEPTABLE_ACCURACY = 400; // meters
 var MENTION_SOUND = '/public/audio/touche.wav';
 var DAY_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 var MONTH = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
