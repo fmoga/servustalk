@@ -143,7 +143,7 @@ function handleMeme(html) {
   if (memeCmd[0] == '/meme') {
     canvas = $('<canvas>').addClass('meme')
                           .attr('topText', 'this is the top text')
-                          .attr('topText', 'this is the bottom text')
+                          .attr('bottomText', 'this is the bottom text')
                           .attr('meme', 'ggg')
                           .attr('processed', 'false');
     return $("<div>").append(canvas.clone()).html();
@@ -152,19 +152,34 @@ function handleMeme(html) {
   }
 }
 
+// TODO: code cleanup
+// TODO: support different image sizes
 function memeify() {
+  MEMES = {};
+  MEMES['ggg'] = '/public/img/ggg.jpg';
+
   canvasMemes = $('.meme');
   for (var i = 0; i < canvasMemes.length; i++) {
-    canvas = $(memeCanvases[i]);
+    canvas = $(canvasMemes[i]);
     if (canvas.attr('processed') != 'true') {
       // I have no idea why I have to specify canvas[0], but hey - it works
-      var ctx = canvas[0].getContext("2d");  
-  
-     ctx.fillStyle = "rgb(200,0,0)";  
-     ctx.fillRect (10, 10, 55, 50);  
-      
-     ctx.fillStyle = "rgba(0, 0, 200, 0.5)";  
-     ctx.fillRect (30, 30, 55, 50);  
+      var ctx = canvas[0].getContext("2d");
+
+      meme = canvas.attr('meme');
+      topText = canvas.attr('topText');
+      bottomText = canvas.attr('bottomText');
+
+      if (MEMES.hasOwnProperty(meme)) {
+        img = new Image();
+        img.onload = function(){
+          ctx.drawImage(img,0,0);
+          ctx.fillStyle = "rgb(255, 255, 255)";
+          ctx.font = "bold 36px sans-serif";
+          ctx.fillText(topText, 10, 50);
+          ctx.fillText(bottomText, 10, 150);
+        }
+        img.src = MEMES[meme];
+      }
       canvas.attr('processed', true);
     }
   }
