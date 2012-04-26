@@ -121,7 +121,9 @@ function displayMessage(message, autoscroll, displayInline) {
       $('#messagebox .scrollr').append(html);
     }
 
+    memeify();
     $('code').syntaxHighlight();
+    
     lastMessage = message;
     if (autoscroll && wasScrolledToBottom) {
       scrollToBottom();
@@ -132,16 +134,39 @@ function displayMessage(message, autoscroll, displayInline) {
   }
 }
 
+/*
+ * we need to draw the canvas element only after the canvas was attached.
+ * reason: (I think) it is because we attach html text instead of jquery objects
+ */
 function handleMeme(html) {
   memeCmd = html.split(' ');
   if (memeCmd[0] == '/meme') {
-    selectedMeme = memeCmd[1];
-    img = $('<img>').attr('src', '/public/img/ggg.jpg').addClass('imgimg');
-    imgContainer = $('<div>').addClass('meme').append("<span class='toptop'>top text</span><br/>").append(img).append("<span class='botbot'>bottom text</span>");
-    meme = $("<div>").append(imgContainer.clone()).html();
-    return meme;
+    canvas = $('<canvas>').addClass('meme')
+                          .attr('topText', 'this is the top text')
+                          .attr('topText', 'this is the bottom text')
+                          .attr('meme', 'ggg')
+                          .attr('processed', 'false');
+    return $("<div>").append(canvas.clone()).html();
   } else {
     return html;
+  }
+}
+
+function memeify() {
+  canvasMemes = $('.meme');
+  for (var i = 0; i < canvasMemes.length; i++) {
+    canvas = $(memeCanvases[i]);
+    if (canvas.attr('processed') != 'true') {
+      // I have no idea why I have to specify canvas[0], but hey - it works
+      var ctx = canvas[0].getContext("2d");  
+  
+     ctx.fillStyle = "rgb(200,0,0)";  
+     ctx.fillRect (10, 10, 55, 50);  
+      
+     ctx.fillStyle = "rgba(0, 0, 200, 0.5)";  
+     ctx.fillRect (30, 30, 55, 50);  
+      canvas.attr('processed', true);
+    }
   }
 }
 

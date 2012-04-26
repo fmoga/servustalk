@@ -450,29 +450,4 @@ hr {
 }
 
 .meme {
-  background-color: black;
-  height: 285px;
-  width: 300px;
-  overflow:hidden;
-}
-
-.botbot {
-  color: #FFF;
-  position: relative;
-  top: -40px;
-  z-index: 2;
-}
-
-.imgimg {
-  position: relative;
-  top: -20px;
-  z-index: 1;
-  height: 285px;
-  width: 300px;
-}
-
-.toptop {
-  color: #FFF;
-  position: relative;
-  z-index: 2;
 }
