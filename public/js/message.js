@@ -177,6 +177,7 @@ function processMessage(message, userMention, scroll, displayInline){
       html += addSoundcloudLinks(result.soundcloud);
       html += addMp3s(result.mp3s);
       html += result.imagery;
+      html += addVimeoLinks(result.vimeo);
     }
 
     // Close content and messageContent
@@ -233,6 +234,7 @@ function handleLinksAndEscape(text) {
   var mixcloud = [];
   var soundcloud = [];
   var mp3s = [];
+  var vimeo = [];
   var imagery = '';
   var linkMatch = /http[s]?:///g
   var index = text.search(linkMatch);
@@ -248,18 +250,26 @@ function handleLinksAndEscape(text) {
     }
     html += '<a target="_blank" href="' + link + '">' + $('<div/>').text(link).html() + '</a>';
     // check for youtube links
-    if (link.indexOf('http://www.youtube.com') == 0) {
+    var youtubeMatch = /http[s]?:\/\/(www\.)?youtube.com/g;
+    if (link.search(youtubeMatch) != -1) {
       youtube.push(link); 
     };
-    if (link.indexOf('http://www.mixcloud.com') == 0) {
+    var mixcloudMatch = /http[s]?:\/\/(www\.)?mixcloud.com/g;
+    if (link.search(mixcloudMatch) != -1) {
       mixcloud.push(link); 
     };
-    if (link.indexOf('http://soundcloud.com') == 0) {
+    var soundcloudMatch = /http[s]?:\/\/(www\.)?soundcloud.com/g;
+    if (link.search(soundcloudMatch) != -1) {
       soundcloud.push(link); 
     };
-    if (link.indexOf('http://youtu.be') == 0) {
+    var youtuMatch = /http[s]?:\/\/(www\.)?youtu.be/g;
+    if (link.search(youtuMatch) != -1) {
       youtube.push(link.replace(/\?/g, '&').replace(/youtu\.be\//g, 'youtube.com/watch?v='));
-    }
+    };
+    var vimeoMatch = /http[s]?:\/\/vimeo.com/g;
+    if (link.search(vimeoMatch) == 0) {
+      vimeo.push(link)
+    };
     // check for imagery content
     var scrolled = isScrolledToBottom() ? ' onload="scrollToBottom()"' : '';
     imagery += '<a target="_blank" href="' + link +'"><img class="imageLink" src="' + link + '"' + scrolled + ' onerror="this.style.display = \'none\'"></img></a>';
@@ -288,6 +298,7 @@ function handleLinksAndEscape(text) {
     mixcloud: mixcloud,
     soundcloud: soundcloud,
     imagery : imagery,
+    vimeo: vimeo,
     mp3s: mp3s,
   }
 }
@@ -342,6 +353,27 @@ function addMixcloudLinks(links) {
     html += '  <embed src="http://www.mixcloud.com/media/swf/player/mixcloudLoader.swf?feed=' + encodeURIComponent(link) + '&embed_uuid=cf33541f-9302-42e5-91bb-597a70dc852d&stylecolor=&embed_type=widget_standard" type="application/x-shockwave-flash" wmode="opaque" allowscriptaccess="always" allowfullscreen="true" width="480" height="480"></embed>';
     html += '</object>';
     html += '</div>';
+  });
+  return html;
+}
+
+function getVimeoIdFromLink(link){
+  var result = "";
+  var vid = link.substring(link.indexOf('.com/')+5);
+  var i = 0;
+  var valid = "0123456789";
+  while (i<vid.length && valid.indexOf(vid[i]) != -1) {
+    result += vid[i];
+    i ++;
+  }
+  return result;
+}
+
+function addVimeoLinks(links) {
+  var html = '';
+  $.each(links, function(index, link) {
+    video_id = getVimeoIdFromLink(link);
+    html += '<iframe src="http://player.vimeo.com/video/'+video_id+'?byline=0&amp;portrait=0" width="420" height="236" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
   });
   return html;
 }
