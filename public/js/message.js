@@ -139,49 +139,16 @@ function displayMessage(message, autoscroll, displayInline) {
  * reason: (I think) it is because we attach html text instead of jquery objects
  */
 function handleMeme(html) {
-  memeCmd = html.split(' ');
-  if (memeCmd[0] == '/meme') {
+  memeCmd = parseMemeCmd(html);
+  if (isMemeCmd(memeCmd)) {
     canvas = $('<canvas>').addClass('meme')
-                          .attr('topText', 'this is the top text')
-                          .attr('bottomText', 'this is the bottom text')
-                          .attr('meme', 'ggg')
+                          .attr('topText', memeCmd['topText'])
+                          .attr('bottomText', memeCmd['bottomText'])
+                          .attr('meme', memeCmd['meme'])
                           .attr('processed', 'false');
     return $("<div>").append(canvas.clone()).html();
   } else {
     return html;
-  }
-}
-
-// TODO: code cleanup
-// TODO: support different image sizes
-function memeify() {
-  MEMES = {};
-  MEMES['ggg'] = '/public/img/ggg.jpg';
-
-  canvasMemes = $('.meme');
-  for (var i = 0; i < canvasMemes.length; i++) {
-    canvas = $(canvasMemes[i]);
-    if (canvas.attr('processed') != 'true') {
-      // I have no idea why I have to specify canvas[0], but hey - it works
-      var ctx = canvas[0].getContext("2d");
-
-      meme = canvas.attr('meme');
-      topText = canvas.attr('topText');
-      bottomText = canvas.attr('bottomText');
-
-      if (MEMES.hasOwnProperty(meme)) {
-        img = new Image();
-        img.onload = function(){
-          ctx.drawImage(img,0,0);
-          ctx.fillStyle = "rgb(255, 255, 255)";
-          ctx.font = "bold 36px sans-serif";
-          ctx.fillText(topText, 10, 50);
-          ctx.fillText(bottomText, 10, 150);
-        }
-        img.src = MEMES[meme];
-      }
-      canvas.attr('processed', true);
-    }
   }
 }
 

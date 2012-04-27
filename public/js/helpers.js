@@ -59,3 +59,53 @@ addClient = function(client, buddylist, nameStyle) {
 
   buddylist.append(li);
 }
+
+isMemeCmd = function(cmd) {
+  return (result['cmd'] == '/meme' &&
+          result['topText'] != undefined &&
+          result['bottomText'] != undefined &&
+          ALLOWED_MEMES.hasOwnProperty(result['meme']) &&
+          result['topText'].length <= MAX_MEME_TEXT_LENGTH &&
+          result['bottomText'].length <= MAX_MEME_TEXT_LENGTH)
+}
+
+parseMemeCmd = function(stringCmd) {
+  words = stringCmd.split(' ');
+  text = stringCmd.split('"');
+  result = {
+    'topText': text[1],
+    'bottomText': text[3],
+    'cmd': words[0],
+    'meme': words[1]
+  }
+  return result;
+}
+
+// used to update the meme canvas
+// iterates through all the unprocessed memes and if they are not processed,
+// memeify them
+memeify = function() {
+  canvasMemes = $('.meme');
+  for (var i = 0; i < canvasMemes.length; i++) {
+    canvas = $(canvasMemes[i]);
+    if (canvas.attr('processed') != 'true') {
+      // I have no idea why I have to specify canvas[0], but hey - it works
+      var ctx = canvas[0].getContext("2d");
+      var meme = canvas.attr('meme');
+      var topText = canvas.attr('topText');
+      var bottomText = canvas.attr('bottomText');
+      var img = new Image();
+
+      img.onload = function() {
+        ctx.drawImage(img, 0, 0);
+        ctx.drawImage(new Image(), 0, 0);
+        ctx.fillStyle = "rgb(255, 255, 255)";
+        ctx.font = "bold 20px sans-serif";
+        ctx.fillText(topText, 5, 20);
+        ctx.fillText(bottomText, 5, 145);
+      }
+      img.src = ALLOWED_MEMES[meme];
+      canvas.attr('processed', true);
+    }
+  }
+}

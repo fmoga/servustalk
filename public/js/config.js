@@ -179,3 +179,14 @@ var EMOTICONS = [
   { code: '\n', url:''}
 ];
 var MOCK_LOCATIONS = ["20.000 leagues under the sea", "the underworld", "higher than the empire state", "moon"];
+var MAX_MEME_TEXT_LENGTH = 13; // until someone does resizing :)
+var ALLOWED_MEMES = {
+  'ggg': '/public/img/ggg.jpg',
+  'ss': '/public/img/ss.png',
+  'raptor': '/public/img/raptor.png',
+  'sap': '/public/img/sap.jpg',
+  'cat': '/public/img/cat.png',
+  'pp': '/public/img/pp.jpg',
+  'fap': '/public/img/fap.png',
+  'felix': '/public/img/felix.png'
+};
