@@ -98,7 +98,6 @@ memeify = function() {
 
       img.onload = function() {
         ctx.drawImage(img, 0, 0);
-        ctx.drawImage(new Image(), 0, 0);
         ctx.fillStyle = "rgb(255, 255, 255)";
         ctx.font = "bold 20px sans-serif";
         ctx.fillText(topText, 5, 20);
