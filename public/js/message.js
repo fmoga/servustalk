@@ -123,6 +123,7 @@ function displayMessage(message, autoscroll, displayInline) {
 
     memeify();
     $('code').syntaxHighlight();
+
     
     lastMessage = message;
     if (autoscroll && wasScrolledToBottom) {
@@ -132,6 +133,16 @@ function displayMessage(message, autoscroll, displayInline) {
     // Add vote handlers
     addTimestampHandler(message);
   }
+}
+
+// lene + entuziasm
+function handleBlink(html) {
+    words = html.split(' ');
+    if (words[0] == '/blink') {
+        return $("<div>").append($('<blink>').html(html.substr(6))).html();
+    } else {
+        return html;
+    }
 }
 
 /*
@@ -156,6 +167,7 @@ function processMessage(message, userMention, scroll, displayInline){
     var result = handleLinksAndEscape(message.text);
     result.html = handleMentions(result.html, userMention);
     result.html = handleMeme(result.html);
+    result.html = handleBlink(result.html);
     var classes = 'messageContent';
     if (hasMention(result.html, userMention)) {
       classes += ' mention';

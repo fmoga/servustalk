@@ -366,6 +366,8 @@ $(document).ready(function() {
   } else if (window.webkitNotifications.checkPermission() == 0) {
     $('#desknot').prop('checked', true);
   }
+
+  setInterval('blinkText()', 400);
 });
 
 window.addEventListener('focus', function() {

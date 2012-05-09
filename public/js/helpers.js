@@ -108,3 +108,11 @@ memeify = function() {
     }
   }
 }
+
+// https://en.wikipedia.org/wiki/Blink_element
+blinkText = function() {
+    for(i=0;i<document.all.tags('blink').length;i++) {
+        s=document.all.tags('blink')[i];
+        s.style.visibility=(s.style.visibility=='visible') ?'hidden':'visible';
+    }
+}
