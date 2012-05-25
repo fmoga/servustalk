@@ -1,11 +1,7 @@
 extends layout
 
-block append scripts
-  script(src='/public/js/hoverFun.js')
-
 block content
-  br
-  div(class='row')
-    span(class='span1', id='hoverFun')
-      a(href='/auth/google', class='btn btn-warning')
-        img(src='/public/servustalk_favicon.png')
+  p.loginLogo
+    img(src='/public/images/tux.png')
+  p.loginLink
+    a(href='/auth/google') Login with Google Account

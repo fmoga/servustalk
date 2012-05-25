@@ -406,6 +406,13 @@ hr {
   padding-right: 5px;
 }
 
+/* Login */
+
+.loginLink, .loginLogo {
+  margin-top: 10px;
+  text-align: center;
+}
+
 /********************************** 
 
   Custom browser styles
