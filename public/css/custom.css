@@ -11,6 +11,11 @@ body, input, textarea, p {
   font-size: 14px;
 }
 
+blockquote {
+  font-style: italic;
+  color: #555;
+}
+
 /* Profile pics & user info */
 
 .profilepic {

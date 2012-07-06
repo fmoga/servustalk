@@ -136,6 +136,15 @@ function displayMessage(message, autoscroll, displayInline) {
 }
 
 // lene + entuziasm
+function handleQuote(html) {
+    words = html.split(' ');
+    if (words[0] == '/quote') {
+        return $("<div>").append($('<blockquote>').html(html.substr(7))).html();
+    } else {
+        return html;
+    }
+}
+
 function handleBlink(html) {
     words = html.split(' ');
     if (words[0] == '/blink') {
@@ -168,6 +177,7 @@ function processMessage(message, userMention, scroll, displayInline){
     result.html = handleMentions(result.html, userMention);
     result.html = handleMeme(result.html);
     result.html = handleBlink(result.html);
+    result.html = handleQuote(result.html);
     var classes = 'messageContent';
     if (hasMention(result.html, userMention)) {
       classes += ' mention';
