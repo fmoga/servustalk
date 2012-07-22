@@ -353,7 +353,7 @@ $(document).ready(function() {
       $('#desknot').prop('checked', false);
       window.webkitNotifications.requestPermission(function(){
         if (window.webkitNotifications.checkPermission() == 2) {
-          alert('You have denied desktop notifications from UbunTalk. To unblock them, please go to Preferences -> Under the Hood -> Content Settings -> Manage Exceptions (Notifications section).');
+          alert('You have denied desktop notifications from ServusTalk. To unblock them, please go to Preferences -> Under the Hood -> Content Settings -> Manage Exceptions (Notifications section).');
         } else if (window.webkitNotifications.checkPermission() == 0) {
             $('#desknot').prop('checked', true);
         }
@@ -368,6 +368,10 @@ $(document).ready(function() {
   }
 
   setInterval('blinkText()', 400);
+
+  $('#checkin').click(function() {
+    socket.emit('checkin', userLocation);
+  });
 });
 
 window.addEventListener('focus', function() {

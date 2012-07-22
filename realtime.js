@@ -65,10 +65,11 @@ function disconnectUser(userId) {
   }
 }
 
-function handleMessage(user, message) {
+function handleMessage(user, message, type) {
   var completeMessage = {
     user: user,
-    text: message,
+    text: message, 
+    type: (type ? type : "TEXT"),
     ts: new Date().getTime(),
   }
   persistency.saveMessage(completeMessage);
@@ -190,6 +191,9 @@ function init(app, sessionStore) {
         socket.on('location', function(newLocation) {
           socket.user.location = newLocation;
           broadcast('clients', packClients());
+        });
+        socket.on('checkin', function(loc) {
+          handleMessage(socket.user, loc, "CHECKIN");
         });
       } else {
         socket.disconnect();

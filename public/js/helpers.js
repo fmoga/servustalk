@@ -1,3 +1,7 @@
+escapeText = function(text) {
+  return $('<div/>').text(text).html();
+}
+
 getProfileName = function(client, nameStyle) {
   // this line is still duplicated in getProfilePic
   // TODO: fix later its late
@@ -26,7 +30,7 @@ getMockLocation = function() {
 
 getProfileLocation = function(client) {
   return $('<span>').addClass('location')
-                    .html(client.location ? client.location : getMockLocation());
+                    .html(client.location ? escapeText(client.location) : getMockLocation());
 }
 
 idleSince = function(client) {

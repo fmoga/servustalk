@@ -62,6 +62,7 @@ function saveMessage(message) {
   msg = {
     user: message.user.id,
     text: message.text,
+    type: message.type,
     ts: message.ts
   }
   messages.insert(msg);

@@ -79,6 +79,14 @@ blockquote {
   display: block;
 }
 
+.checkin-time {
+  display: inline;
+}
+
+i {
+  margin-right: 5px;
+}
+
 /* Full height */
 
 html, body {
@@ -167,6 +175,10 @@ html, body {
 
   padding-top: 5px;
   padding-bottom: 10px;
+}
+
+#checkin {
+  margin-left: 10px;
 }
 
 /* Input box */
@@ -282,6 +294,10 @@ html, body {
 
 .messageContent .content {
   margin-left: 42px;
+}
+
+.checkinMessage {
+  margin: 10px 0 10px 0;
 }
 
 /* Calendar */

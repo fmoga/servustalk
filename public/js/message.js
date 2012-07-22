@@ -1,4 +1,4 @@
-// depends on config.js
+// depends on config.js and helpers.js
 
 var NO_USER = { id: ''};
 var NO_MESSAGE = {
@@ -86,7 +86,12 @@ function displayMessage(message, autoscroll, displayInline) {
   var wasScrolledToBottom = isScrolledToBottom();
 
   var html = '';
-  if (message.text.indexOf('/#') == 0) { // colored alert
+  if (message.type === 'CHECKIN') {
+    html += '<div class="checkinMessage"><i class="icon-map-marker"></i><strong>' + escapeText(message.user.name) + '</strong> is at <strong><a href="http://maps.google.com/?q=' + encodeURIComponent(message.text) + '" target="_blank">' + escapeText(message.text) + '</a></strong><span class="checkin-time timestamp">' + formatTimestamp(message.ts) + '</span></div>';
+    $('#messagebox .scrollr').append(html);
+    if (autoscroll && wasScrolledToBottom) scrollToBottom();
+    lastMessage = NO_MESSAGE;
+  } else if (message.text.indexOf('/#') == 0) { // colored alert
     var color = message.text.substring(1, message.text.indexOf(' '));
     if (!color.match(/[a-fA-F0-9]{6}|[a-fA-F0-9]{3}/g)) {
         color = '#3B5';
@@ -477,11 +482,6 @@ function getUrlVars(link) {
   }
   return vars;
 }
-
-function escapeText(text) {
-  return $('<div/>').text(text).html();
-}
-
 
 function htmlEncode(value){
   return $('<div/>').text(value).html();

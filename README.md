@@ -24,6 +24,7 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 * User moderation. Chat access is based on a whitelisting process. New users can't access the group chat until a whitelisted user accepts their request. First user to connect to the group chat is automatically accepted (he's probably the administrator) and then the whitelisting process continues normally. New requests, whitelisting/blacklisting trigger notifications in the chat area and they have realtime effects (e.g. blacklisting a user will instantly disconnect him from all active sessions).
 * Using long-polling as Comet technique so server push works on the vast majority of browsers including on Kindle, iOS and Android-based devices
 * HTML5 geolocation
+* Ability to check in current location
 
 ### Installation
 
