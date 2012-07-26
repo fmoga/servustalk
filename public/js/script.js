@@ -125,7 +125,7 @@ $(document).ready(function() {
 
   socket.on('reconnect', function(transport, attempts) {
     console.log('DEBUG: reconnect: transport=' + transport + '; attempts=' + attempts);
-    reportIdleness();  
+    window.location.reload();
   });
 
   socket.on('reconnecting', function(delay, attempts) {
@@ -370,7 +370,7 @@ $(document).ready(function() {
   setInterval('blinkText()', 400);
 
   $('#checkin').click(function() {
-    socket.emit('checkin', userLocation);
+    socket.emit('checkin', userLocation ? userLocation : '127.0.0.1');
   });
 });
 

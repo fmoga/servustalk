@@ -1,3 +1,5 @@
+// depends on config.js
+
 escapeText = function(text) {
   return $('<div/>').text(text).html();
 }

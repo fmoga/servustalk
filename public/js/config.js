@@ -190,5 +190,7 @@ var ALLOWED_MEMES = {
   'fap': '/public/img/fap.png',
   'felix': '/public/img/felix.png',
   'aliens': '/public/img/aliens.png',
-  'dolan': '/public/img/dolan.jpg'
+  'dolan': '/public/img/dolan.jpg',
+  'gabi': '/public/img/gabi.jpg',
+  'fric': '/public/img/fric.jpg'
 };
