@@ -121,6 +121,12 @@ $(document).ready(function() {
     if(userLocation) {    
       socket.emit('location', userLocation);
     }
+    // set focus and idle on reconnect
+    if(!document.hasFocus()) {
+      focus = false;
+      idle = new Date().getTime();
+      reportIdleness();
+    }
   });
 
   socket.on('reconnect', function(transport, attempts) {
