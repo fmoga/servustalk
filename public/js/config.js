@@ -188,9 +188,14 @@ var ALLOWED_MEMES = {
   'cat': '/public/img/cat.png',
   'pp': '/public/img/pp.jpg',
   'fap': '/public/img/fap.png',
-  'felix': '/public/img/felix.png',
+  'felix': '/public/img/felix.jpg',
   'aliens': '/public/img/aliens.png',
   'dolan': '/public/img/dolan.jpg',
   'gabi': '/public/img/gabi.jpg',
+  'flo': '/public/img/flo.jpg',
+  'mire': '/public/img/mire.jpg',
+  'spiri': '/public/img/spiri.jpg',
+  'vasi': '/public/img/vasi.jpg',
+  'cata': '/public/img/cata.jpg',
   'fric': '/public/img/fric.jpg'
 };
