@@ -178,8 +178,12 @@ var EMOTICONS = [
   { code: 'boian', url:''},
   { code: '\n', url:''}
 ];
+
 var MOCK_LOCATIONS = ["20.000 leagues under the sea", "the underworld", "higher than the empire state", "moon"];
-var MAX_MEME_TEXT_LENGTH = 13; // until someone does resizing :)
+
+// Since there are now 2 lines, this is the max allowed per line
+var MAX_MEME_TEXT_LENGTH = 16;
+
 var ALLOWED_MEMES = {
   'ggg': '/public/img/ggg.jpg',
   'ss': '/public/img/ss.png',
@@ -197,5 +201,14 @@ var ALLOWED_MEMES = {
   'spiri': '/public/img/spiri.jpg',
   'vasi': '/public/img/vasi.jpg',
   'cata': '/public/img/cata.jpg',
-  'fric': '/public/img/fric.jpg'
+  'fric': '/public/img/fric.jpg',
+  'aditza': '/public/img/aditza.jpg',
+  'awesome': '/public/img/awesome.jpg',
+  'banderas': '/public/img/banderas.jpg',
+  'kiki': '/public/img/kiki.jpg',
+  'mela': '/public/img/mela.jpg',
+  'notbad': '/public/img/notbad.jpg',
+  'shlap': '/public/img/rave.gif',
+  'santa': '/public/img/santa.jpg',
+  'troll': '/public/img/troll.jpg',
 };

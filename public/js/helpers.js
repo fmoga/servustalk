@@ -71,8 +71,8 @@ isMemeCmd = function(cmd) {
           result['topText'] != undefined &&
           result['bottomText'] != undefined &&
           ALLOWED_MEMES.hasOwnProperty(result['meme']) &&
-          result['topText'].length <= MAX_MEME_TEXT_LENGTH &&
-          result['bottomText'].length <= MAX_MEME_TEXT_LENGTH)
+          result['topText'].length <= MAX_MEME_TEXT_LENGTH * 2 &&
+          result['bottomText'].length <= MAX_MEME_TEXT_LENGTH * 2)
 }
 
 parseMemeCmd = function(stringCmd) {
@@ -98,17 +98,67 @@ memeify = function() {
       // I have no idea why I have to specify canvas[0], but hey - it works
       var ctx = canvas[0].getContext("2d");
       var meme = canvas.attr('meme');
-      var topText = canvas.attr('topText');
-      var bottomText = canvas.attr('bottomText');
+      
+      var topText = canvas.attr('topText').substr(0,MAX_MEME_TEXT_LENGTH);
+      var topTextExtra = canvas.attr('topText').substr(MAX_MEME_TEXT_LENGTH);
+
+      var bottomText = canvas.attr('bottomText').substr(0,MAX_MEME_TEXT_LENGTH);
+      var bottomTextExtra = canvas.attr('bottomText').substr(MAX_MEME_TEXT_LENGTH);
+
+      // String beautifications
+      if (topTextExtra != "") {
+        if (topTextExtra[0] != " ") {
+          topText += "-";
+        } else {
+          topTextExtra = topTextExtra.substr(1);
+        }
+      }
+
+      if (bottomTextExtra != "") {
+        if (bottomTextExtra[0] != " ") {
+          bottomText += "-";
+        } else {
+          bottomTextExtra = topTextExtra.substr(1);
+        }
+      }
+
       var img = new Image();
 
       img.onload = function() {
+        // Imae
         ctx.drawImage(img, 0, 0);
+
+        // Set font
+        ctx.font = "20px Impact";
+        
+        // Stroke text
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 6;
+        ctx.strokeText(topText, 5, 20);
+        ctx.strokeText(topTextExtra, 5, 40);
+
+        if (bottomTextExtra != "") {
+          ctx.strokeText(bottomText, 5, 125);
+          ctx.strokeText(bottomTextExtra, 5, 145);
+        } else {
+          ctx.strokeText(bottomText, 5, 145);
+        }
+        
+        // Fill text
         ctx.fillStyle = "rgb(255, 255, 255)";
-        ctx.font = "bold 20px sans-serif";
         ctx.fillText(topText, 5, 20);
-        ctx.fillText(bottomText, 5, 145);
+        ctx.fillText(topTextExtra, 5, 40);
+        
+        if (bottomTextExtra != "") {
+          ctx.fillText(bottomText, 5, 125);
+          ctx.fillText(bottomTextExtra, 5, 145);
+        } else {
+          ctx.fillText(bottomText, 5, 145);
+        }
+        
       }
+
+      // Set image
       img.src = ALLOWED_MEMES[meme];
       canvas.attr('processed', true);
     }
