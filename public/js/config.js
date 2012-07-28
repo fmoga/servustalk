@@ -211,4 +211,5 @@ var ALLOWED_MEMES = {
   'shlap': '/public/img/rave.gif',
   'santa': '/public/img/santa.jpg',
   'troll': '/public/img/troll.jpg',
+  'slowpoke': '/public/img/slowpoke.jpg',
 };
