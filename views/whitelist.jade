@@ -16,11 +16,13 @@ block header
   #header.row-fluid
     ul.inline.unstyled.pull-right#menu
       li
-        a(href='/logout') Logout
-      li
         a(target='_blank',href='/') Chat
       li
+        a(target='_blank',href='/memegeist') Memegeist
+      li
         a(href='/history',target='_blank') History
+      li
+        a(href='/logout') Logout
 
     |Currently logged in as 
     span#loggedUser.username #{everyauth.google.user.name}

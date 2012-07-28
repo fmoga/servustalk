@@ -36,49 +36,42 @@ function index(req, res) {
 
 function history(req, res) {
   isUserAllowed(req, res, function() {
-    res.render('history');
+    res.render('history', {endpoint: '/getMessages/'});
   });
 }
 
-function getHistory(req, res) {
+function memegeist(req, res) {
   isUserAllowed(req, res, function() {
-    year = parseInt(req.params.year);
-    month = parseInt(req.params.month);
-    day = parseInt(req.params.day);
-    if (isNaN(day) || isNaN(month) || isNaN(year)) {
-      res.render('404');
-      return;
-    }
-
-    if (!Date.validateDay(day, year, month)) {
-      res.render('404');
-      return;
-    }
-
-    lower_date = new Date(year, month, day, 0, 0, 0, 0);
-    upper_date = lower_date.clone();
-    upper_date.addDays(1);
-
-    data = {};
-    persistency.getMessages(lower_date, upper_date, function(err, messages) {
-      if (err) {
-        console.warn('Error getting messages: ' + err, err.stack);
-        res.render('404');
-      } else {
-        persistency.getUsers(function(err, users) {
-          if (err) {
-            console.warn('Error getting users: ' + err, err.stack);
-            res.render('404');
-          } else {
-            data.messages = messages;
-            data.users = users;
-            res.contentType('json');
-            res.send(data);
-          }
-        });
-      }
-    });
+    res.render('history', {endpoint: '/getMemes/'});
   });
+}
+
+function getMessages(req, res) {
+  timestamp = parseInt(req.params.timestamp);
+  if (isNaN(timestamp)) {
+    res.render('404');
+  } else {
+    persistency.getMessagesChunk(timestamp, 100, function(err, messages) {
+      persistency.mergeMessagesWithUsers(messages, null, function(messages) {
+        res.contentType('json');
+        res.send(messages);
+      });
+    });
+  }
+}
+
+function getMemes(req, res) {
+  timestamp = parseInt(req.params.timestamp);
+  if (isNaN(timestamp)) {
+    res.render('404');
+  } else {
+    persistency.getMemesChunk(timestamp, 100, function(err, messages) {
+      persistency.mergeMessagesWithUsers(messages, null, function(messages) {
+        res.contentType('json');
+        res.send(messages);
+      });
+    });
+  }
 }
 
 function beta(req, res) {
@@ -207,25 +200,11 @@ function vote(req, res) {
   res.end('uptokes!');
 }
 
-function getMessages(req, res) {
-  timestamp = parseInt(req.params.timestamp);
-  if (isNaN(timestamp)) {
-    res.render('404');
-  } else {
-    persistency.getMessagesChunk(timestamp, 100, function(err, messages) {
-      persistency.mergeMessagesWithUsers(messages, null, function(messages) {
-        res.contentType('json');
-        res.send(messages);
-      });
-    });
-  }
-}
-
 exports.index = index
 exports.login = login
 exports.access = access
 exports.history = history
-exports.getHistory = getHistory
+exports.memegeist = memegeist
 exports.beta = beta
 exports.whitelist = whitelist
 exports.acceptUser = acceptUser
@@ -234,3 +213,4 @@ exports.setRealtimeEngine = setRealtimeEngine
 exports.pay = pay
 exports.vote = vote
 exports.getMessages = getMessages
+exports.getMemes = getMemes

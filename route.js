@@ -4,7 +4,7 @@ function addRoutes(app) {
     app.get('/login', requestHandlers.login);
     app.get('/', requestHandlers.index);
     app.get('/history', requestHandlers.history);
-    app.post('/getHistory/:year/:month/:day', requestHandlers.getHistory);
+    app.get('/memegeist', requestHandlers.memegeist);
     app.get('/beta', requestHandlers.beta);
     app.get('/whitelist', requestHandlers.whitelist);
     app.get('/accept/:userid', requestHandlers.acceptUser);
@@ -14,6 +14,8 @@ function addRoutes(app) {
     app.post('/vote', requestHandlers.vote);
     app.post('/getMessages/:timestamp', requestHandlers.getMessages);
     app.get('/getMessages/:timestamp', requestHandlers.getMessages);
+    app.post('/getMemes/:timestamp', requestHandlers.getMemes);
+    app.get('/getMemes/:timestamp', requestHandlers.getMemes);
 }
 
 function setRealtimeEngine(engine) {

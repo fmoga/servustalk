@@ -1,4 +1,4 @@
-// depends on config.js
+// depends on config.js and on history.jade (sets MESSAGE_ENDPOINT based on history or memegeist request)
 
 var lastTimestamp = 0;
 var HISTORY_SCROLL_THRESHOLD = 200;
@@ -43,7 +43,7 @@ function getHistory(date) {
   var timestamp = date.getTime();
   loading = true;
   $.ajax({
-    url: "/getMessages/"+timestamp,
+    url: MESSAGE_ENDPOINT+timestamp,
     type: "POST",
     success: function(messages) {
       addMessages(messages, true);
@@ -62,7 +62,7 @@ function resetDisplayArea() {
 function loadMore() {
   loading = true;
   $.ajax({
-    url: "/getMessages/"+lastTimestamp,
+    url: MESSAGE_ENDPOINT+lastTimestamp,
     type: "POST",
     success: function(messages) {
       addMessages(messages, false);

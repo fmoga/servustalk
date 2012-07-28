@@ -25,6 +25,8 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 * Using long-polling as Comet technique so server push works on the vast majority of browsers including on Kindle, iOS and Android-based devices
 * HTML5 geolocation
 * Ability to check in current location
+* Meme support using `/meme meme-name "top text" "bottom text"` and `/meme list` to see all meme types
+* Memegeist (meme archive)
 
 ### Installation
 

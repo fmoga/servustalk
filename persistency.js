@@ -76,6 +76,10 @@ function getMessagesChunk(timestamp, count, callback) {
   messages.find({ts: {$gt: timestamp} }, {_id : 0 }).limit(count).sort({ts: 1}).toArray(callback);
 }
 
+function getMemesChunk(timestamp, count, callback) {
+  messages.find({ts: {$gt: timestamp}, text : /^\/meme/}, {_id : 0 }).limit(count).sort({ts: 1}).toArray(callback);
+}
+
 function isUserWhitelisted(userId, callback) {
   users.count({id: userId, acceptedBy: {$exists: true}}, function(err, count) {
     if (count > 0) 
@@ -192,6 +196,7 @@ exports.init = init
 exports.saveMessage = saveMessage
 exports.getMessages = getMessages
 exports.getMessagesChunk = getMessagesChunk
+exports.getMemesChunk = getMemesChunk
 exports.saveUser = saveUser
 exports.updateUser = updateUser
 exports.getHistory = getHistory
