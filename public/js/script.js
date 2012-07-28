@@ -280,7 +280,11 @@ $(document).ready(function() {
           $('#messagebox .scrollr').html('');
           lastMessage = NO_MESSAGE;
         } else {
-          socket.emit('message', text);
+          if (clientSideMessage(text)) {
+            processClientSideMessage(text);
+          } else {
+            socket.emit('message', text);
+          }
         }
       }
       return false;

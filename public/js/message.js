@@ -170,6 +170,8 @@ function handleMeme(html) {
                           .attr('topText', memeCmd['topText'])
                           .attr('bottomText', memeCmd['bottomText'])
                           .attr('meme', memeCmd['meme'])
+                          .attr('height', '150px')
+                          .attr('width', '150px')
                           .attr('processed', 'false');
     return $("<div>").append(canvas.clone()).html();
   } else {
@@ -542,3 +544,25 @@ var inputHistory = {
 };
 
 //=========END Input History=============
+
+// CLient side commands
+function clientSideMessage(text) {
+  if(text === '/meme list') {
+    return true;
+  }
+  return false;
+}
+
+function processClientSideMessage(text) {
+  if(text === '/meme list') {
+    wasScrolledToBottom = isScrolledToBottom();
+    html = $('<div class="author">');
+    for(i in ALLOWED_MEMES) {
+      html.append(handleMeme('/meme ' + i + ' " " "' + i + '"'));
+    }
+    $('#messagebox .scrollr').append(html);
+    memeify();
+    lastMessage = NO_MESSAGE;
+    if (wasScrolledToBottom) scrollToBottom();
+  }
+}

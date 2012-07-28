@@ -95,38 +95,39 @@ memeify = function() {
   for (var i = 0; i < canvasMemes.length; i++) {
     canvas = $(canvasMemes[i]);
     if (canvas.attr('processed') != 'true') {
-      // I have no idea why I have to specify canvas[0], but hey - it works
-      var ctx = canvas[0].getContext("2d");
-      var meme = canvas.attr('meme');
-      
-      var topText = canvas.attr('topText').substr(0,MAX_MEME_TEXT_LENGTH);
-      var topTextExtra = canvas.attr('topText').substr(MAX_MEME_TEXT_LENGTH);
-
-      var bottomText = canvas.attr('bottomText').substr(0,MAX_MEME_TEXT_LENGTH);
-      var bottomTextExtra = canvas.attr('bottomText').substr(MAX_MEME_TEXT_LENGTH);
-
-      // String beautifications
-      if (topTextExtra != "") {
-        if (topTextExtra[0] != " ") {
-          topText += "-";
-        } else {
-          topTextExtra = topTextExtra.substr(1);
-        }
-      }
-
-      if (bottomTextExtra != "") {
-        if (bottomTextExtra[0] != " ") {
-          bottomText += "-";
-        } else {
-          bottomTextExtra = topTextExtra.substr(1);
-        }
-      }
-
       var img = new Image();
 
+      // I have no idea why I have to specify canvas[0], but hey - it works
+      img.ctx = canvas[0].getContext("2d");
+      var meme = canvas.attr('meme');
+      
+      img.topText = canvas.attr('topText').substr(0,MAX_MEME_TEXT_LENGTH);
+      img.topTextExtra = canvas.attr('topText').substr(MAX_MEME_TEXT_LENGTH);
+
+      img.bottomText = canvas.attr('bottomText').substr(0,MAX_MEME_TEXT_LENGTH);
+      img.bottomTextExtra = canvas.attr('bottomText').substr(MAX_MEME_TEXT_LENGTH);
+
+      // String beautifications
+      if (img.topTextExtra != "") {
+        if (img.topTextExtra[0] != " ") {
+          img.topText += "-";
+        } else {
+          img.topTextExtra = img.topTextExtra.substr(1);
+        }
+      }
+
+      if (img.bottomTextExtra != "") {
+        if (img.bottomTextExtra[0] != " ") {
+          img.bottomText += "-";
+        } else {
+          img.bottomTextExtra = img.topTextExtra.substr(1);
+        }
+      }
+
       img.onload = function() {
+        ctx = this.ctx;
         // Imae
-        ctx.drawImage(img, 0, 0);
+        ctx.drawImage(this, 0, 0);
 
         // Set font
         ctx.font = "20px Impact";
@@ -134,28 +135,27 @@ memeify = function() {
         // Stroke text
         ctx.strokeStyle = "#000";
         ctx.lineWidth = 6;
-        ctx.strokeText(topText, 5, 20);
-        ctx.strokeText(topTextExtra, 5, 40);
+        ctx.strokeText(this.topText, 5, 20);
+        ctx.strokeText(this.topTextExtra, 5, 40);
 
-        if (bottomTextExtra != "") {
-          ctx.strokeText(bottomText, 5, 125);
-          ctx.strokeText(bottomTextExtra, 5, 145);
+        if (this.bottomTextExtra != "") {
+          ctx.strokeText(this.bottomText, 5, 125);
+          ctx.strokeText(this.bottomTextExtra, 5, 145);
         } else {
-          ctx.strokeText(bottomText, 5, 145);
+          ctx.strokeText(this.bottomText, 5, 145);
         }
         
         // Fill text
         ctx.fillStyle = "rgb(255, 255, 255)";
-        ctx.fillText(topText, 5, 20);
-        ctx.fillText(topTextExtra, 5, 40);
+        ctx.fillText(this.topText, 5, 20);
+        ctx.fillText(this.topTextExtra, 5, 40);
         
-        if (bottomTextExtra != "") {
-          ctx.fillText(bottomText, 5, 125);
-          ctx.fillText(bottomTextExtra, 5, 145);
+        if (this.bottomTextExtra != "") {
+          ctx.fillText(this.bottomText, 5, 125);
+          ctx.fillText(this.bottomTextExtra, 5, 145);
         } else {
-          ctx.fillText(bottomText, 5, 145);
+          ctx.fillText(this.bottomText, 5, 145);
         }
-        
       }
 
       // Set image

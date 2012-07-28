@@ -71,6 +71,10 @@ blockquote {
   color: #CD3333;
 }
 
+.meme {
+  margin-right: 5px;
+}
+
 .timestamp {
   color: #777;
   font-size: 12px;
