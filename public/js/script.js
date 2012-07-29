@@ -52,6 +52,12 @@ function codeLatLng(lat, lng, accuracy) {
   });
 }
 
+checkinButtonVisibility = function() {
+  if (!userLocation) {
+    $("#checkin").hide();
+  }
+}
+
 $(document).ready(function() {
   $.SyntaxHighlighter.init({
     'lineNumbers': true,
@@ -382,6 +388,8 @@ $(document).ready(function() {
   $('#checkin').click(function() {
     socket.emit('checkin', userLocation ? userLocation : '127.0.0.1');
   });
+
+  checkinButtonVisibility();
 });
 
 window.addEventListener('focus', function() {
