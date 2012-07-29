@@ -197,7 +197,7 @@ var ALLOWED_MEMES = {
   'cat': '/public/img/memes/cat.png',
   'pp': '/public/img/memes/pp.jpg',
   'fap': '/public/img/memes/fap.png',
-  'felix': '/public/memes/img/felix.jpg',
+  'felix': '/public/img/memes/felix.jpg',
   'aliens': '/public/img/memes/aliens.png',
   'dolan': '/public/img/memes/dolan.jpg',
   'gabi': '/public/img/memes/gabi.jpg',
