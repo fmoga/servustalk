@@ -62,7 +62,7 @@ block content
           #events
 
   #footer.row-fluid
-    |Logged in as 
+    = __i('Logged in as ')
     span#loggedUser.username.alt #{everyauth.google.user.name}
     button.btn.btn-info.btn-mini#checkin(type='submit') Check in
     span.pull-right#desktop.hidden-phone

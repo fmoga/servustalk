@@ -1,4 +1,5 @@
 var express = require('express'),
+    i18n = require("i18n"),
     everyauth = require('everyauth'),
     util = require('util'),
     persistency = require('./persistency'),
@@ -38,6 +39,11 @@ everyauth.google
   })
   .redirectPath('/');
 
+i18n.configure({
+  locales: config.app.supported_languages
+});
+i18n.setLocale(config.app.language);
+
 var app = express.createServer();
 app.configure(function() {
   app.use(express.bodyParser());
@@ -53,7 +59,12 @@ app.configure(function() {
   app.set('view options', {layout: false});
   app.use('/public', express.static(__dirname + '/public'));
   app.use(express.favicon(__dirname + '/public/servustalk_favicon.png'));
-  app.use(express.errorHandler({ showStack: true, dumpExceptions: true })); 
+  app.use(express.errorHandler({ showStack: true, dumpExceptions: true }));
+  app.use(i18n.init);
+  app.helpers({
+    __i: i18n.__,
+    __n: i18n.__n
+  });
 });
 
 everyauth.helpExpress(app);

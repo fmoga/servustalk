@@ -10,7 +10,8 @@
        "jquery": "1.6.3",
        "mongolian": "0.1.16",
        "connect-mongo": "0.1.7",
-       "socket.io": "0.9.5"
+       "socket.io": "0.9.5",
+       "i18n": "*"
     },
     "version": "0.1.0"
 }

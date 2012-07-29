@@ -19,7 +19,9 @@ config.app = {
     transports: ['websocket', 'xhr-polling']
   },
   calendar: 'https://www.google.com/calendar/render?cid=<GOOGLE_CALENDAR_ID>',
-  defaultTitle: 'UbunTalk - chat for humans (and dancers)'
+  defaultTitle: 'UbunTalk - chat for humans (and dancers)',
+  supported_languages: ['ro', 'en', 'pirate'],
+  language: 'en'
 }
 
 try {
