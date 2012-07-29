@@ -179,7 +179,12 @@ var EMOTICONS = [
   { code: '\n', url:''}
 ];
 
-var MOCK_LOCATIONS = ["20.000 leagues under the sea", "the underworld", "higher than the empire state", "moon"];
+var MOCK_LOCATIONS = [
+  "20.000 leagues under the sea",
+  "the underworld",
+  "higher than the empire state",
+  "moon"
+];
 
 // Since there are now 2 lines, this is the max allowed per line
 var MAX_MEME_TEXT_LENGTH = 16;
