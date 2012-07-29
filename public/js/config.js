@@ -212,4 +212,5 @@ var ALLOWED_MEMES = {
   'santa': '/public/img/santa.jpg',
   'troll': '/public/img/troll.jpg',
   'slowpoke': '/public/img/slowpoke.jpg',
+  'memelist': '/public/img/memelist.png'
 };
