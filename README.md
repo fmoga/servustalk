@@ -27,6 +27,7 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 * Ability to check in current location
 * Meme support using `/meme meme-name "top text" "bottom text"` and `/meme list` to see all meme types
 * Memegeist (meme archive)
+* Support for i18n
 
 ### Installation
 
