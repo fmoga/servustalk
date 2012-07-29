@@ -68,8 +68,6 @@ addClient = function(client, buddylist, nameStyle) {
 
 isMemeCmd = function(cmd) {
   return (result['cmd'] == '/meme' &&
-          result['topText'] != undefined &&
-          result['bottomText'] != undefined &&
           ALLOWED_MEMES.hasOwnProperty(result['meme']) &&
           result['topText'].length <= MAX_MEME_TEXT_LENGTH * 2 &&
           result['bottomText'].length <= MAX_MEME_TEXT_LENGTH * 2)
@@ -79,8 +77,8 @@ parseMemeCmd = function(stringCmd) {
   words = stringCmd.split(' ');
   text = stringCmd.split('"');
   result = {
-    'topText': text[1],
-    'bottomText': text[3],
+    'topText': text[1] || '',
+    'bottomText': text[3] || '',
     'cmd': words[0],
     'meme': words[1]
   }
