@@ -13,6 +13,7 @@ var idlePromise;
 var tabHistory;
 var unloading = false;
 var userLocation;
+var bookmark;
 
 
 //Get the latitude and the longitude;
@@ -57,7 +58,6 @@ checkinButtonVisibility = function() {
     $("#checkin").hide();
   }
 }
-
 $(document).ready(function() {
   $.SyntaxHighlighter.init({
     'lineNumbers': true,
@@ -412,12 +412,21 @@ window.addEventListener('focus', function() {
 
 window.addEventListener('blur', function() {
   focused = false;
+  var wasScrolledToBottom = isScrolledToBottom();
   // idle
   if (idlePromise) clearTimeout(idlePromise);
   idlePromise = setTimeout(function() {
     idle = new Date().getTime();
     reportIdleness();
   }, IDLE_TIMEOUT);
+  if (bookmark) {
+    bookmark.removeClass('alert');
+    bookmark.removeClass('alert-info');
+  }
+  bookmark = $(".author .messageContent .content:last")
+  bookmark.addClass('alert');
+  bookmark.addClass('alert-info');
+  if (wasScrolledToBottom) scrollToBottom();
 });
 
 
