@@ -5,6 +5,7 @@ var io = require('socket.io'),
     parseCookie = require('connect').utils.parseCookie;
 
 var online = {};
+var rooms = {}
 var title = config.app.defaultTitle;
 var PING_INTERVAL = 5 * 60 * 1000; // 5 min
 var MAX_LATENCY = 10 * 1000; // 10 sec
@@ -14,29 +15,37 @@ setInterval(function() {
 }, PING_INTERVAL);
 
 function broadcast(type, body) {
+  broadcastToRoom(online, type, body);
+}
+
+function broadcastToRoom(room, type, body) {
   var toDelete = [];
   var now = new Date().getTime();
-  for (id in online) {
-    if (online[id].disconnected || now - online[id].lastPong > PING_INTERVAL + MAX_LATENCY) {
+  for (id in room) {
+    if (room[id].disconnected || now - room[id].lastPong > PING_INTERVAL + MAX_LATENCY) {
       toDelete.push(id);
     } else {
-      online[id].emit(type, body);
+      room[id].emit(type, body);
     }
   }
   if (toDelete.length > 0) {
     for (i in toDelete) {
-      online[toDelete[i]].disconnect();
-      delete online[toDelete[i]]; 
+      room[toDelete[i]].disconnect();
+      delete room[toDelete[i]]; 
     }
-    broadcast('clients', packClients());
+    broadcast('clients', packClients(room));
   }
 }
 
-function packClients() {
+function packClients(users) {
+  if (!users) {
+    users = online;
+  }
+
   clients = [];
   now = new Date().getTime();
-  for (id in online) {
-    user = online[id].user;
+  for (id in users) {
+    user = users[id].user;
     if (user.idle) {
       user.idleFor = now - user.idle; 
     }
@@ -68,12 +77,21 @@ function disconnectUser(userId) {
 function handleMessage(user, message, type) {
   var completeMessage = {
     user: user,
-    text: message, 
     type: (type ? type : "TEXT"),
+    text: message.text,
     ts: new Date().getTime(),
   }
   persistency.saveMessage(completeMessage);
   broadcast('message', completeMessage);
+}
+
+function handleRoomMessage(user, message) {
+  var completeMessage = {
+    user: user,
+    text: message.text,
+    ts: new Date().getTime(),
+  }
+  broadcastToRoom(rooms[message.room], 'message', completeMessage);
 }
 
 function init(app, sessionStore) {
@@ -132,69 +150,89 @@ function init(app, sessionStore) {
       if (socket.handshake.session.auth) {
         socket.user = socket.handshake.session.auth.google.user;
         socket.user.idle = false;
-        online[socket.id] = socket;
-        broadcast('clients', packClients());
 
-        persistency.getHistory(config.app.history_size, function(err, messages) {
-          if (err) {
-              console.warn('Error getting history: ' + err, err.stack);
+        socket.on('room', function(room) {
+          var roomUsers = {};
+          if (room) {
+            if (rooms[room] === undefined) {
+              rooms[room] = {};
+            }
+            roomUsers = rooms[room];
           } else {
-            persistency.mergeMessagesWithUsers(messages, null, function(messages) {
-              history = messages.reverse();
-              socket.emit('history', history);
+            roomUsers = online;
+          }
+        
+          roomUsers[socket.id] = socket;
+          broadcastToRoom(roomUsers, 'clients', packClients(roomUsers));
+
+          if (!room) {
+            persistency.getHistory(config.app.history_size, function(err, messages) {
+              if (err) {
+                  console.warn('Error getting history: ' + err, err.stack);
+              } else {
+                persistency.mergeMessagesWithUsers(messages, null, function(messages) {
+                  history = messages.reverse();
+                  socket.emit('history', history);
+                });
+              }
             });
           }
-        });
 
-        socket.lastPong = new Date().getTime();
-        socket.emit('ping');
-
-        socket.on('pong', function() {
           socket.lastPong = new Date().getTime();
-        });
+          socket.emit('ping');
 
-        socket.on('message', function(message) {
-          handleMessage(socket.user, message);
-        });
+          socket.on('pong', function() {
+            socket.lastPong = new Date().getTime();
+          });
 
-        socket.on('disconnect', function() {
-          delete online[socket.id];
-          broadcast('clients', packClients());
-        });
+          socket.on('message', function(message) {
+            if (message.room) {
+              handleRoomMessage(socket.user, message);
+            } else {
+              handleMessage(socket.user, message);
+            }
+          });
 
-        socket.on('loadTitle', function() {
-            socket.emit('loadTitle', title); 
-        });
+          socket.on('disconnect', function() {
+            delete roomUsers[socket.id];
+            broadcastToRoom(roomUsers, 'clients', packClients(roomUsers));
+          });
 
-        socket.on('updateTitle', function(newTitle) { 
-            title = {
-              text: newTitle,
-              user: socket.user.name,
-              ts: new Date().getTime()
-            };
-            broadcast('updateTitle', title);
+          socket.on('loadTitle', function() {
+              socket.emit('loadTitle', title); 
+          });
 
-            title.user = socket.user.id;
-            persistency.saveTitle(title);
-        });
+          socket.on('updateTitle', function(newTitle) { 
+              title = {
+                text: newTitle,
+                user: socket.user.name,
+                ts: new Date().getTime()
+              };
+              broadcastToRoom(roomUsers, 'updateTitle', title);
 
-        socket.on('idle', function(data) {
-          socket.user.idle = new Date().getTime() - data.since;
-          broadcast('clients', packClients());
-        });
+              title.user = socket.user.id;
+              persistency.saveTitle(title);
+          });
 
-        socket.on('not idle', function() {
-          socket.user.idle = false;
-          broadcast('clients', packClients());
-        });
+          socket.on('idle', function(data) {
+            socket.user.idle = new Date().getTime() - data.since;
+            broadcastToRoom(roomUsers, 'clients', packClients(roomUsers));
+          });
 
-        socket.on('location', function(newLocation) {
-          socket.user.location = newLocation;
-          broadcast('clients', packClients());
-        });
-        socket.on('checkin', function(loc) {
-          handleMessage(socket.user, loc, "CHECKIN");
-        });
+          socket.on('not idle', function() {
+            socket.user.idle = false;
+            broadcastToRoom(roomUsers, 'clients', packClients(roomUsers));
+          });
+
+          socket.on('location', function(newLocation) {
+            socket.user.location = newLocation;
+            broadcastToRoom(roomUsers, 'clients', packClients(roomUsers));
+          });
+
+          socket.on('checkin', function(loc) {
+            handleMessage(socket.user, loc, "CHECKIN");
+          });
+        }); // end of socket.on("room")
       } else {
         socket.disconnect();
       }

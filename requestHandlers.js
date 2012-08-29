@@ -200,6 +200,14 @@ function vote(req, res) {
   res.end('uptokes!');
 }
 
+function room(req, res) {
+  isUserAllowed(req, res, function() {
+    res.render('room', {
+      room: req.params.room
+    });
+  });
+}
+
 exports.index = index
 exports.login = login
 exports.access = access
@@ -214,3 +222,4 @@ exports.pay = pay
 exports.vote = vote
 exports.getMessages = getMessages
 exports.getMemes = getMemes
+exports.room = room

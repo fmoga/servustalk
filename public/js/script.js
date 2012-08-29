@@ -112,6 +112,8 @@ $(document).ready(function() {
 
   originalDocTitle = document.title;
 
+  var room = $('#chat').attr('data-room');
+
   socket = io.connect('/', {
     'force new connection' : true,
     'connect timeout': 5000,
@@ -123,6 +125,7 @@ $(document).ready(function() {
   });
 
   socket.on('connect', function() {
+    socket.emit('room', room);
     socket.emit('loadTitle');
     if(userLocation) {    
       socket.emit('location', userLocation);
@@ -289,7 +292,13 @@ $(document).ready(function() {
           if (clientSideMessage(text)) {
             processClientSideMessage(text);
           } else {
-            socket.emit('message', text);
+            message = {
+              text: text
+            }
+            if (room) {
+              message.room = room;
+            }
+            socket.emit('message', message);
           }
         }
       }
