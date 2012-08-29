@@ -16,7 +16,7 @@ function addRoutes(app) {
     app.get('/getMessages/:timestamp', requestHandlers.getMessages);
     app.post('/getMemes/:timestamp', requestHandlers.getMemes);
     app.get('/getMemes/:timestamp', requestHandlers.getMemes);
-    app.get('/r/:room/', requestHandlers.room);
+    app.get('/r/:room', requestHandlers.room);
 }
 
 function setRealtimeEngine(engine) {
