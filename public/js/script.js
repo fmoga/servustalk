@@ -126,7 +126,9 @@ $(document).ready(function() {
 
   socket.on('connect', function() {
     socket.emit('room', room);
-    socket.emit('loadTitle');
+    if (!room) {
+      socket.emit('loadTitle');
+    }
     if(userLocation) {    
       socket.emit('location', userLocation);
     }

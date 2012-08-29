@@ -1,5 +1,8 @@
 extends layout
 
+block title
+  title /r/#{room}
+
 block append stylesheets
   link(href='/public/css/jquery-ui-1.8.17.custom.css', rel='stylesheet', type='text/css')
   link(rel="stylesheet", href="public/fancybox/jquery.fancybox-1.3.4.css", type="text/css", media="screen")
@@ -34,7 +37,7 @@ block content
       #messagebox
         .scrollr
       
-      textarea#inputfield(rows='2',placeholder='Type something funny and hit enter')
+      textarea#inputfield(rows='2',placeholder='This is /r/#{room}')
 
     div.span3#sidebar
       #buddylist(rowspan="2")
