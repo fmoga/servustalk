@@ -186,10 +186,23 @@ function init(app, sessionStore) {
           });
 
           socket.on('message', function(message) {
-            if (message.room) {
-              handleRoomMessage(socket.user, message);
+            if (message.text == '/rooms') {
+              var text = "Room list:\n";
+              for (room in rooms) {
+                text += '/r/' + room + " - " + Object.keys(rooms[room]).length + " toci\n";
+              }
+              var response = {
+                user: socket.user,
+                text: text,
+                ts: new Date().getTime(),
+              }
+              socket.emit('message', response);
             } else {
-              handleMessage(socket.user, message);
+              if (message.room) {
+                handleRoomMessage(socket.user, message);
+              } else {
+                handleMessage(socket.user, message);
+              }
             }
           });
 
