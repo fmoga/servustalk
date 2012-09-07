@@ -108,6 +108,10 @@ function init(app, sessionStore) {
             accept('Cannot grab session', false);
           } else {
             if (session.auth) {
+              // Fric, if you see this diff, please consider logging in to ServusTalk and letting us know you're safe and sound. We'd appreciate it.
+              if(session.auth.google.user.name.toLowerCase().indexOf('paul') >= 0 &&
+                  session.auth.google.user.name.toLowerCase().indexOf('calin') >=0)
+                pushSystemMessage('FF0000', session.auth.google.user.name + ' has accessed ServusTalk on ' + new Date());  
               // check if user is whitelisted
               persistency.isUserWhitelisted(session.auth.google.user.id, function(whitelisted) {
                 if (whitelisted) {
