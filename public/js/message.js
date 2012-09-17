@@ -83,6 +83,8 @@ function addTimestampHandler(message) {
 }
 
 function displayMessage(message, autoscroll, displayInline) {
+  // TODO: figure out how we end up having message.text undefined
+  if (message.type === 'TEXT' && !message.text) return;
   var wasScrolledToBottom = isScrolledToBottom();
 
   var html = '';

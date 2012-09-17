@@ -14,7 +14,7 @@ function drawMarkersMap() {
     var options = {
       // region: 'IT',
       displayMode: 'markers',
-      colorAxis: {colors: ['lightBlue', 'blue']}
+      colorAxis: {colors: ['blue', 'lightBlue']}
     };
 
     var map = new google.visualization.GeoChart(document.getElementById('map'));
