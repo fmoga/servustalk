@@ -67,6 +67,10 @@ blockquote {
 
 /* Misc. */
 
+.hidden {
+  display: none;
+}
+
 .attention {
   color: #CD3333;
 }
@@ -361,7 +365,10 @@ html, body {
   margin-bottom: 5px;
   height: 32px;
   overflow: hidden;
+  cursor: default;
+}
 
+#buddylist ul li .profilepic {
   cursor: hand;
   cursor: pointer;
 }

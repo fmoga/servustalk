@@ -47,6 +47,7 @@ function codeLatLng(lat, lng, accuracy) {
       if(socket) {	 
         socket.emit('location', userLocation);
       }
+      checkinButtonVisibility();
     } else {
       userLocation = 'Location unavailable';
     }
@@ -54,10 +55,11 @@ function codeLatLng(lat, lng, accuracy) {
 }
 
 checkinButtonVisibility = function() {
-  if (!userLocation) {
-    $("#checkin").hide();
+  if (userLocation) {
+    $("#checkin").removeClass('hidden');
   }
 }
+
 $(document).ready(function() {
   $.SyntaxHighlighter.init({
     'lineNumbers': true,

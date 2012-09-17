@@ -6,6 +6,8 @@ function addRoutes(app) {
     app.get('/history', requestHandlers.history);
     app.get('/memegeist', requestHandlers.memegeist);
     app.get('/beta', requestHandlers.beta);
+    app.get('/map', requestHandlers.map);
+    app.get('/distinctCheckins', requestHandlers.distinctCheckins);
     app.get('/whitelist', requestHandlers.whitelist);
     app.get('/accept/:userid', requestHandlers.acceptUser);
     app.get('/ban/:userid', requestHandlers.banUser);

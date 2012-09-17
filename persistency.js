@@ -76,6 +76,10 @@ function getMessagesChunk(timestamp, count, callback) {
   messages.find({ts: {$gt: timestamp} }, {_id : 0 }).limit(count).sort({ts: 1}).toArray(callback);
 }
 
+function getDistinctCheckins(callback) {
+  messages.find({type : 'CHECKIN'}).toArray(callback);
+}
+
 function getMemesChunk(timestamp, count, callback) {
   messages.find({ts: {$gt: timestamp}, text : /^\/meme/}, {_id : 0 }).limit(count).sort({ts: 1}).toArray(callback);
 }
@@ -197,6 +201,7 @@ exports.saveMessage = saveMessage
 exports.getMessages = getMessages
 exports.getMessagesChunk = getMessagesChunk
 exports.getMemesChunk = getMemesChunk
+exports.getDistinctCheckins = getDistinctCheckins
 exports.saveUser = saveUser
 exports.updateUser = updateUser
 exports.getHistory = getHistory

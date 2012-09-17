@@ -26,6 +26,8 @@ block header
       li
         a(href='/history',target='_blank') History
       li
+        a(href='/map',target='_blank') Map
+      li
         a(href='/whitelist',target='_blank') Whitelist
       li
         a(href='/logout') Logout
@@ -64,7 +66,7 @@ block content
   #footer.row-fluid
     = __i('Logged in as ')
     span#loggedUser.username.alt #{everyauth.google.user.name}
-    button.btn.btn-info.btn-mini#checkin(type='submit') Check in
+    button.btn.btn-info.btn-mini.hidden#checkin(type='submit') Check in
     span.pull-right#desktop.hidden-phone
       label(class='checkbox')
         input#desknot(type='checkbox') 

@@ -1,0 +1,26 @@
+extends layout
+
+block append scripts
+  script(src='https://www.google.com/jsapi')
+  script(src='/public/js/map.js')
+
+block header
+  #header.row-fluid
+    ul.inline.unstyled.pull-right#menu
+      li
+        a(href='/') Chat
+      li
+        a(href='/memegeist') Memegeist
+      li
+        a(href='/history') History
+      li
+        a(href='/whitelist') Whitelist
+      li
+        a(href='/logout') Logout
+
+    | Currently logged in as 
+    span#loggedUser.username #{everyauth.google.user.name}
+
+block content
+  .row
+  #map.span10.offset1

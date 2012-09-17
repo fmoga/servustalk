@@ -200,6 +200,38 @@ function vote(req, res) {
   res.end('uptokes!');
 }
 
+function map(req, res) {
+  isUserAllowed(req, res, function() {
+    res.render('map');
+  });
+}
+
+function distinctCheckins(req, res) {
+  isUserAllowed(req, res, function() {
+    persistency.getDistinctCheckins(function(error, checkins) {
+      if (error) {
+        res.statusCode = 500;
+        res.end('Error retrieving checkins');
+        return;
+      }
+      IGNORE_LOCATIONS = {'null': true, '127.0.0.1': true};
+      locations = {};
+      for(i in checkins) {
+        text = checkins[i].text;
+        if (!IGNORE_LOCATIONS[text]) {
+          if (locations[text]) {
+            locations[text]++;
+          } else {
+            locations[text] = 1;
+          }
+        }
+      }
+      res.contentType('json');
+      res.send(locations);
+    });
+  });
+}
+
 exports.index = index
 exports.login = login
 exports.access = access
@@ -214,3 +246,5 @@ exports.pay = pay
 exports.vote = vote
 exports.getMessages = getMessages
 exports.getMemes = getMemes
+exports.map = map
+exports.distinctCheckins = distinctCheckins

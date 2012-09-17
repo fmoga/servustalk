@@ -31,8 +31,14 @@ getMockLocation = function() {
 }
 
 getProfileLocation = function(client) {
-  return $('<span>').addClass('location')
-                    .html(client.location ? escapeText(client.location) : getMockLocation());
+  if (client.location) {
+    link = $('<a>').attr('href', 'http://maps.google.com/?q=' + encodeURIComponent(client.location))
+                   .attr('target', '_blank')
+                   .html(escapeText(client.location));
+  } else {
+    link = getMockLocation();
+  }
+  return $('<span>').addClass('location').html(link);
 }
 
 idleSince = function(client) {
@@ -58,7 +64,7 @@ addClient = function(client, buddylist, nameStyle) {
   
   var inputField = $('textarea#inputfield');
 
-  li.on('click', function() {
+  profilePic.on('click', function() {
     inputField.val(inputField.val() + '@' + client.name + ' ')
               .setCursorPosition(inputField.val().length).focus();
   });
