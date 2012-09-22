@@ -3,6 +3,7 @@ extends layout
 block append stylesheets
   link(href='/public/css/jquery-ui-1.8.17.custom.css', rel='stylesheet', type='text/css')
   link(rel="stylesheet", href="public/fancybox/jquery.fancybox-1.3.4.css", type="text/css", media="screen")
+  link(rel="stylesheet", href="public/css/clouds.css", type="text/css", media="screen")
 
 block append scripts
   script(src='/public/js/jquery-ui-1.8.17.custom.min.js');
@@ -39,6 +40,12 @@ block header
 block content
   #content.row-fluid
     div.span9#chat
+      #clouds 
+        .cloud.x1
+        .cloud.x2
+        .cloud.x3
+        .cloud.x4
+        .cloud.x5
       #messagebox
         .scrollr
       

@@ -211,7 +211,8 @@ html, body {
 
   padding-bottom: 60px;
 
-  position: relative;
+  position: absolute;
+  top: 0;
 
   overflow: hidden;
 }
@@ -235,6 +236,7 @@ html, body {
 
 #messagebox .scrollr {
   word-wrap: break-word;
+  background-color: transparent;
 }
 
 /* Vote */
