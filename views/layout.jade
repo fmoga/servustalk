@@ -14,9 +14,15 @@ html(lang="en")
       link(href='/public/css/responsive.css', rel='stylesheet', type='text/css')
 
   body
-    div.container-fluid
+      
+    div.container-fluid.loading
       block header
       block content
+
+    div.container-fluid.preloader.gangnam-style
+      p
+        |Loading...
+      img(src='/public/img/preloader.gif')
 
     block scripts
       script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');

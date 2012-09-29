@@ -459,6 +459,21 @@ hr {
   padding-right: 10px;
 }
 
+/* Preloading */
+
+.loading {
+  display: none;
+}
+
+.preloader {
+  display: block !important;
+}
+
+.gangnam-style {
+  text-align: center;
+  padding-top: 100px;
+}
+
 /********************************** 
 
   Custom browser styles

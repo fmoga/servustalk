@@ -25,3 +25,11 @@ $(document).ready(function() {
     resize();
   });
 });
+
+// Preloader
+
+$(document).ready(function () {
+  $(".loading").removeClass('loading');
+  $(".preloader").removeClass('preloader');
+  resize();
+});
