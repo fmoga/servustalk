@@ -46,11 +46,53 @@ body {
 	top: -55px; left: auto; right: 15px;
 }
 
+.space-invader{
+  box-shadow:
+    0 0 0 1em #DEFAF3,
+    0 1em 0 1em #DEFAF3,
+    -2.5em 1.5em 0 .5em #DEFAF3,
+    2.5em 1.5em 0 .5em #DEFAF3,
+    -3em -3em 0 0 #DEFAF3,
+    3em -3em 0 0 #DEFAF3,
+    -2em -2em 0 0 #DEFAF3,
+    2em -2em 0 0 #DEFAF3,
+    -3em -1em 0 0 #DEFAF3,
+    -2em -1em 0 0 #DEFAF3,
+    2em -1em 0 0 #DEFAF3,
+    3em -1em 0 0 #DEFAF3,
+    -4em 0 0 0 #DEFAF3,
+    -3em 0 0 0 #DEFAF3,
+    3em 0 0 0 #DEFAF3,
+    4em 0 0 0 #DEFAF3,
+    -5em 1em 0 0 #DEFAF3,
+    -4em 1em 0 0 #DEFAF3,
+    4em 1em 0 0 #DEFAF3,
+    5em 1em 0 0 #DEFAF3,
+    -5em 2em 0 0 #DEFAF3,
+    5em 2em 0 0 #DEFAF3,
+    -5em 3em 0 0 #DEFAF3,
+    -3em 3em 0 0 #DEFAF3,
+    3em 3em 0 0 #DEFAF3,
+    5em 3em 0 0 #DEFAF3,
+    -2em 4em 0 0 #DEFAF3,
+    -1em 4em 0 0 #DEFAF3,
+    1em 4em 0 0 #DEFAF3,
+    2em 4em 0 0 #DEFAF3;
+
+    background: #DEFAF3;
+    width: 1em;
+    height: 1em;
+    overflow: hidden;
+
+    margin: 50px 0 70px 65px;
+    position: relative;
+  }
+
 /*Time to animate*/
 .x1 {
-	-webkit-animation: moveclouds 15s linear infinite;
-	-moz-animation: moveclouds 15s linear infinite;
-	-o-animation: moveclouds 15s linear infinite;
+	-webkit-animation: moveclouds 30s linear infinite;
+	-moz-animation: moveclouds 30s linear infinite;
+	-o-animation: moveclouds 30s linear infinite;
 }
 
 /*variable speed, opacity, and position of clouds for realistic effect*/
