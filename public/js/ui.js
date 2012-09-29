@@ -1,17 +1,14 @@
+// Resizes the important bits to make sure the app scales properly across the screen
 function resize() {
+  // Resize the main viewport
   $("#content").height(
     $(window).height() - $("#header").height() - $("#footer").height() - 35
   );
 
-  if ($("#messagebox").hasClass('history')) {
-    $("#messagebox").height(
-      $("#content").height() - 20
-    );
-  } else {
-    $("#messagebox").height(
-      $("#content").height() - 60 - 20
-    );
-  }
+  // Resize the message scroller
+  $("#messagebox").height(
+    $("#content").height()
+  );
 }
 
 $(document).ready(function() {
