@@ -1,0 +1,50 @@
+<!doctype html>  
+<html lang="en">
+	
+	<head>
+		<meta charset="utf-8">
+		
+		<title>forkit.js - A different kind of GitHub ribbon</title>
+
+		<meta name="description" content="A playful JavaScript+CSS ribbon">
+		<meta name="author" content="Hakim El Hattab">
+		
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+		
+		<link rel="stylesheet" href="css/demo.css">
+		<link rel="stylesheet" href="css/forkit.css">
+	</head>
+	
+	<body>
+
+		<article>
+			<h1>forkit.js</h1>
+			<p>
+				An experimental animated ribbon which reveals a curtain of additional content. See the top right corner! <a href="http://github.com/hakimel/forkit.js">Source on GitHub.</a>
+			</p>
+			<p>
+				<del>This a concept for a more playful and animated GitHub ribbon. The intention was to let you use the detached ribbon to drag down an iframe-embed of the repository on github.com but I neglected to check their X-Frame-Options until finishing most of the work.</del>
+			</p>
+			<small>
+				Created by <a href="http://twitter.com/hakimel">@hakimel</a> / <a href="http://hakim.se/">http://hakim.se</a>
+			</small>
+		</article>
+
+		<!-- The contents (if there's no contents the ribbon acts as a link) -->
+		<div class="forkit-curtain">
+			<div class="close-button"></div>
+			<h2>OMGOSH KITTENZ!!!1!</h2>
+			<small>thx <a href="http://placekitten.com/">placekittens.com</a></small>
+			<img src="http://placekitten.com/g/200/200">
+			<img src="http://placekitten.com/g/201/200">
+			<img src="http://placekitten.com/g/202/200">
+			<img src="http://placekitten.com/g/204/200">
+		</div>
+
+		<!-- The ribbon -->
+		<a class="forkit" data-text="Top Secret" data-text-detached="Drag down >" href="https://github.com/hakimel/forkit.js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/camo.github.com/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
+
+		<script src="js/forkit.js"></script>
+		
+	</body>
+</html>
