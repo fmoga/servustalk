@@ -147,7 +147,7 @@ memeify = function() {
         
         // Stroke text
         ctx.strokeStyle = "#000";
-        ctx.lineWidth = 4;
+        ctx.lineWidth = 5;
         ctx.strokeText(this.topText, 5, 20);
         ctx.strokeText(this.topTextExtra, 5, 40);
 
@@ -160,6 +160,7 @@ memeify = function() {
         
         // Fill text
         ctx.fillStyle = "rgb(255, 255, 255)";
+        ctx.lineWidth = 10;
         ctx.fillText(this.topText, 5, 20);
         ctx.fillText(this.topTextExtra, 5, 40);
         
