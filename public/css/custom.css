@@ -134,7 +134,7 @@ html, body {
   line-height: 1.2em;
   border-bottom: 1px solid #ccc;
   
-  padding-top: 10px;
+  padding-top: 7px;
   padding-bottom: 5px;
   min-height: 20px;
 }
@@ -445,6 +445,18 @@ hr {
 .loginLink, .loginLogo {
   margin-top: 10px;
   text-align: center;
+}
+
+/* Full-width container */
+
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.container-fluid > .row-fluid {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 /********************************** 
