@@ -338,8 +338,7 @@ function handleLinksAndEscape(text) {
   //html += $('<div/>').text(text).html();
   html += getHtmlWithSmilyes(text);
   // handle [code]snippets[/code]
-  html = html.replace("[code]", "<code class='highlight'>");
-  html = html.replace("[/code]", "</code>");
+  html = html.replace("/code", "<code class='highlight'>");
   
   imagery = '<div class="imageDock">' + imagery + '</div>';
 
