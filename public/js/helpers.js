@@ -1,3 +1,12 @@
+
+/*=========================================================== 
+
+  Helper functions
+  
+  Depends on config.js
+
+===========================================================*/
+
 // depends on config.js
 
 escapeText = function(text) {

@@ -1,4 +1,10 @@
-// depends on config.js and helpers.js
+
+/*=========================================================== 
+
+  Used to process messages
+  depends on config.js and helpers.js
+
+===========================================================*/
 
 var NO_USER = { id: ''};
 var NO_MESSAGE = {
@@ -280,6 +286,9 @@ function getUuid() {
   
 
 function handleLinksAndEscape(text) {
+
+  if (text === undefined) return;
+
   var html = '';
   var youtube = [];
   var mixcloud = [];

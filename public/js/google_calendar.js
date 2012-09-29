@@ -1,4 +1,12 @@
-// depends on config.js
+
+/*=========================================================== 
+
+  Calendar functionality
+  
+  Depends on config.js
+
+===========================================================*/
+
 
 /* Calendar output variables */
 var days_to_show = 30;

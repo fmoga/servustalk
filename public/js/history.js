@@ -1,4 +1,12 @@
-// depends on config.js and on history.jade (sets MESSAGE_ENDPOINT based on history or memegeist request)
+
+/*=========================================================== 
+
+  Used on the History page
+  
+  Depends on config.js and on history.jade 
+  (sets MESSAGE_ENDPOINT based on history or memegeist request)
+
+===========================================================*/
 
 var lastTimestamp = 0;
 var HISTORY_SCROLL_THRESHOLD = 200;

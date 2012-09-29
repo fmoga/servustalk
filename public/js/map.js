@@ -1,3 +1,9 @@
+/*=========================================================== 
+
+  Loads the vizualisation on the map page; adds the markers
+
+===========================================================*/
+
 google.load('visualization', '1', {'packages': ['geochart']});
 google.setOnLoadCallback(drawMarkersMap);
 

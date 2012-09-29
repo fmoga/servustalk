@@ -1,18 +1,50 @@
+
+/*=========================================================== 
+
+  Configuration file
+
+  Also contains definitions for emotes, memes and sounds
+
+===========================================================*/
+
+
+// Time Constants
 var ONE_SECOND = 1000;
 var ONE_MINUTE = 60 * ONE_SECOND;
 var ONE_HOUR = 60 * ONE_MINUTE;
+var DAY_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+var MONTH = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+// Timeouts
 var IDLE_TIMEOUT = 5 * ONE_MINUTE; // 5 min
 var FLICKER_TITLE_INTERVAL = 2 * ONE_SECOND; // 2 sec
+var MAX_TIMESTAMP_DIFF = 60 * 1000; // 1 min
+
+// Sounds
+var MENTION_SOUND = '/public/audio/touche.wav';
+
+// Calendar
 var GOOGLE_CALENDAR_ATOM_FEED = 'http://www.google.com/calendar/feeds/fv690mq7i7jk6l0mhu9hd5uvms%40group.calendar.google.com/public/full';
 var GOOGLE_CALENDAR_DAYS_INTERVAL = 30;
 var GOOGLE_CALENDAR_UPDATE_INTERVAL = 2 * ONE_MINUTE; // 2 mins
+
+// History
 var HISTORY_MESSAGES_PER_PAGE = 100;
+
+// Avatars
 var DEFAULT_PICTURE = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
-var MAX_TIMESTAMP_DIFF = 60 * 1000; // 1 min
+
+// Location
 var ACCEPTABLE_ACCURACY = 400; // meters
-var MENTION_SOUND = '/public/audio/touche.wav';
-var DAY_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-var MONTH = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+var MOCK_LOCATIONS = [
+  "20.000 leagues under the sea",
+  "the underworld",
+  "higher than the empire state",
+  "moon"
+];
+
+
+// Emotes
 var EMOTICONS = [
   { code: '\[..\]', url:'public/smileys/transformer.gif'},
   { code: ':BZ', url:'public/smileys/115.gif'},
@@ -179,16 +211,8 @@ var EMOTICONS = [
   { code: '\n', url:''}
 ];
 
-var MOCK_LOCATIONS = [
-  "20.000 leagues under the sea",
-  "the underworld",
-  "higher than the empire state",
-  "moon"
-];
-
-// Since there are now 2 lines, this is the max allowed per line
-var MAX_MEME_TEXT_LENGTH = 16;
-
+// Memes
+var MAX_MEME_TEXT_LENGTH = 2 * 8; // lines * characters
 var ALLOWED_MEMES = {
   'ggg': '/public/img/memes/ggg.jpg',
   'ss': '/public/img/memes/ss.png',

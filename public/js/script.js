@@ -1,4 +1,9 @@
-// depends on config.js and message.js
+/*=========================================================== 
+
+  General scripts
+  Depends on config.js and message.js
+
+===========================================================*/
 
 var currentClients = [];
 var first = true;
@@ -16,19 +21,21 @@ var userLocation;
 var bookmark;
 
 
-//Get the latitude and the longitude;
-function geolocationSuccess(position) {
+// On receiving new location
+geolocationSuccess = function (position) {
   var lat = position.coords.latitude;
   var lng = position.coords.longitude;
   var acc = position.coords.accuracy;
   codeLatLng(lat, lng, acc)
 }
 
-function geolocationError(){
+// On geolocation error
+geolocationError = function () {
   console.log("Geocoder failed");
 }
 
-function codeLatLng(lat, lng, accuracy) {
+// Sets user location when receiving a new one
+codeLatLng = function (lat, lng, accuracy) {
   var latlng = new google.maps.LatLng(lat, lng);
   geocoder.geocode({'latLng': latlng}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
@@ -54,6 +61,7 @@ function codeLatLng(lat, lng, accuracy) {
   });
 }
 
+// Hides the checkin button if the userLocation is unset
 checkinButtonVisibility = function() {
   if (userLocation) {
     $("#checkin").removeClass('hidden');
@@ -61,6 +69,8 @@ checkinButtonVisibility = function() {
 }
 
 $(document).ready(function() {
+  
+  // Initialize the syntax highlighter
   $.SyntaxHighlighter.init({
     'lineNumbers': true,
     'baseUrl' : 'public/syntaxhighlighter',
@@ -68,20 +78,26 @@ $(document).ready(function() {
     'theme': 'ubutalk'
   });
 
+  // If ther's support for it, enable geolocation
   if (navigator.geolocation) {
     geocoder = new google.maps.Geocoder();
+
+    // Set the callbacks for success and error
     navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
   }
 
+  // Load and poll the callendar
   loadCalendar(GOOGLE_CALENDAR_ATOM_FEED, 0, GOOGLE_CALENDAR_DAYS_INTERVAL);
   setInterval(function() {
     loadCalendar(GOOGLE_CALENDAR_ATOM_FEED, 0, GOOGLE_CALENDAR_DAYS_INTERVAL);
   }, GOOGLE_CALENDAR_UPDATE_INTERVAL);
 
+  // Set a poll for idle detection
   setInterval(function() {
     refreshIdleTimes();
   }, ONE_MINUTE);
 
+  // TODO: move
   $("a#settingsLink").fancybox();
   $("a#changeTitle").fancybox();
 
@@ -114,6 +130,7 @@ $(document).ready(function() {
 
   originalDocTitle = document.title;
 
+  // Socket.io connection
   socket = io.connect('/', {
     'force new connection' : true,
     'connect timeout': 5000,
@@ -124,11 +141,17 @@ $(document).ready(function() {
     'max reconnection attempts': 10
   });
 
+  // When connecting through the socket
   socket.on('connect', function() {
+    
+    // Request title
     socket.emit('loadTitle');
-    if(userLocation) {    
+    
+    // Send location (if available)
+    if (userLocation) {    
       socket.emit('location', userLocation);
     }
+
     // set focus and idle on reconnect
     if(!document.hasFocus()) {
       focus = false;
@@ -137,6 +160,7 @@ $(document).ready(function() {
     }
   });
 
+  // Socket debug helpers
   socket.on('reconnect', function(transport, attempts) {
     console.log('DEBUG: reconnect: transport=' + transport + '; attempts=' + attempts);
     window.location.reload();
@@ -154,19 +178,28 @@ $(document).ready(function() {
     socket.emit('pong');
   });
 
+  // Title handling
   socket.on('loadTitle', function(title) {
     roomTitle = title;
     var result = handleLinksAndEscape(title.text);
-    $('#roomTitle').html(result.html);
+
+    if ($('#roomTitle') && result) {
+      $('#roomTitle').html(result.html);
+    }
   });
 
   socket.on('updateTitle', function(title) {
     roomTitle = title;
     var result = handleLinksAndEscape(title.text);
-    $('#roomTitle').html(result.html);
+    
+    if ($('#roomTitle') && result) {
+      $('#roomTitle').html(result.html);
+    }
+    
     displayNotification(title.user + ' changed chat title', false, true);
   });
 
+  // Handle message receiving
   socket.on('message', function(message) {
     // title flicker
     if (!focused) {
@@ -179,25 +212,31 @@ $(document).ready(function() {
         }
       }, FLICKER_TITLE_INTERVAL);
     }
+
     // desktop notification
     if (!focused && $('#desknot').prop('checked') && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
       var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
       displayDesktopNotification(picture, message.user.name, message.text);
     }
+
     displayMessage(message, true, true);
   });
 
+  // Client handling
   socket.on('clients', function(clients) {
     // sort clients in reverse order of login time and increasing order of idle times
     var now = new Date().getTime();
+    
     clients = clients.reverse().sort(function(a, b) {
       var idleA = a.idle ? a.idleFor : -1;
       var idleB = b.idle ? b.idleFor : -1;
       return idleA - idleB;
     });
+
     var buddylist = $('#buddylist ul');
     $(buddylist).empty();
     var nameStyle = '';
+    
     if ($('#toggle').attr('full') == '0') {
        nameStyle = 'style="display: none"';
     }
