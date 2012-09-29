@@ -443,8 +443,15 @@ hr {
 /* Login */
 
 .loginLink, .loginLogo {
-  margin-top: 10px;
   text-align: center;
+}
+
+.loginLogo {
+  margin-top: 200px;
+}
+
+.loginLink {
+  margin-top: 50px;
 }
 
 /* Full-width container */
@@ -469,6 +476,11 @@ hr {
   display: block !important;
 }
 
+.preloader-hide {
+  display: none;
+}
+
+/* HEEEEEEEEEY SEXY LADEEE */
 .gangnam-style {
   text-align: center;
   padding-top: 100px;

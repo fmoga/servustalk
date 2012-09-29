@@ -12,6 +12,7 @@ html(lang="en")
       link(href='/public/css/utils.css', rel='stylesheet', type='text/css')
       link(href='/public/css/custom.css', rel='stylesheet', type='text/css')
       link(href='/public/css/responsive.css', rel='stylesheet', type='text/css')
+      link(href='/public/css/animate-custom.css', rel='stylesheet', type='text/css')
 
   body
       
@@ -19,10 +20,10 @@ html(lang="en")
       block header
       block content
 
-    div.container-fluid.preloader.gangnam-style
+    div.container-fluid.preloader.preloader-hide.gangnam-style
       p
         |Loading...
-      img(src='/public/img/preloader.gif')
+      img(src='/public/img/preloader.gif',alt='Finn is Gangnam Style.')
 
     block scripts
       script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');

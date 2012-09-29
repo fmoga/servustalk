@@ -1,7 +1,10 @@
 extends layout
 
+block append stylesheets
+  link(rel="stylesheet", href="public/css/login.css", type="text/css", media="screen")
+
 block content
-  p.loginLogo
-    img(src='/public/img/tux.png')
-  p.loginLink
-    a(href='/auth/google') Login with Google Account
+  p.loginLogo.animated.fadeInDown
+    img(src='/public/img/logo.png')
+  p.loginLink.animated.fadeInDown
+    a(href='/auth/google',class='btn btn-large btn-inverse') Login with Google Account
