@@ -440,6 +440,17 @@ hr {
   padding-right: 5px;
 }
 
+/* Self-referencing /me */
+
+.its-a-me {
+  font-style: italic;
+  margin: 10px 0 10px 0;
+}
+
+.its-a-me .name {
+  font-weight: bold;
+}
+
 /* Login */
 
 .loginLink, .loginLogo {

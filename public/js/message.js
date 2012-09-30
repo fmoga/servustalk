@@ -94,11 +94,15 @@ function displayMessage(message, autoscroll, displayInline) {
   var wasScrolledToBottom = isScrolledToBottom();
 
   var html = '';
+
+  // I <3 Checkins, Eddy
   if (message.type === 'CHECKIN') {
     html += '<div class="checkinMessage"><i class="icon-map-marker"></i><strong>' + escapeText(message.user.name) + '</strong> is at <strong><a href="http://maps.google.com/?q=' + encodeURIComponent(message.text) + '" target="_blank">' + escapeText(message.text) + '</a></strong><span class="checkin-time timestamp">' + formatTimestamp(message.ts) + '</span></div>';
     $('#messagebox .scrollr').append(html);
     if (autoscroll && wasScrolledToBottom) scrollToBottom();
     lastMessage = NO_MESSAGE;
+
+  // Coloured messages
   } else if (message.text.indexOf('/#') == 0) { // colored alert
     var color = message.text.substring(1, message.text.indexOf(' '));
     if (!color.match(/[a-fA-F0-9]{6}|[a-fA-F0-9]{3}/g)) {
@@ -113,6 +117,18 @@ function displayMessage(message, autoscroll, displayInline) {
     $('#messagebox .scrollr').append(html);
     if (autoscroll && wasScrolledToBottom) scrollToBottom();
     lastMessage = NO_MESSAGE;        
+
+  // Custom messages for /me commands
+  } else if (message.text.indexOf('/me') == 0) {
+    var text = message.text.substr(4);
+
+    html += '<div class="its-a-me">';
+    html += '<span class="name">' + message.user.name + '</span> ';
+    html += htmlEncode(text) +' </div>';
+
+    $('#messagebox .scrollr').append(html);
+    if (autoscroll && wasScrolledToBottom) scrollToBottom();
+    lastMessage = NO_MESSAGE;
   } else {
     var userMention = '@' + $('#loggedUser').html();
     var processedMessage = processMessage(message, userMention, autoscroll && wasScrolledToBottom, displayInline);
