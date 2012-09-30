@@ -461,12 +461,10 @@ window.addEventListener('blur', function() {
     reportIdleness();
   }, IDLE_TIMEOUT);
   if (bookmark) {
-    bookmark.removeClass('alert');
-    bookmark.removeClass('alert-info');
+    bookmark.removeClass('bookmark');
   }
   bookmark = $(".author .messageContent .content:last")
-  bookmark.addClass('alert');
-  bookmark.addClass('alert-info');
+  bookmark.addClass('bookmark');
   if (wasScrolledToBottom) scrollToBottom();
 });
 

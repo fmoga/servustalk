@@ -397,6 +397,10 @@ html, body {
   max-height : 315px;
 }
 
+.imageLink.resized {
+  max-height : none !important;
+}
+
 .soundcloud {
   width: 90%;
 }
@@ -495,6 +499,24 @@ hr {
 .gangnam-style {
   text-align: center;
   padding-top: 100px;
+}
+
+/* Bookmark */
+
+.bookmark {
+  border-radius: 4px;
+  margin-bottom: 4px !important;
+  font-weight: bold;
+  color: black !important;
+
+  margin: 7px 10px 10px 42px;
+  padding: 5px;
+
+  border: 1px solid #fff;
+  box-shadow: 0 0 5px #BCE8F1;
+
+  background-color: #D9EDF7;
+  border-color: #BCE8F1;
 }
 
 /********************************** 

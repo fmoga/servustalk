@@ -116,7 +116,7 @@ function displayMessage(message, autoscroll, displayInline) {
     html += htmlEncode(message.text.substring(message.text.indexOf(' ') + 1))  + ' </div>';
     $('#messagebox .scrollr').append(html);
     if (autoscroll && wasScrolledToBottom) scrollToBottom();
-    lastMessage = NO_MESSAGE;        
+    lastMessage = NO_MESSAGE;
 
   // Custom messages for /me commands
   } else if (message.text.indexOf('/me') == 0) {
@@ -161,6 +161,9 @@ function displayMessage(message, autoscroll, displayInline) {
 
     // Add vote handlers
     addTimestampHandler(message);
+
+    // Add images to the resize manager
+    findAllImages();
   }
 }
 
