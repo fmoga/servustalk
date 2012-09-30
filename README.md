@@ -9,12 +9,15 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 * Authentication using Google Account via OAuth 2
 * HTML5 desktop notifications
 * Inline display of image links
+* Drag & drop image resizing
 * Inline display of Youtube, Soundcloud, Mixcloud and mp3 links
 * Displays upcoming events in a public Google Calendar
 * Basic idle detection
+* Bookmark showing messages typed since going idle
 * Mentions support with `@name` syntax and autocompletion using Tab key
 * Archives
-* Code syntax highlighting using the `[code]` tag
+* Code syntax highlighting using `/code`
+* IRC-style `/me` support
 * Emoticons
 * Chat title (topic)
 * Announcements and alerts using `/#<hexcolor> text` syntax
@@ -24,8 +27,10 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 * User moderation. Chat access is based on a whitelisting process. New users can't access the group chat until a whitelisted user accepts their request. First user to connect to the group chat is automatically accepted (he's probably the administrator) and then the whitelisting process continues normally. New requests, whitelisting/blacklisting trigger notifications in the chat area and they have realtime effects (e.g. blacklisting a user will instantly disconnect him from all active sessions).
 * Using long-polling as Comet technique so server push works on the vast majority of browsers including on Kindle, iOS and Android-based devices
 * HTML5 geolocation
+* Check-in support, and a map of past checkins
 * Ability to check in current location
 * Meme support using `/meme meme-name "top text" "bottom text"` and `/meme list` to see all meme types
+* Listing existing memes using `/meme lisr`
 * Memegeist (meme archive)
 * Support for i18n
 
