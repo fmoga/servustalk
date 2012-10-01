@@ -207,7 +207,6 @@ function makeImageZoomable(imgTag)
       e.target.style.maxHeight = '';
       e.target.style.height = 'auto';
       $(e.target).addClass('resized');
-      e.target.style.zIndex = 1000; // Make sure the image is on top.
 
       if(e.target.style.position == '')
       {
