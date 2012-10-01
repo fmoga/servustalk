@@ -18,6 +18,7 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 * Archives
 * Code syntax highlighting using `/code`
 * IRC-style `/me` support
+* `/slap` support (utter chaos)
 * Emoticons
 * Chat title (topic)
 * Announcements and alerts using `/#<hexcolor> text` syntax
@@ -30,7 +31,7 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 * Check-in support, and a map of past checkins
 * Ability to check in current location
 * Meme support using `/meme meme-name "top text" "bottom text"` and `/meme list` to see all meme types
-* Listing existing memes using `/meme lisr`
+* Listing existing memes using `/meme list`
 * Memegeist (meme archive)
 * Support for i18n
 

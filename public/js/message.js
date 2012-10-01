@@ -208,13 +208,35 @@ function handleMeme(html) {
 
 function processMessage(message, userMention, scroll, displayInline){
     var result = handleLinksAndEscape(message.text);
-    result.html = handleMentions(result.html, userMention);
+    
+    // Check slap before mention
+    var wasSlap = false;
+
+    // Check if the current user was slapped
+    if (isSlap(result.html, userMention)) {
+      shakeScreen();
+      result.html = handleSlap(result.html, userMention, message.user.name);
+      wasSlap = true;
+    } else {
+      // Check if someone else was slapped
+      if (isRemoteSlap(result.html)) {
+        // Remove '/slap @'
+        var slappedUser = result.html.substr(7);
+        result.html = handleSlap(result.html, slappedUser, message.user.name);
+      }
+    }
+
+    result.html = handleMentions(result.html, userMention, wasSlap);
     result.html = handleMeme(result.html);
     result.html = handleBlink(result.html);
     result.html = handleQuote(result.html);
     var classes = 'messageContent';
-    if (hasMention(result.html, userMention)) {
+
+    // If this wasn't a slap, it could be a mention
+    if (!wasSlap && hasMention(result.html, userMention)) {
       classes += ' mention';
+    } else if (wasSlap) {
+      classes += ' slap';
     }
 
     // Votes wrapper
@@ -266,13 +288,32 @@ function hasMention(text, mention) {
   return text.indexOf(mention) != -1;
 }
 
-function handleMentions(text, mention) {
+// Check if it begins with /slap and contains a mention to us
+function isSlap(text, mention) {
+  return text == ('/slap ' + mention);
+}
+
+// Check if someone else was slapped
+// TODO: does not check if the user actually exists
+function isRemoteSlap(text) {
+  return text.indexOf('/slap @') == 0;
+}
+
+// Handles slap commands
+// cafea + no QA
+function handleSlap(text, mention, by) {
+    return '<i>' + by + ' slapped ' + text.replace('/slap ','') + '!</i>';
+}
+
+function handleMentions(text, mention, wasSlap) {
     var r = new RegExp(mention, 'g');
     /*
     if (!focused && text.match(r)) {
       $('#noise').html('<embed src="' + MENTION_SOUND + '" hidden=true autostart=true loop=false>');
     }
     */
+
+    if (wasSlap) return text.replace(r, 'you');
     return text.replace(r, '<strong>' + mention + '</strong>');
 }
 
