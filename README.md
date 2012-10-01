@@ -9,6 +9,7 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 * Authentication using Google Account via OAuth 2
 * HTML5 desktop notifications
 * Inline display of image links
+* Basic NSFW protection
 * Drag & drop image resizing
 * Inline display of Youtube, Soundcloud, Mixcloud and mp3 links
 * Displays upcoming events in a public Google Calendar

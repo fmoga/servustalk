@@ -214,6 +214,14 @@ $(document).ready(function() {
     displayNotification(title.user + ' changed chat title', false, true);
   });
 
+  // NSFW show button, just removes the class
+  $('.show-nsfw').live('click', function(e) {
+    e.preventDefault();
+
+    $(this).closest('.nsfw').removeClass('nsfw');
+    $(this).remove();
+  })
+
   // Handle message receiving
   socket.on('message', function(message) {
     // title flicker

@@ -239,6 +239,12 @@ function processMessage(message, userMention, scroll, displayInline){
       classes += ' slap';
     }
 
+    // Check for NSFW
+    if (isNsfw(result.html, userMention)) {
+      classes += ' nsfw';
+      result.html = handleNsfw(result.html);
+    }
+
     // Votes wrapper
     var votes = $('<div>').addClass("vote");
 
@@ -288,6 +294,12 @@ function hasMention(text, mention) {
   return text.indexOf(mention) != -1;
 }
 
+// Checks if a message is NSFW
+// For now, this means a message containing 'NSFW' in the body
+function isNsfw(text) {
+  return text.toLowerCase().indexOf("nsfw") != -1;
+}
+
 // Check if it begins with /slap and contains a mention to us
 function isSlap(text, mention) {
   return text == ('/slap ' + mention);
@@ -303,6 +315,11 @@ function isRemoteSlap(text) {
 // cafea + no QA
 function handleSlap(text, mention, by) {
     return '<i>' + by + ' slapped ' + text.replace('/slap ','') + '!</i>';
+}
+
+// Adds nsfw wrapper
+function handleNsfw(text) {
+    return '<div class="hide-nsfw">' + text + '</div><a href="" class="btn btn-danger btn-mini show-nsfw">Show NSFW</a>';
 }
 
 function handleMentions(text, mention, wasSlap) {
