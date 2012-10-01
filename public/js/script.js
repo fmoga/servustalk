@@ -97,15 +97,18 @@ $(document).ready(function() {
     refreshIdleTimes();
   }, ONE_MINUTE);
 
-  // TODO: move
-  $("a#settingsLink").fancybox();
-  $("a#changeTitle").fancybox();
-
   $("a#changeTitle").click(function() {
+
+    // Show the editable field
+    $('#roomTitleEdit').show();
+    $('#roomTitleDisplay').hide();
+
+    // Set the title to the previous value
     newTitleField = $('#newTitle');
     newTitleField.val(roomTitle.text);
     newTitleField.select();
     newTitleField.focus();
+
   });
 
   $('#newTitle').live('keydown', function(e) { 
@@ -116,16 +119,28 @@ $(document).ready(function() {
     }
   });
 
+  // TODO: Change to on #newTitle change
   $("#submitTitle").click(function() {
     submitTitle();
   });
 
   function submitTitle() {
+    // Get the title
     var newTitleText = $('#newTitle').val();
+
+    // Hide the editable field
+    $('#roomTitleEdit').hide();
+    $('#roomTitleDisplay').show();
+    
+    // Check if not same title
+    if (newTitleText === roomTitle.text)
+      return;
+
+    // Update title
     if ($.trim(newTitleText) !== '') { 
       socket.emit('updateTitle', newTitleText);
-      $.fancybox.close();
     }
+
   }
 
   originalDocTitle = document.title;

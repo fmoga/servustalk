@@ -519,6 +519,12 @@ hr {
   border-color: #BCE8F1;
 }
 
+/* Title changer */
+#newTitle {
+  margin: 0;
+  font-weight: bold;
+}
+
 /********************************** 
 
   Custom browser styles

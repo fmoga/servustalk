@@ -2,7 +2,6 @@ extends layout
 
 block append stylesheets
   link(href='/public/css/jquery-ui-1.8.17.custom.css', rel='stylesheet', type='text/css')
-  link(rel="stylesheet", href="public/fancybox/jquery.fancybox-1.3.4.css", type="text/css", media="screen")
   link(rel="stylesheet", href="public/css/clouds.css", type="text/css", media="screen")
   link(rel="stylesheet", href="public/forkit/css/forkit.css", type="text/css", media="screen")
   link(rel="stylesheet", href="public/forkit/css/demo.css", type="text/css", media="screen")
@@ -10,7 +9,6 @@ block append stylesheets
 block append scripts
   script(src='/public/js/lib/jquery-ui-1.8.17.custom.min.js');
   script(src='/public/syntaxhighlighter/jquery.syntaxhighlighter.min.js')
-  script(src='/public/fancybox/jquery.fancybox-1.3.4.pack.js')
   script(src='/public/js/resize.js')
   script(src='/public/js/helpers.js')
   script(src='/socket.io/socket.io.js')
@@ -38,8 +36,14 @@ block header
         a(href='/logout') Logout
 
     div#title-box
-      span#roomTitle
-      a#changeTitle(href='#changeTitleForm') Change title
+      div#roomTitleDisplay
+        span#roomTitle
+        a#changeTitle(href='#changeTitleForm', class="btn btn-mini btn-info") Change title
+
+      span#roomTitleEdit(style='display:none')
+        input#newTitle(type='text',class='span4')
+        a#submitTitle(href='#changeTitleForm', class="btn btn-mini btn-info") Done
+      
 
 block content
   #content.row-fluid
@@ -87,6 +91,6 @@ block content
 
   
   div(style='display:none')
-    #changeTitleForm.form-horizontal
-      input#newTitle(type='text')
-      input#submitTitle(type='button', value='Change title', class='btn btn-primary')
+    #xxchangeTitleForm.form-horizontal
+      input#xxnewTitle(type='text')
+      input#xxsubmitTitle(type='button', value='Change title', class='btn btn-primary')
