@@ -119,7 +119,7 @@ function displayMessage(message, autoscroll, displayInline) {
     lastMessage = NO_MESSAGE;
 
   // Custom messages for /me commands
-  } else if (message.text.indexOf('/me') == 0) {
+  } else if (message.text.indexOf('/me ') == 0) {
     var text = message.text.substr(4);
 
     html += '<div class="its-a-me">';
