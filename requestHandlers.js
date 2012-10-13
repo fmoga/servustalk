@@ -46,6 +46,12 @@ function memegeist(req, res) {
   });
 }
 
+function topMessages(req, res) {
+  isUserAllowed(req, res, function() {
+    res.render('history', {endpoint: '/getTopMessages/'});
+  });
+}
+
 function getMessages(req, res) {
   timestamp = parseInt(req.params.timestamp);
   if (isNaN(timestamp)) {
@@ -53,6 +59,32 @@ function getMessages(req, res) {
   } else {
     persistency.getMessagesChunk(timestamp, 100, function(err, messages) {
       persistency.mergeMessagesWithUsers(messages, null, function(messages) {
+        res.contentType('json');
+        res.send(messages);
+      });
+    });
+  }
+}
+
+function getTopMessages(req, res) {
+  var beginTimestamp = new Date()
+  beginTimestamp.setTime(parseInt(req.params.timestamp));
+  var endTimestamp = new Date()
+  if (isNaN(beginTimestamp)) {
+    res.render('404');
+  } else {
+    persistency.getMessages(beginTimestamp, endTimestamp, function(err, messages) {
+      persistency.mergeMessagesWithUsers(messages, null, function(messages) {
+        //Sorts descendingly by the number of upvotes
+        messages.sort(function(firstMessage, secondMessage) {
+          firstVoteCount = 0
+          if (firstMessage.uptokes !== undefined)
+            firstVoteCount = firstMessage.uptokes - firstMessage.downtokes
+          secondVoteCount = 0
+          if (secondMessage.uptokes !== undefined)
+            secondVoteCount = secondMessage.uptokes - secondMessage.downtokes
+          return secondVoteCount - firstVoteCount
+        });
         res.contentType('json');
         res.send(messages);
       });
@@ -242,6 +274,7 @@ exports.login = login
 exports.access = access
 exports.history = history
 exports.memegeist = memegeist
+exports.topMessages = topMessages
 exports.beta = beta
 exports.whitelist = whitelist
 exports.acceptUser = acceptUser
@@ -250,6 +283,7 @@ exports.setRealtimeEngine = setRealtimeEngine
 exports.pay = pay
 exports.vote = vote
 exports.getMessages = getMessages
+exports.getTopMessages = getTopMessages
 exports.getMemes = getMemes
 exports.map = map
 exports.distinctCheckins = distinctCheckins

@@ -5,6 +5,7 @@ function addRoutes(app) {
     app.get('/', requestHandlers.index);
     app.get('/history', requestHandlers.history);
     app.get('/memegeist', requestHandlers.memegeist);
+    app.get('/top', requestHandlers.topMessages);
     app.get('/beta', requestHandlers.beta);
     app.get('/map', requestHandlers.map);
     app.get('/distinctCheckins', requestHandlers.distinctCheckins);
@@ -18,6 +19,8 @@ function addRoutes(app) {
     app.get('/getMessages/:timestamp', requestHandlers.getMessages);
     app.post('/getMemes/:timestamp', requestHandlers.getMemes);
     app.get('/getMemes/:timestamp', requestHandlers.getMemes);
+    app.get('/getTopMessages/:timestamp', requestHandlers.getTopMessages);
+    app.post('/getTopMessages/:timestamp', requestHandlers.getTopMessages);
 }
 
 function setRealtimeEngine(engine) {
