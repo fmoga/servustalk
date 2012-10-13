@@ -2,9 +2,6 @@ extends layout
 
 block append stylesheets
   link(href='/public/css/jquery-ui-1.8.17.custom.css', rel='stylesheet', type='text/css')
-  link(rel="stylesheet", href="public/css/clouds.css", type="text/css", media="screen")
-  link(rel="stylesheet", href="public/forkit/css/forkit.css", type="text/css", media="screen")
-  link(rel="stylesheet", href="public/forkit/css/demo.css", type="text/css", media="screen")
 
 block append scripts
   script(src='/public/js/lib/jquery-ui-1.8.17.custom.min.js');
@@ -18,7 +15,6 @@ block append scripts
   script(src='/public/js/script.js')
   script(src='http://www.google.com/jsapi')
   script(src='/public/js/google_calendar.js')
-  script(src='/public/forkit/js/forkit.js')
   script(src='http://maps.googleapis.com/maps/api/js?sensor=true')
 
 block header
@@ -80,15 +76,6 @@ block content
       label(class='checkbox')
         input#desknot(type='checkbox') 
         |Desktop notifications
-
-  <!-- The contents (if there's no contents the ribbon acts as a link) -->
-  .forkit-curtain
-    .close-button
-    iframe(src="https://docs.google.com/document/d/1fBy1mBattlmJxs3eG4eyfGLSajKLbDqBgNGwiUyfE1w/edit", width="90%", height="100%")
-
-  <!-- The ribbon -->
-  a.forkit.ribbon(data-text="Porceala", data-text-detached="Drag down >", href="https://github.com/hakimel/forkit.js")
-
   
   div(style='display:none')
     #xxchangeTitleForm.form-horizontal
