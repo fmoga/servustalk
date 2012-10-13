@@ -42,7 +42,7 @@ function history(req, res) {
 
 function memegeist(req, res) {
   isUserAllowed(req, res, function() {
-    res.render('history', {endpoint: '/getMemes/'});
+    res.render('memegeist', {endpoint: '/getMemes/'});
   });
 }
 
@@ -217,12 +217,17 @@ function distinctCheckins(req, res) {
       IGNORE_LOCATIONS = {'null': true, '127.0.0.1': true};
       locations = {};
       for(i in checkins) {
-        text = checkins[i].text;
-        if (!IGNORE_LOCATIONS[text]) {
-          if (locations[text]) {
-            locations[text]++;
+        location = checkins[i].text.location;
+        lat = checkins[i].text.lat;
+        lng = checkins[i].text.lng;
+        if (!IGNORE_LOCATIONS[location]) {
+          if (locations[location]) {
+            locations[location]['count']++;
           } else {
-            locations[text] = 1;
+            locations[location] = {};
+            locations[location]['count'] = 1;
+            locations[location]['lat'] = lat;
+            locations[location]['lng'] = lng;
           }
         }
       }

@@ -41,22 +41,34 @@ codeLatLng = function (lat, lng, accuracy) {
     if (status == google.maps.GeocoderStatus.OK) {
       if (accuracy < ACCEPTABLE_ACCURACY) {
         // exact location, display all details
-        userLocation = results[0].formatted_address;
+        userLocation = {
+          lat: lat,
+          lng: lng,
+          location: results[0].formatted_address,
+        }
       } else {
         // inexact location, display city if available and country
         for(var i in results) {
           if ($.inArray('locality', results[i].types) > -1 || $.inArray('country', results[i].types) > -1) {
-            userLocation = results[i].formatted_address;
+            userLocation = {
+              lat: lat,
+              lng: lng,
+              location: results[0].formatted_address,
+            }
             break;
           }
         }
       }
       if(socket) {	 
-        socket.emit('location', userLocation);
+        socket.emit('location', userLocation.location);
       }
       checkinButtonVisibility();
     } else {
-      userLocation = 'Location unavailable';
+      userLocation = {
+        lat: -1,
+        lng: -1,
+        location: 'Location unavailable',
+      }
     }
   });
 }
@@ -164,7 +176,7 @@ $(document).ready(function() {
     
     // Send location (if available)
     if (userLocation) {    
-      socket.emit('location', userLocation);
+      socket.emit('location', userLocation.location);
     }
 
     // set focus and idle on reconnect

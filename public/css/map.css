@@ -1,0 +1,13 @@
+.container-fluid {
+  height: 94% !important;
+}
+
+#map {
+  height: 100% !important;
+}
+
+.jvectormap-zoomin, .jvectormap-zoomout {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}

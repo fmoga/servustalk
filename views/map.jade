@@ -1,8 +1,14 @@
 extends layout
 
+block append stylesheets
+  link(href='/public/css/jquery-jvectormap-1.1.css', rel='stylesheet', type='text/css')
+  link(href='/public/css/map.css', rel='stylesheet', type='text/css')
+
 block append scripts
-  script(src='https://www.google.com/jsapi')
-  script(src='/public/js/map.js')
+  script(src='/public/js/map/jquery-jvectormap-1.1.min.js')
+  script(src='/public/js/map/jquery-jvectormap-world-mill-en.js')
+  script(src='/public/js/map/gdp-data.js')
+  script(src='/public/js/map/map.js')
 
 block header
   #header.row-fluid
@@ -22,5 +28,4 @@ block header
     span#loggedUser.username #{everyauth.google.user.name}
 
 block content
-  .row
-  #map.span10.offset1
+  #map

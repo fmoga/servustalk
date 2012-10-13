@@ -97,7 +97,7 @@ function displayMessage(message, autoscroll, displayInline) {
 
   // I <3 Checkins, Eddy
   if (message.type === 'CHECKIN') {
-    html += '<div class="checkinMessage"><i class="icon-map-marker"></i><strong>' + escapeText(message.user.name) + '</strong> is at <strong><a href="http://maps.google.com/?q=' + encodeURIComponent(message.text) + '" target="_blank">' + escapeText(message.text) + '</a></strong><span class="checkin-time timestamp">' + formatTimestamp(message.ts) + '</span></div>';
+    html += '<div class="checkinMessage"><i class="icon-map-marker"></i><strong>' + escapeText(message.user.name) + '</strong> is at <strong><a href="http://maps.google.com/?q=' + encodeURIComponent(message.text.location) + '" target="_blank">' + escapeText(message.text.location) + '</a></strong><span class="checkin-time timestamp">' + formatTimestamp(message.ts) + '</span></div>';
     $('#messagebox .scrollr').append(html);
     if (autoscroll && wasScrolledToBottom) scrollToBottom();
     lastMessage = NO_MESSAGE;
