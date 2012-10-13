@@ -136,7 +136,9 @@ html, body {
   
   padding-top: 7px;
   padding-bottom: 5px;
-  min-height: 20px;
+  height: 35px;
+
+  box-shadow: 0px 0px 10px #ccc;  
 }
 
 #roomTitle {
@@ -182,7 +184,7 @@ html, body {
   bottom: 0;
 
   padding-top: 5px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 
 #checkin {
@@ -197,6 +199,8 @@ html, body {
 
   position: absolute;
   bottom: 0;
+  margin: 0;
+  margin-bottom: 10px;
 
   color : #000 !important;
 }
@@ -207,12 +211,9 @@ html, body {
   width: 100%;
   height: 100%;
 
-  padding: 1% 0;
-
+  padding: 0;
   padding-bottom: 60px;
-
-  position: absolute;
-  top: 0;
+  padding-top: 5px;
 
   overflow: hidden;
 }
@@ -608,4 +609,15 @@ hr {
   background-color: #CBCBCB;
   border: 1px solid #CBCBCB;
   -webkit-border-radius: 6px;
+}
+
+/* Monkeys are taking over */
+
+* {
+  margin: 0px;
+  padding: 0px;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
