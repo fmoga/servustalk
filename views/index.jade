@@ -31,6 +31,8 @@ block header
       li
         a(href='/whitelist',target='_blank') Whitelist
       li
+        a(href='#OptionsModal',data-toggle='modal') Options
+      li
         a(href='/logout') Logout
 
     div#title-box
@@ -48,8 +50,10 @@ block content
     div.span9#chat
       #messagebox
         .scrollr
-      
+
       textarea#inputfield(rows='2',placeholder='Type something funny and hit enter')
+
+
 
     div.span3#sidebar
       #buddylist(rowspan="2")
@@ -83,3 +87,22 @@ block content
     #xxchangeTitleForm.form-horizontal
       input#xxnewTitle(type='text')
       input#xxsubmitTitle(type='button', value='Change title', class='btn btn-primary')
+  div.modal.hide.fade#OptionsModal(role='dialog',aria-hidden='true')
+    div.modal-header
+        div.close(type='button',data-dismiss='modal',aria-hidden='true')
+            |&times;
+        h3
+            |Options
+    div.modal-body
+        div.themeOptions
+            h4
+                |Chose a theme
+            div.btn-group(data-toggle='buttons-radio')
+                button.btn#themeLight(type='button',active)
+                    |Light
+                button.btn#themeDark(type='button')
+                    |Dark
+
+    div.modal-footer
+        div.btn(data-dismiss='modal',aria-hidden='true')
+            |Close
