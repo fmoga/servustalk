@@ -213,4 +213,4 @@ var EMOTICONS = [
 
 // Memes
 var MAX_MEME_TEXT_LENGTH = 2 * 8; // lines * characters
-var ALLOWED_MEMES = null;
+var ALLOWED_MEMES = {};

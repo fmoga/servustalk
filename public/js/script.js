@@ -316,14 +316,13 @@ $(document).ready(function() {
     updateScore(message);
   });
 
+  socket.on('memes init', function(memes) {
+    refreshMemes(memes);
+  });
+
   socket.on('memes', function(memes) {
-    if (ALLOWED_MEMES) {  // don't display notification on inital fetch
-      displayNotification('New meme has been added', false, true);
-    }
-    ALLOWED_MEMES = {};
-    for (i in memes) {
-      ALLOWED_MEMES[memes[i].keyword] = memes[i].url;
-    }
+    displayNotification('New meme has been added', false, true);
+    refreshMemes(memes);
   });
 
   socket.on('disconnect', function() {
@@ -343,6 +342,13 @@ $(document).ready(function() {
         this.cancel(); 
       };
       popup.show();
+  }
+  
+  function refreshMemes(memes) {
+    ALLOWED_MEMES = {};
+    for (i in memes) {
+      ALLOWED_MEMES[memes[i].keyword] = memes[i].url;
+    }
   }
 
   $('#toggle').click(function() {

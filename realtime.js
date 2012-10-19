@@ -171,7 +171,14 @@ function init(app, sessionStore) {
         socket.user.idle = false;
         online[socket.id] = socket;
         broadcast('clients', packClients());
-        pushMemes();
+
+        persistency.getMemes(function(err, memes) {
+          if (err) {
+            console.warn('Error fetching memes');
+          } else {
+            socket.emit('memes init', memes);
+          }
+        });
 
         persistency.getHistory(config.app.history_size, function(err, messages) {
           if (err) {

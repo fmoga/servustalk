@@ -74,7 +74,7 @@ function saveMeme(meme) {
 }
 
 function getMemes(callback) {
-  memes.find().toArray(callback);
+  memes.find({}, {_id:0}).toArray(callback);
 }
 
 function getMessages(lower_date, upper_date, callback) {
@@ -211,6 +211,7 @@ exports.saveMeme = saveMeme
 exports.getMessages = getMessages
 exports.getMessagesChunk = getMessagesChunk
 exports.getMemes = getMemes
+exports.getMemesChunk = getMemesChunk
 exports.getDistinctCheckins = getDistinctCheckins
 exports.saveUser = saveUser
 exports.updateUser = updateUser
