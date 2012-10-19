@@ -106,6 +106,20 @@ function getMemes(req, res) {
   }
 }
 
+function loadMemes(req, res) {
+  isUserAllowed(req, res, function() {
+    persistency.getMemes(function(error, memes) {
+      if (error) {
+        res.statusCode = 500;
+        res.end('Error loading memes');
+        return;
+      }
+      res.contentType('json');
+      res.send(memes);
+    });
+  });
+}
+
 function beta(req, res) {
   isUserAllowed(req, res, function() {
     res.render('beta', {
@@ -285,5 +299,6 @@ exports.vote = vote
 exports.getMessages = getMessages
 exports.getTopMessages = getTopMessages
 exports.getMemes = getMemes
+exports.loadMemes = loadMemes
 exports.map = map
 exports.distinctCheckins = distinctCheckins

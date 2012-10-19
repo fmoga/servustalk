@@ -19,6 +19,7 @@ function addRoutes(app) {
     app.get('/getMessages/:timestamp', requestHandlers.getMessages);
     app.post('/getMemes/:timestamp', requestHandlers.getMemes);
     app.get('/getMemes/:timestamp', requestHandlers.getMemes);
+    app.get('/loadMemes', requestHandlers.loadMemes);
     app.get('/getTopMessages/:timestamp', requestHandlers.getTopMessages);
     app.post('/getTopMessages/:timestamp', requestHandlers.getTopMessages);
 }
