@@ -22,6 +22,7 @@ blockquote {
   width: 32px;
   height: 32px;
   margin-right: 5px;
+  border-radius: 4px;
 }
 
 .middle {
@@ -275,12 +276,20 @@ html, body {
   cursor: default;
 }
 
+.vote .vote-plus {
+opacity: 0;
+}
 .vote:hover .vote-plus {
   color: green;
+  opacity: 100;
 }
 
+.vote .vote-minus {
+    opacity: 0;
+}
 .vote:hover .vote-minus {
   color: red;
+  opacity: 100;
 }
 
 .vote.voted-minus .vote-minus {
@@ -297,10 +306,12 @@ html, body {
 
 .vote.zero {
   color: #fff;
+  opacity: 0;
 }
 
 .vote.zero:hover {
   color: #000;
+  opacity: 100;
 }
 
 .vote a {
@@ -324,10 +335,13 @@ html, body {
   width: 100%;
   height: 48%;
   margin-top: 2%;
+  padding-top: 2%;
   
   position: relative;
   word-wrap: break-word;
   overflow-y: hidden;
+    border-top: 1px solid #000000;
+    box-shadow: 1px 1px 1px 1px #353535 inset;
 }
 
 #calendar_link {
@@ -416,7 +430,7 @@ html, body {
 /* Separators */
 
 hr {
-  border-top: 1px solid #949494 !important;
+  border-top: 1px solid #1f1f1f !important;
   border-bottom: 0 !important;
 
   margin: 5px 10px 5px 0 !important;
@@ -440,7 +454,9 @@ hr {
 }
 
 .mention .content {
-  background-color: #FFFFAA;
+  background-color: #EEE;
+  color: #000000;
+   border-radius: 5px;
 }
 
 /* Slap dat bitch */
