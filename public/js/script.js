@@ -316,6 +316,16 @@ $(document).ready(function() {
     updateScore(message);
   });
 
+  socket.on('memes', function(memes) {
+    if (ALLOWED_MEMES) {  // don't display notification on inital fetch
+      displayNotification('New meme has been added', false, true);
+    }
+    ALLOWED_MEMES = {};
+    for (i in memes) {
+      ALLOWED_MEMES[memes[i].keyword] = memes[i].url;
+    }
+  });
+
   socket.on('disconnect', function() {
     if (!unloading) {
       var message = 'You have been disconnected from server for maintenance. Please refresh and log in again.';

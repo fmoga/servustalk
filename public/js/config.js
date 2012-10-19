@@ -3,7 +3,7 @@
 
   Configuration file
 
-  Also contains definitions for emotes, memes and sounds
+  Also contains definitions for emotes and sounds
 
 ===========================================================*/
 
@@ -213,33 +213,4 @@ var EMOTICONS = [
 
 // Memes
 var MAX_MEME_TEXT_LENGTH = 2 * 8; // lines * characters
-var ALLOWED_MEMES = {
-  'ggg': '/public/img/memes/ggg.jpg',
-  'ss': '/public/img/memes/ss.png',
-  'raptor': '/public/img/memes/raptor.png',
-  'sap': '/public/img/memes/sap.jpg',
-  'cat': '/public/img/memes/cat.png',
-  'pp': '/public/img/memes/pp.jpg',
-  'fap': '/public/img/memes/fap.png',
-  'felix': '/public/img/memes/felix.jpg',
-  'aliens': '/public/img/memes/aliens.png',
-  'dolan': '/public/img/memes/dolan.jpg',
-  'gabi': '/public/img/memes/gabi.jpg',
-  'flo': '/public/img/memes/flo.jpg',
-  'mire': '/public/img/memes/mire.jpg',
-  'spiri': '/public/img/memes/spiri.jpg',
-  'vasi': '/public/img/memes/vasi.jpg',
-  'cata': '/public/img/memes/cata.jpg',
-  'fric': '/public/img/memes/fric.jpg',
-  'aditza': '/public/img/memes/aditza.jpg',
-  'awesome': '/public/img/memes/awesome.jpg',
-  'banderas': '/public/img/memes/banderas.jpg',
-  'kiki': '/public/img/memes/kiki.jpg',
-  'mela': '/public/img/memes/mela.jpg',
-  'notbad': '/public/img/memes/notbad.jpg',
-  'shlap': '/public/img/memes/rave.gif',
-  'santa': '/public/img/memes/santa.jpg',
-  'troll': '/public/img/memes/troll.jpg',
-  'slowpoke': '/public/img/memes/slowpoke.jpg',
-  'memelist': '/public/img/memes/memelist.png'
-};
+var ALLOWED_MEMES = null;

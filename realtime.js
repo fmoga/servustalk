@@ -32,6 +32,12 @@ function broadcast(type, body) {
   }
 }
 
+function isValidUrl(text) {
+  var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+  var regex = new RegExp(expression);
+  return text.match(regex);
+}
+
 function packClients() {
   clients = [];
   now = new Date().getTime();
@@ -65,12 +71,39 @@ function disconnectUser(userId) {
   }
 }
 
+function pushMemes() {
+  persistency.getMemes(function(err, memes) {
+    if (err) {
+      console.warn('Error fetching memes');
+    } else {
+      broadcast('memes', memes);
+    }
+  });
+}
+
 function handleMessage(user, message, type) {
   var completeMessage = {
     user: user,
     text: message, 
     type: (type ? type : "TEXT"),
     ts: new Date().getTime(),
+  }
+  if (message.indexOf('/meme add ') == 0) {
+    remaining = message.substring(10);
+    first_space = remaining.indexOf(' ');
+    if (first_space > 0) {
+      keyword = remaining.substring(0, first_space);
+      url = remaining.substring(first_space + 1);
+      if (keyword.length > 0 && url.length > 0 && isValidUrl(url)) {
+        persistency.saveMeme({
+          keyword: keyword,
+          url: url,
+          user: user.id
+        });
+        pushMemes();
+        return;
+      }
+    }
   }
   persistency.saveMessage(completeMessage);
   broadcast('message', completeMessage);
@@ -138,6 +171,7 @@ function init(app, sessionStore) {
         socket.user.idle = false;
         online[socket.id] = socket;
         broadcast('clients', packClients());
+        pushMemes();
 
         persistency.getHistory(config.app.history_size, function(err, messages) {
           if (err) {

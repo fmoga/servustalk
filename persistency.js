@@ -8,6 +8,7 @@ var server = new Mongolian
 var db = server.db(config.mongo.db)
 
 var messages = db.collection("messages")
+var memes = db.collection("memes")
 var users = db.collection("users")
 var titles = db.collection("titles")
 var message_votes = db.collection("message_votes")
@@ -66,6 +67,14 @@ function saveMessage(message) {
     ts: message.ts
   }
   messages.insert(msg);
+}
+
+function saveMeme(meme) {
+  memes.insert(meme);
+}
+
+function getMemes(callback) {
+  memes.find().toArray(callback);
 }
 
 function getMessages(lower_date, upper_date, callback) {
@@ -198,9 +207,10 @@ function saveVote(message_ts, user_id, vote, callback) {
 exports.mergeMessagesWithUsers = mergeMessagesWithUsers
 exports.init = init
 exports.saveMessage = saveMessage
+exports.saveMeme = saveMeme
 exports.getMessages = getMessages
 exports.getMessagesChunk = getMessagesChunk
-exports.getMemesChunk = getMemesChunk
+exports.getMemes = getMemes
 exports.getDistinctCheckins = getDistinctCheckins
 exports.saveUser = saveUser
 exports.updateUser = updateUser
