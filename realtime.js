@@ -82,13 +82,14 @@ function pushMemes() {
 }
 
 function handleMessage(user, message, type) {
+  type = (type ? type : "TEXT");
   var completeMessage = {
     user: user,
     text: message, 
-    type: (type ? type : "TEXT"),
+    type: type,
     ts: new Date().getTime(),
   }
-  if (message.indexOf('/meme add ') == 0) {
+  if (type == "TEXT" && message.indexOf('/meme add ') == 0) {
     remaining = message.substring(10);
     first_space = remaining.indexOf(' ');
     if (first_space > 0) {

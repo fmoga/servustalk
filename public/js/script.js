@@ -251,7 +251,11 @@ $(document).ready(function() {
     // desktop notification
     if (!focused && $('#desknot').prop('checked') && window.webkitNotifications && window.webkitNotifications.checkPermission() == 0) {
       var picture = message.user.picture ? message.user.picture : DEFAULT_PICTURE;
-      displayDesktopNotification(picture, message.user.name, message.text);
+      if (message.type == "CHECKIN") {
+        displayDesktopNotification(picture, message.user.name, message.text.location);
+      } else {
+        displayDesktopNotification(picture, message.user.name, message.text);
+      }
     }
 
     displayMessage(message, true, true);
