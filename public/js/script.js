@@ -558,14 +558,3 @@ function unique(a) {
   for(i in o) r.push(o[i]);
   return r;
 };
-
-function shakeScreen(delay) {
-  if (delay === undefined)
-    delay = 1000;
-
-  $('#content').addClass('shake');
-
-  setTimeout(function() {
-    $('#content').removeClass('shake');
-  }, 300)
-}

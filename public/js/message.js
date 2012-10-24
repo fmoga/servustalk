@@ -49,6 +49,17 @@ function sendVote(message_ts, vote) {
   });
 }
 
+function shakeScreen(delay) {
+  if (delay === undefined)
+    delay = 1000;
+
+  $('#content').addClass('shake');
+
+  setTimeout(function() {
+    $('#content').removeClass('shake');
+  }, 300)
+}
+
 function addTimestampHandler(message) {
   updateScore(message);
 
