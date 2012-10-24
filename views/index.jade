@@ -78,10 +78,6 @@ block content
     = __i('Logged in as ')
     span#loggedUser.username.alt #{everyauth.google.user.name}
     button.btn.btn-info.btn-mini.hidden#checkin(type='submit') Check in
-    span.pull-right#desktop.hidden-phone
-      label(class='checkbox')
-        input#desknot(type='checkbox') 
-        |Desktop notifications
   
   div(style='display:none')
     #xxchangeTitleForm.form-horizontal
@@ -102,6 +98,11 @@ block content
                     |Light
                 button.btn#themeDark(type='button')
                     |Dark
+        div.desktop-notification
+          span#desktop.hidden-phone
+            label(class='checkbox')
+              input#desknot(type='checkbox')
+              |Desktop notifications
 
     div.modal-footer
         div.btn(data-dismiss='modal',aria-hidden='true')
