@@ -342,7 +342,7 @@ $(document).ready(function() {
       }
       popup = window.webkitNotifications.createNotification(picture, title, text);
       popup.onclick = function() { 
-        window.focus(); 
+        $(window).focus();
         this.cancel(); 
       };
       popup.show();

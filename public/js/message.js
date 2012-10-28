@@ -197,17 +197,6 @@ function handleBlink(html) {
     }
 }
 
-function handleReleasingTheKraken(html) {
-  words = html.split(' ');
-  if (words[0] == '/release') {
-    // In case of creativity type some code here
-    // Until then, returning html so we won't raise any eyebrows
-    return html;
-  } else {
-    return html;
-  }
-}
-
 /*
  * we need to draw the canvas element only after the canvas was attached.
  * reason: (I think) it is because we attach html text instead of jquery objects
@@ -251,7 +240,6 @@ function processMessage(message, userMention, scroll, displayInline){
     result.html = handleMentions(result.html, userMention, wasSlap);
     result.html = handleMeme(result.html);
     result.html = handleBlink(result.html);
-    result.html = handleReleasingTheKraken(result.html);
     result.html = handleQuote(result.html);
     var classes = 'messageContent';
 
@@ -657,7 +645,7 @@ var inputHistory = {
 
 // CLient side commands
 function clientSideMessage(text) {
-  if(text === '/meme list') {
+  if(text === '/meme list' || text.indexOf('/release') == 0) {
     return true;
   }
   return false;
@@ -674,5 +662,9 @@ function processClientSideMessage(text) {
     memeify();
     lastMessage = NO_MESSAGE;
     if (wasScrolledToBottom) scrollToBottom();
+  } else if (text.indexOf('/release') == 0) {
+    var script = document.createElement("script");
+    script.src="http://gravityscript.googlecode.com/svn/trunk/gravityscript.js";
+    document.body.appendChild(script);void(0);
   }
 }
