@@ -56,8 +56,7 @@ var UI = {
         this.updateTheme();
     },
     cacheElements:function(){
-        this.$theme_link=$("#theme_link");
-        console.log(this.$theme_link);
+        this.$theme_link=$("#theme_link");        
 
     },
     bindEvents:function(){
