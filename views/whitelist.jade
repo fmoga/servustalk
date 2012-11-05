@@ -6,10 +6,17 @@ block append stylesheets
 block append scripts
   script(src='/public/js/config.js');
   script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
+  script(src='/public/js/makisu.js');
   | <script type='text/javascript'>
   |   $('img.default').each(function() {
   |     this.src = DEFAULT_PICTURE;
   |   });
+  |$( '.list' ).makisu({
+  | selector: 'dd',
+  |  overlap: 0.6,
+  |  speed: 0.85
+  |});
+  $( '.list' ).makisu( 'open' );
   | </script>
 
 block header
@@ -30,54 +37,58 @@ block header
     span#loggedUser.username #{everyauth.google.user.name}
 
 block content
-  .row-fluid
-    .span4
-      h3 #{pending.length} Pending
-      table
+  dl.list.pending
+    dt #{pending.length} Pending
+    - if (pending.length>0) {
         each user, index in pending
-          tr(class='#{index % 2 ? 'odd' : 'even'}')
-            td
-              - if (user.picture) {
-                img.avatar(src='#{user.picture}')
-              - } else {
-                img.avatar.default 
-              - }
+          dd
+            - if (user.picture) {
+              img.avatar(src='#{user.picture}')
+            - } else {
+              img.avatar.default 
+            - }
+            - if (user.name)
               span.user #{user.name}
-              - if (user.email)
-                span.detail &nbsp;&nbsp;#{user.email}
-            td
-              a.accept(href='/accept/#{user.id}') Accept
-            td
-              a.ban(href='/ban/#{user.id}') Ban
-    
-    .span4
-      h3 #{accepted.length} Whitelisted
-      table
+            - if (user.email)
+              span.detail &nbsp;&nbsp;#{user.email}
+            a.accept(href='/accept/#{user.id}') Accept
+            a.ban(href='/ban/#{user.id}') Ban
+    -}else{
+        dd
+         |List is empty
+    -}
+  dl.list.whitelist
+    dt #{accepted.length} Whitelist
+    - if (accepted.length>0) {
         each user, index in accepted
-          tr(class='#{index % 2 ? 'odd' : 'even'}')
-            td
-              - if (user.picture) {
-                img.avatar(src='#{user.picture}')
-              - } else {
-                img.avatar.default 
-              - }
-              span.user #{user.name}
-              span.detail &nbsp;&nbsp;accepted by #{userMap[user.acceptedBy].name}
-            td
-              a.ban(href='/ban/#{user.id}') Ban
-
-    .span4
-      h3 #{banned.length} Blacklisted
-      table
+          dd
+            - if (user.picture) {
+              img.avatar(src='#{user.picture}')
+            - } else {
+              img.avatar.default 
+            - }
+            span.user #{user.name}
+            span.detail &nbsp;&nbsp;accepted by #{userMap[user.acceptedBy].name}
+            a.ban(href='/ban/#{user.id}') Ban
+    -}else{
+        dd
+         |List is empty
+    -}
+  dl.list.blacklisted
+    dt #{banned.length} Blacklisted
+    - if (banned.length>0) {
         each user, index in banned
-          tr(class='#{index % 2 ? 'odd' : 'even'}')
-            td
-              - if (user.picture) {
-                img.avatar(src='#{user.picture}')
-              - } else {
-                img.avatar.default 
-              - }
+          dd
+            - if (user.picture) {
+              img.avatar(src='#{user.picture}')
+            - } else {
+              img.avatar.default 
+            - }
+            - if (user.name)
               span.user #{user.name}
-              span.detail &nbsp;&nbsp;banned by #{userMap[user.bannedBy].name}
-            td
-              a.accept(href='/accept/#{user.id}') Accept
+            span.detail &nbsp;&nbsp;banned by #{userMap[user.bannedBy].name}
+            a.accept(href='/accept/#{user.id}') Accept
+    -}else{
+        dd
+         |List is empty
+    -}
