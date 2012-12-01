@@ -8,6 +8,7 @@
 
 body {
   background: -webkit-gradient(linear, left center, right center, from(#94CAF3), to(#F39595),color-stop(.20,#94CAF3), color-stop(.33,#F7F9A6), color-stop(.66,#F7F9A6), color-stop(.80,#F39595));
+  background: -moz-linear-gradient(left, #94CAF3 0%, #94CAF3 20%, #F7F9A6 33%, #F7F9A6 66%, #F39595 80%,  #F39595 100%);
 }
 
 body, input, textarea, p {
