@@ -3,14 +3,39 @@
   General 
 
 **********************************/
-
-/* Typography */
-
+/* Background */
 body {
-  background: -webkit-gradient(linear, left center, right center, from(#94CAF3), to(#F39595),color-stop(.20,#94CAF3), color-stop(.33,#F7F9A6), color-stop(.66,#F7F9A6), color-stop(.80,#F39595));
-  background: -moz-linear-gradient(left, #94CAF3 0%, #94CAF3 20%, #F7F9A6 33%, #F7F9A6 66%, #F39595 80%,  #F39595 100%);
+  background-color: #6b92b9; 
+  background-image: url('/public/img/snow/snow.png'), url('/public/img/snow/snow3.png'), url('/public/img/snow/snow2.png');
+  -webkit-animation: snow 20s linear infinite;
+  -moz-animation: snow 20s linear infinite;
+  -ms-animation: snow 20s linear infinite;
+  animation: snow 20s linear infinite;
 }
 
+/*Keyframes*/
+@keyframes snow {
+  0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
+  100% {background-position: 500px 1000px, 400px 400px, 300px 300px;}
+}
+ 
+@-moz-keyframes snow {
+  0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
+  100% {background-position: 500px 1000px, 400px 400px, 300px 300px;}
+}
+ 
+@-webkit-keyframes snow {
+  0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
+  50% {background-color:#b4cfe0;}
+  100% {background-position: 500px 1000px, 400px 400px, 300px 300px; background-color:#6b92b9;}
+}
+ 
+@-ms-keyframes snow {
+  0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
+  100% {background-position: 500px 1000px, 400px 400px, 300px 300px;}
+}
+
+/* Typography */
 body, input, textarea, p {
   font-family: 'Droid Sans', sans-serif;
   font-size: 14px;
