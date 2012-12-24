@@ -5,7 +5,9 @@
 **********************************/
 /* Background */
 body {
-  background-image: url('/public/img/snow.jpg');
+  background-image: url('/public/img/santa.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /* Typography */
