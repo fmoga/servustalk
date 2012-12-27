@@ -11,6 +11,10 @@ function addRoutes(app) {
     app.get('/distinctCheckins', requestHandlers.distinctCheckins);
     app.get('/whitelist', requestHandlers.whitelist);
     app.get('/accept/:userid', requestHandlers.acceptUser);
+    // http://northisup.com/blog/a-new-sith-or-revenge-of-the-hope-mirror/
+    // this article is so good, I think it should be hardcoded in the code.
+    // I wish I could commit this with a killer feature so nobody reverts it.
+    // R2D2
     app.get('/ban/:userid', requestHandlers.banUser);
     app.get('/access', requestHandlers.access);
     app.get('/pay', requestHandlers.pay);

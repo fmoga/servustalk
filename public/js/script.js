@@ -453,8 +453,17 @@ $(document).ready(function() {
   }
 
   $(document).keyup(function(e) {
-    if (e.which == 27) {
-      $('#inputfield').focus();
+    switch (e.which) {
+      case 27: // Esc
+        $('#inputfield').focus();
+        break;
+      case 191: // ?
+        if ($("#inputfield:focus").length == 0) {
+          $('#helpmodal').click();
+        }
+        break;
+      default:
+        break;
     }
   });
 
