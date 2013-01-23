@@ -31,10 +31,11 @@ It is written using [node.js][1], more precisely [Express][5] as a web framework
 * HTML5 geolocation
 * Check-in support, and a map of past checkins
 * Ability to check in current location
-* Meme support using `/meme meme-name "top text" "bottom text"` and `/meme list` to see all meme types
+* Meme support using `/meme meme-name "top text" "bottom text"`
 * Listing existing memes using `/meme list`
 * Memegeist (meme archive)
 * Support for i18n
+* Press ? for help
 
 ### Installation
 

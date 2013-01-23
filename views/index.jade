@@ -33,6 +33,8 @@ block header
       li
         a(href='#OptionsModal',data-toggle='modal') Options
       li
+        a#helpmodal(href='#HelpModal',data-toggle='modal') Help
+      li
         a(href='/logout') Logout
 
     div#title-box
@@ -83,6 +85,57 @@ block content
     #xxchangeTitleForm.form-horizontal
       input#xxnewTitle(type='text')
       input#xxsubmitTitle(type='button', value='Change title', class='btn btn-primary')
+
+  div.modal.hide.fade#HelpModal(role='dialog',aria-hidden='true')
+    div.modal-header
+      h3 Help
+      p '?' is the shortcut for this help window
+    div.modal-body
+      div.tabbable.tabs-left
+        ul.nav.nav-tabs
+          li.active
+            a(href='#help-media', data-toggle='tab') media
+          li
+            a(href='#help-code', data-toggle='tab') code
+          li
+            a(href='#help-name', data-toggle='tab') @name
+          li
+            a(href='#help-emoticons', data-toggle='tab') emoticons
+          li
+            a(href='#help-meme', data-toggle='tab') meme
+        // tab-content too width and jumps on the next line
+        div.tab-content(style='width: 75%')
+          div.tab-pane.active#help-media
+            p Copy/Paste url to media to embed it
+            p Supports
+              ul
+                li images (and GIF only on mobile)
+                li mp3
+                li Mixcloud
+                li Soundcloud
+                li YouTube
+          div.tab-pane#help-code
+            p Prepend '/code' to your message to format it as code
+            p Example:
+            p /code puts "hello world"
+            code.highlight.prettyprint.lang-null.linenums.theme-ubutalk.prettyprint-has(style='overflow: hidden; white-space: pre-wrap; max-height: none;')
+              ol.linenums
+                li.L0
+                  span.pln puts
+                  span.str "hello world"
+          div.tab-pane#help-name
+            p Getting the attention of other people is easy.
+            p You can mention someone by prepending @ to their name and use TAB to autocomplete
+          div.tab-pane#help-emoticons
+            div.emoticons TODO include all emoticons
+          div.tab-pane#help-meme
+            p '/meme list' shows a list of possible memes
+            p Valid meme syntax
+              ul
+                li '/meme meme-name'
+                li '/meme meme-name "top-text"'
+                li '/meme meme-name "top-text" "bottom-text"'
+
   div.modal.hide.fade#OptionsModal(role='dialog',aria-hidden='true')
     div.modal-header
         div.close(type='button',data-dismiss='modal',aria-hidden='true')
