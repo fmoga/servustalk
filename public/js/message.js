@@ -452,7 +452,8 @@ function handleLinksAndEscape(text) {
 
 function paramize(text) {
   if (!text.match(/(\d\d?m)?\d\d?s/g)) {
-    alert(text);
+    // nu tipa..
+    console.log('paramize when parsing youtube url: ' + text);
     return '';
   };
   var time = 0;
