@@ -409,48 +409,19 @@ $(document).ready(function() {
       var text = $('#inputfield').val();
       var left = text.substring(0, index);
       var right = text.substring(index);
+      // TODO better solution for figuring out what to complete
       index = left.lastIndexOf('@');
       if (index != -1) {
-        var mention = left.substring(index + 1);
-        left = left.substring(0, index);
-        var names = new Array();
-        $('.profilename').each(function() {
-            var name = $(this).text();
-            if ((name).toLowerCase().indexOf(mention.toLowerCase()) == 0) {
-              names.push(name);
-            }
-        }); 
-        names = unique(names);
-        if (names.length > 0) {
-          tabHistory = {
-            left: left,
-            mention: mention,
-            right: right,
-            names: names,
-            pos: 0
-          }
-          showTabResult();
+        handleMentionAutoComplete(text, index, left, right);
+      } else {
+        if (left.indexOf('/mem') == 0) {
+          handleMemeAutoComplete(text, index, left, right);
         }
       }
     } else {
       tabHistory = null;
     }
   });
-
-  function showTabResult() {
-    var name = tabHistory.mention; 
-    if (tabHistory.pos < tabHistory.names.length) {
-      name = tabHistory.names[tabHistory.pos];
-    }
-    $('#inputfield').val(tabHistory.left + '@' + name + tabHistory.right + " ");
-    var cursor = tabHistory.left.length + name.length + 2; // + 2 because of @ and ' '
-    $('#inputfield').setCursorPosition(cursor);
-    if (tabHistory.pos == tabHistory.names.length) {
-      tabHistory.pos = 0;
-    } else {
-      tabHistory.pos++;
-    }
-  }
 
   $(document).keyup(function(e) {
     switch (e.which) {

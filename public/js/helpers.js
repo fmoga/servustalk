@@ -186,3 +186,44 @@ blinkText = function() {
         s.style.visibility=(s.style.visibility=='visible') ?'hidden':'visible';
     }
 }
+
+handleMentionAutoComplete = function (text, index, left, right) {
+  var mention = left.substring(index + 1);
+  left = left.substring(0, index);
+  var names = new Array();
+  $('.profilename').each(function() {
+      var name = $(this).text();
+      if ((name).toLowerCase().indexOf(mention.toLowerCase()) == 0) {
+        names.push(name);
+      }
+  });
+  names = unique(names);
+  if (names.length > 0) {
+    tabHistory = {
+      left: left,
+      mention: mention,
+      right: right,
+      names: names,
+      pos: 0
+    }
+    showTabResult();
+  }
+}
+
+handleMemeAutoComplete = function (text, index, left, right) {
+}
+
+showTabResult = function () {
+  var name = tabHistory.mention;
+  if (tabHistory.pos < tabHistory.names.length) {
+    name = tabHistory.names[tabHistory.pos];
+  }
+  $('#inputfield').val(tabHistory.left + '@' + name + tabHistory.right + " ");
+  var cursor = tabHistory.left.length + name.length + 2; // + 2 because of @ and ' '
+  $('#inputfield').setCursorPosition(cursor);
+  if (tabHistory.pos == tabHistory.names.length) {
+    tabHistory.pos = 0;
+  } else {
+    tabHistory.pos++;
+  }
+}
