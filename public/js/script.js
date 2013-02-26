@@ -431,7 +431,7 @@ $(document).ready(function() {
         $('#inputfield').focus();
         break;
       case 191: // ?
-        if ($("#inputfield:focus").length == 0) {
+        if ($("input:text:focus").length == 0 && $("textarea:focus").length == 0) {
           $('#helpmodal').click();
         }
         break;
