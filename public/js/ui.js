@@ -8,7 +8,7 @@
 function resize() {
   // Resize the main viewport
   $("#content").height(
-    $(window).height() - $("#header").height() - $("#footer").height() - 25
+    $(window).height() - $("#header").height() - $("#footer").height() - 5
   );
 
   // Resize the message scroller

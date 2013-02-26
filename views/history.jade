@@ -19,21 +19,6 @@ block append scripts
   script(src='/public/js/helpers.js')
 
 block header
-  #header.row-fluid
-    ul.inline.unstyled.pull-right#menu
-      li
-        a(target='_blank',href='/') Chat
-      li
-        a(href='/memegeist',target='_blank') Memegeist
-      li
-        a(href='/map',target='_blank') Map
-      li
-        a(href='/whitelist',target='_blank') Whitelist
-      li
-        a(href='/logout') Logout
-
-    | Currently logged in as 
-    span#loggedUser.username #{everyauth.google.user.name}
 
 block content
   #content.row-fluid

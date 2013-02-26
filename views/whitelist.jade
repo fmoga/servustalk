@@ -13,21 +13,6 @@ block append scripts
   | </script>
 
 block header
-  #header.row-fluid
-    ul.inline.unstyled.pull-right#menu
-      li
-        a(target='_blank',href='/') Chat
-      li
-        a(target='_blank',href='/memegeist') Memegeist
-      li
-        a(href='/history',target='_blank') History
-      li
-        a(href='/map',target='_blank') Map
-      li
-        a(href='/logout') Logout
-
-    |Currently logged in as 
-    span#loggedUser.username #{everyauth.google.user.name}
 
 block content
   .row-fluid

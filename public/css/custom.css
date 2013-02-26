@@ -139,19 +139,38 @@ html, body {
   line-height: 1.2em;
   border-bottom: 1px solid #ccc;
   
-  padding-top: 7px;
-  padding-bottom: 5px;
   height: 35px;
 
   box-shadow: 0px 0px 10px #ccc;  
+}
+
+#roomTitleDisplay {
+  padding: 7px 0;
 }
 
 #roomTitle {
   font-weight: bold;
 }
 
-#menu li {
- margin-left: .5em;
+#menu {
+  margin: 0;
+}
+
+#menu li.dropdown ul {
+  min-width: 160px;
+}
+
+#menu .divider {
+  border-bottom-color: #E5E5E5;
+}
+
+#menu label {
+  font-size: 14px;
+}
+
+#menu a:hover > label {
+  color: #fff;
+  cursor: pointer;
 }
 
 /* Title */
@@ -190,10 +209,6 @@ html, body {
 
   padding-top: 5px;
   padding-bottom: 5px;
-}
-
-#checkin {
-  margin-left: 10px;
 }
 
 /* Input box */

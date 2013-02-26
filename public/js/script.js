@@ -109,7 +109,9 @@ $(document).ready(function() {
     refreshIdleTimes();
   }, ONE_MINUTE);
 
-  $("a#changeTitle").click(function() {
+  $("a#changeTitle").click(function(e) {
+
+    e.preventDefault();
 
     // Show the editable field
     $('#roomTitleEdit').show();
@@ -461,8 +463,9 @@ $(document).ready(function() {
 
   setInterval('blinkText()', 400);
 
-  $('#checkin').click(function() {
+  $('#checkin').click(function(e) {
     socket.emit('checkin', userLocation ? userLocation : '127.0.0.1');
+    e.preventDefault();
   });
 
   checkinButtonVisibility();

@@ -1,0 +1,61 @@
+#header.row-fluid
+  ul.nav.nav-pills.pull-right#menu
+    li.dropdown
+      a(href="#", class="dropdown-toggle", data-toggle="dropdown")
+        i.icon-fast-backward
+        | History
+        b.caret
+      ul.dropdown-menu
+        li
+          a(href='/history',target='_blank') History
+        li
+          a(href='/top',target='_blank') Top
+        li
+          a(href='/memegeist',target='_blank') Memegeist
+
+    li.dropdown
+      a(href="#", class="dropdown-toggle", data-toggle="dropdown")
+        i.icon-th-list
+        | Tools
+        b.caret
+      ul.dropdown-menu
+        li
+          a(href='/map',target='_blank')
+            | Map
+        li
+          a(target='_blank', href='#{calendar_web_link}')
+            |Calendar
+        li.divider
+        li
+          a(href='#OptionsModal',data-toggle='modal') Themes
+        li
+          a(href='/whitelist',target='_blank') Whitelist
+        li.divider
+        li
+          a#helpmodal(href='#HelpModal',data-toggle='modal') Help
+
+    li.dropdown
+      a(href="#", class="dropdown-toggle", data-toggle="dropdown")
+        i.icon-user
+        #{everyauth.google.user.name}
+        b.caret
+      ul.dropdown-menu
+        li
+          a(href="#")#desktop.hidden-phone
+            label(class='checkbox')
+              input#desknot(type='checkbox')
+              |Notifications
+        li
+          a.hidden#checkin(href='#') Check in
+        li.divider
+        li
+          a(href='/logout') Logout
+
+  div#title-box
+    div#roomTitleDisplay
+      span#roomTitle
+      a#changeTitle(href='#changeTitleForm', class="btn btn-mini btn-info") Change title
+
+    span#roomTitleEdit(style='display:none')
+      input#newTitle(type='text',class='span4')
+      a#submitTitle(href='#changeTitleForm', class="btn btn-mini btn-info") Done

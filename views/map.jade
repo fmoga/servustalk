@@ -11,21 +11,6 @@ block append scripts
   script(src='/public/js/map/map.js')
 
 block header
-  #header.row-fluid
-    ul.inline.unstyled.pull-right#menu
-      li
-        a(href='/') Chat
-      li
-        a(href='/memegeist') Memegeist
-      li
-        a(href='/history') History
-      li
-        a(href='/whitelist') Whitelist
-      li
-        a(href='/logout') Logout
-
-    | Currently logged in as 
-    span#loggedUser.username #{everyauth.google.user.name}
 
 block content
   #map

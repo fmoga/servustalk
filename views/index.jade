@@ -17,36 +17,6 @@ block append scripts
   script(src='/public/js/google_calendar.js')
   script(src='http://maps.googleapis.com/maps/api/js?sensor=true')
 
-block header
-  #header.row-fluid
-    ul.inline.unstyled.pull-right#menu
-      li
-        a(href='/memegeist',target='_blank') Memegeist
-      li
-        a(href='/top',target='_blank') Top
-      li
-        a(href='/history',target='_blank') History
-      li
-        a(href='/map',target='_blank') Map
-      li
-        a(href='/whitelist',target='_blank') Whitelist
-      li
-        a(href='#OptionsModal',data-toggle='modal') Options
-      li
-        a#helpmodal(href='#HelpModal',data-toggle='modal') Help
-      li
-        a(href='/logout') Logout
-
-    div#title-box
-      div#roomTitleDisplay
-        span#roomTitle
-        a#changeTitle(href='#changeTitleForm', class="btn btn-mini btn-info") Change title
-
-      span#roomTitleEdit(style='display:none')
-        input#newTitle(type='text',class='span4')
-        a#submitTitle(href='#changeTitleForm', class="btn btn-mini btn-info") Done
-      
-
 block content
   #content.row-fluid
     div.span9#chat
@@ -75,11 +45,6 @@ block content
           
           h4 Events
           #events
-
-  #footer.row-fluid
-    = __i('Logged in as ')
-    span#loggedUser.username.alt #{everyauth.google.user.name}
-    button.btn.btn-info.btn-mini.hidden#checkin(type='submit') Check in
   
   div(style='display:none')
     #xxchangeTitleForm.form-horizontal
@@ -141,7 +106,7 @@ block content
         div.close(type='button',data-dismiss='modal',aria-hidden='true')
             |&times;
         h3
-            |Options
+            |Themes
     div.modal-body
         div.themeOptions
             h4
@@ -151,11 +116,6 @@ block content
                     |Light
                 button.btn#themeDark(type='button')
                     |Dark
-        div.desktop-notification
-          span#desktop.hidden-phone
-            label(class='checkbox')
-              input#desknot(type='checkbox')
-              |Desktop notifications
 
     div.modal-footer
         div.btn(data-dismiss='modal',aria-hidden='true')
