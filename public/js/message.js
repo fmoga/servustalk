@@ -614,6 +614,9 @@ function getSmyleHtml(smyle)
   } else if (smyle.code == 'boian') {
     return 'ಠ_ಠ';
   }
+  else if (smyle.code == 'fail' || smyle.code == 'eroare') {
+    return 'buctiş';
+  }
 	return '<img class="emoticon" src="' + smyle.url + '" title=\'' + smyle.code + '\' alt=\'' + smyle.code + '\'/>';
 }
 //=========Input History=================

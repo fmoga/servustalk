@@ -207,7 +207,10 @@ var EMOTICONS = [
   { code: ':-)', url:'public/smileys/1.gif'},
   { code: ':)', url:'public/smileys/1.gif'},
   { code: 'loop', url:'public/smileys/loop.gif'},
+  { code: 'bro', url:'public/smileys/bro.gif'},
   { code: 'boian', url:''},
+  { code: 'fail', url:''},
+  { code: 'eroare', url:''},
   { code: '\n', url:''}
 ];
 
