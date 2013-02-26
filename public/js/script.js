@@ -62,7 +62,6 @@ codeLatLng = function (lat, lng, accuracy) {
       if(socket) {	 
         socket.emit('location', userLocation.location);
       }
-      checkinButtonVisibility();
     } else {
       userLocation = {
         lat: -1,
@@ -71,13 +70,6 @@ codeLatLng = function (lat, lng, accuracy) {
       }
     }
   });
-}
-
-// Hides the checkin button if the userLocation is unset
-checkinButtonVisibility = function() {
-  if (userLocation) {
-    $("#checkin").removeClass('hidden');
-  }
 }
 
 $(document).ready(function() {
@@ -467,8 +459,6 @@ $(document).ready(function() {
     socket.emit('checkin', userLocation ? userLocation : '127.0.0.1');
     e.preventDefault();
   });
-
-  checkinButtonVisibility();
 });
 
 window.addEventListener('focus', function() {
