@@ -469,7 +469,16 @@ function addYoutubeLinks(links) {
     var params = getUrlVars(link);
     var timestamp = params.t ? paramize(params.t) : '';
     if (params.v) {
-      html += '<div><iframe width="420" height="315" src="http://www.youtube.com/v/' + params.v + timestamp + '" frameborder="0" allowfullscreen></iframe></div>';
+      html += '<div class="youtube">';
+      html += '<object width="420" height="315">';
+      html += '  <param name="allowFullScreen" value="true"></param>';
+      html += '  <embed src="https://youtube.googleapis.com/v/' + params.v + timestamp + '?fs=1"';
+      html += '    type="application/x-shockwave-flash"';
+      html += '    allowfullscreen="true"';
+      html += '    width="420" height="315">';
+      html += '  </embed>';
+      html += '</object>'
+      html == '</div>';
     }
   });
   return html;
