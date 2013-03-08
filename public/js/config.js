@@ -151,7 +151,7 @@ var EMOTICONS = [
   { code: '8-|', url:'public/smileys/29.gif'},
   { code: 'i-)', url:'public/smileys/28.gif'},
   { code: 'I-)', url:'public/smileys/28.gif'},
-  { code: '=,', url:'public/smileys/27.gif'},
+  { code: '=;', url:'public/smileys/27.gif'},
   { code: ':-b', url:'public/smileys/26.gif'},
   { code: ':-B', url:'public/smileys/26.gif'},
   { code: 'o:)', url:'public/smileys/25.gif'},

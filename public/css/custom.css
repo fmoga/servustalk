@@ -641,3 +641,19 @@ hr {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+
+/* Help modal */
+
+.emoticons table {
+  border-collapse: collapse;
+}
+
+.emoticons tr {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+.emoticons td {
+  min-width: 50px;
+  padding: 2px 10px;
+}
