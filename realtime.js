@@ -106,8 +106,17 @@ function handleMessage(user, message, type) {
       }
     }
   }
+  completeMessage = aprilFirst(completeMessage);
   persistency.saveMessage(completeMessage);
   broadcast('message', completeMessage);
+}
+
+function aprilFirst(message) {
+  tokens = message.text.split(' ');
+  index = Math.floor(Math.random() * tokens.length);
+  tokens[index] = 'penis';
+  message.text = tokens.join(' ');
+  return message;
 }
 
 function init(app, sessionStore) {
