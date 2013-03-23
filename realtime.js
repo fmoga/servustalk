@@ -113,8 +113,12 @@ function handleMessage(user, message, type) {
 
 function aprilFirst(message) {
   tokens = message.text.split(' ');
-  index = Math.floor(Math.random() * tokens.length);
-  tokens[index] = 'penis';
+  for (var i = (tokens.length - 1); i > 0; i--) {
+    pos = Math.floor(i * Math.random());
+    var aux = tokens[pos];
+    tokens[pos] = tokens[i];
+    tokens[i] = aux;
+  }
   message.text = tokens.join(' ');
   return message;
 }
