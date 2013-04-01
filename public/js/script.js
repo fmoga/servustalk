@@ -379,7 +379,12 @@ $(document).ready(function() {
           if (clientSideMessage(text)) {
             processClientSideMessage(text);
           } else {
-            socket.emit('message', text);
+            tokens = text.split(' ');
+            if (tokens[0] == '/meme' && tokens[1] in ALLOWED_MEMES) {
+                socket.emit('message', text);
+            } else {
+                displayNotification('Use memes to say something', false, true);
+            }
           }
         }
       }

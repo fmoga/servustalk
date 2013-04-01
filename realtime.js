@@ -106,21 +106,8 @@ function handleMessage(user, message, type) {
       }
     }
   }
-  completeMessage = aprilFirst(completeMessage);
   persistency.saveMessage(completeMessage);
   broadcast('message', completeMessage);
-}
-
-function aprilFirst(message) {
-  tokens = message.text.split(' ');
-  for (var i = (tokens.length - 1); i > 0; i--) {
-    pos = Math.floor(i * Math.random());
-    var aux = tokens[pos];
-    tokens[pos] = tokens[i];
-    tokens[i] = aux;
-  }
-  message.text = tokens.join(' ');
-  return message;
 }
 
 function init(app, sessionStore) {
