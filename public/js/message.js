@@ -402,7 +402,7 @@ function handleLinksAndEscape(text) {
     if (link.search(youtubeMatch) != -1) {
       youtube.push(link); 
     };
-    var mixcloudMatch = /http[s]?:\/\/(www\.)?mixcloud.com/g;
+    var mixcloudMatch = /http[s]?:\/\/(www\.)?mixcloud.com\/\w+\/\w+/g;
     if (link.search(mixcloudMatch) != -1) {
       mixcloud.push(link); 
     };
@@ -502,13 +502,7 @@ function addMixcloudLinks(links) {
   var html = '';
   $.each(links, function(index, link) {
     html += '<div class="mixcloud">';
-    html += '<object width="480" height="480">';
-    html += '  <param name="movie" value="http://www.mixcloud.com/media/swf/player/mixcloudLoader.swf?feed=' + encodeURIComponent(link) + '&embed_uuid=cf33541f-9302-42e5-91bb-597a70dc852d&stylecolor=&embed_type=widget_standard"></param>';
-    html += '  <param name="allowFullScreen" value="true"></param>';
-    html += '  <param name="wmode" value="opaque"></param>';
-    html += '  <param name="allowscriptaccess" value="always"></param>';
-    html += '  <embed src="http://www.mixcloud.com/media/swf/player/mixcloudLoader.swf?feed=' + encodeURIComponent(link) + '&embed_uuid=cf33541f-9302-42e5-91bb-597a70dc852d&stylecolor=&embed_type=widget_standard" type="application/x-shockwave-flash" wmode="opaque" allowscriptaccess="always" allowfullscreen="true" width="480" height="480"></embed>';
-    html += '</object>';
+    html += '  <iframe width="100%" height="180" src="//www.mixcloud.com/widget/iframe/?feed=' + encodeURIComponent(link) + '&show_tracklist=&hide_cover=1&force_html=1" frameborder="0"></iframe>';
     html += '</div>';
   });
   return html;
