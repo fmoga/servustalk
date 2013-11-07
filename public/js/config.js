@@ -211,6 +211,7 @@ var EMOTICONS = [
   { code: 'boian', url:''},
   { code: 'fail', url:''},
   { code: 'eroare', url:''},
+  { code: 'spart', url:'public/smileys/casper.png'},
   { code: '\n', url:''}
 ];
 
