@@ -3,9 +3,7 @@ var Mongolian = require("mongolian"),
     config = require('./config'),
     util = require('util');
 
-var server = new Mongolian
-
-var db = server.db(config.mongo.db)
+var db = new Mongolian(config.mongo.url)
 
 var messages = db.collection("messages")
 var memes = db.collection("memes")

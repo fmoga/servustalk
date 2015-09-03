@@ -67,6 +67,7 @@ This will override default configs in `config.js`.
 
 ### Notes
 * Everyauth fails to parse Google OAuth response once in a while and causes the server to crash. Workaround for this is to use the `forever` node.js module when starting the server which respawns the app once it crashes. However, this is not necessary during development.
+* Enviornment variables used for webserver port, listen address and mongo connection. They are prefixed with SERVUS_
 
 [1]: http://nodejs.org
 [2]: http://npmjs.org

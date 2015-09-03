@@ -3,11 +3,13 @@ var jQuery = require('jquery');
 var config = {}
 
 config.server = {
-  port: 8000
+  ip: process.env.SERVUS_IP || "0.0.0.0",
+  port: process.env.SERVUS_PORT || 8000
 }
 
 config.mongo = {
-  db: "ubuntalk"
+  url: process.env.SERVUS_MONGO_URL || 'mongo://127.0.0.1:27017/ubuntalk',
+  clear_interval: 60 * 30 // clear expired sessions from mongo each 30 min
 }
 
 config.app = {

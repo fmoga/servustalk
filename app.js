@@ -6,10 +6,7 @@ var express = require('express'),
     config = require('./config'),
     route = require('./route'),
     MongoStore = require('connect-mongo'),
-    sessionStore = new MongoStore({
-      db: config.mongo.db,
-      clear_interval: 60 * 30 // clear expired sessions from mongo each 30 min
-    }),
+    sessionStore = new MongoStore(config.mongo),
     realtime = require('./realtime');
 
 everyauth.google
@@ -74,4 +71,4 @@ persistency.init();
 route.addRoutes(app);
 route.setRealtimeEngine(realtime);
 
-app.listen(config.server.port);
+app.listen(config.server.port, config.server.ip);
