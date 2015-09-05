@@ -4,7 +4,7 @@ var config = {}
 
 config.server = {
   ip: process.env.SERVUS_IP || "0.0.0.0",
-  port: process.env.SERVUS_PORT || 8000
+  port: process.env.PORT || process.env.SERVUS_PORT || 8000
 }
 
 config.mongo = {
