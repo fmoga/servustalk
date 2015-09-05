@@ -10,7 +10,7 @@
        "everyauth": "0.2.29",
        "express": "2.5.6",
        "jade": "0.20.0",
-       "jquery": "1.7.3",
+       "jquery": "1.8.3",
        "mongolian": "0.1.16",
        "connect-mongo": "0.1.7",
        "socket.io": "0.9.5",
