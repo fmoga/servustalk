@@ -13,8 +13,8 @@ config.mongo = {
 }
 
 config.app = {
-  google_client_id: "842106021486-cumc60o8sncjuvgpdmm0t8ib5suoreg1.apps.googleusercontent.com",
-  google_client_secret: "NokyfQmm4lbIsa0OvXo1BQnB",
+  google_client_id: "368935632446-m7rjl3k9e8of0soj8bkckpreaotqg38o.apps.googleusercontent.com",
+  google_client_secret: "7o7oEG3y-zy-AJ7EHWXROwpP",
   history_size: 20,
   sio: {
     log_level: 1,
