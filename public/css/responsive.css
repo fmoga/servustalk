@@ -20,4 +20,8 @@
   	max-width: 90%;
   	max-height : 250px;
   }
+
+  body > .container-fluid {
+    padding: 0 !important;
+  }
 }
